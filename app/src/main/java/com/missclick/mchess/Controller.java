@@ -14,7 +14,7 @@ public class Controller {
             }
         }
         for(int i = 0; i < 8; i ++){
-            black.add(new Pawn(0));
+            black.add(new Pawn(0,));
             white.add(new Pawn(1));
         }
     }
