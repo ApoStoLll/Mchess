@@ -1,5 +1,7 @@
 package com.missclick.mchess;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 public class Controller {
@@ -7,6 +9,8 @@ public class Controller {
     private ArrayList<figures> black;
     private ArrayList<figures> white;
     Controller(){
+        black = new ArrayList<>();
+        white = new ArrayList<>();
         field = new int[8][8];
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++){
@@ -18,7 +22,7 @@ public class Controller {
     void createFigures(){
         for(int i = 0; i < 8; i ++) {
             black.add(new Pawn(0, new Coordinate(i, 1)));
-            field[i][1] = 1;
+            field[i][1] = -1;
             white.add(new Pawn(1, new Coordinate(i, 6)));
             field[i][6] = 1;
         }
@@ -52,6 +56,14 @@ public class Controller {
         field[3][7] = 6;
         black.add(new King(0, new Coordinate(4, 0)));
         field[4][0] = -6;
+        for(figures figure : black){
+            Log.d("MYLOG", "BLACK X: " + figure.coor.getX());
+            Log.d("MYLOG", "BLACK Y: " + figure.coor.getY());
+        }
+        for(figures figure : white){
+            Log.d("MYLOG", "WHITE X: " + figure.coor.getX());
+            Log.d("MYLOG", "WHITE Y: " + figure.coor.getY());
+        }
     }
     int[][] getField(){ return field; }
     ArrayList<figures> getBlack(){ return black; }
