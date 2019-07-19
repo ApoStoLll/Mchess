@@ -4,8 +4,8 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-public class Controller {
-    private int field[][];
+class Controller {
+    private int[][] field;
     private ArrayList<figures> black;
     private ArrayList<figures> white;
     Controller(){
@@ -19,7 +19,7 @@ public class Controller {
         }
         createFigures();
     }
-    void createFigures(){
+    private void createFigures(){
         for(int i = 0; i < 8; i ++) {
             black.add(new Pawn(0, new Coordinate(i, 1)));
             field[i][1] = -1;
