@@ -14,3 +14,38 @@ class Pawn extends figures{
 
     }
 }
+
+class Rook extends figures{
+    @Override
+    void move(int x, int y){
+
+    }
+}
+
+class Bishop extends figures{
+    @Override
+    void move(int x, int y){
+
+    }
+}
+
+class Knight extends figures{
+    @Override
+    void move(int x, int y){
+
+    }
+}
+
+class Queen extends figures{
+    @Override
+    void move(int x, int y){
+
+    }
+}
+
+class King extends figures{
+    @Override
+    void move(int x, int y){
+
+    }
+}
