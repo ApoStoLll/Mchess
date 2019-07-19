@@ -6,7 +6,7 @@ import android.graphics.Color;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-class DrawView extends SurfaceView implements SurfaceHolder.Callback {
+public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
 
     private DrawThread drawThread;
 
@@ -72,7 +72,5 @@ class DrawView extends SurfaceView implements SurfaceHolder.Callback {
             }
         }
     }
-
-}
 
 }
