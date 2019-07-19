@@ -9,6 +9,9 @@ abstract class figures {
 }
 
 class Pawn extends figures{
+    Pawn(int color){
+        this.color = color;
+    }
     @Override
     void move(int x, int y){
 
