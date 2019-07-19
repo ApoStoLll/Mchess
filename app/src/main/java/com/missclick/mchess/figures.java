@@ -6,10 +6,12 @@ abstract class figures {
     void move(int x, int y){
         //ABSTRACT
     }
+    Coordinate getCoor(){ return coor; }
 }
 
 class Pawn extends figures{
-    Pawn(int color){
+    Pawn(int color, Coordinate coor){
+        this.coor = coor;
         this.color = color;
     }
     @Override
