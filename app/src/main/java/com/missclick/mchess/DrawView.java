@@ -117,7 +117,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
                     canvas = surfaceHolder.lockCanvas(null);
                     if (canvas == null)
                         continue;
-                    canvas.drawColor(Color.GREEN);
+                    drawMap(canvas, controller.getField());
                 } finally {
                     if (canvas != null) {
                         surfaceHolder.unlockCanvasAndPost(canvas);
