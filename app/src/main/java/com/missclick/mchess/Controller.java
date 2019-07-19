@@ -36,11 +36,11 @@ class Controller {
         field[7][7] = 2;
         black.add(new Knight(0, new Coordinate(1, 0)));
         field[1][0] = -3;
-        white.add(new Knight(1, new Coordinate(1, 6)));
+        white.add(new Knight(1, new Coordinate(1, 7)));
         field[1][7] = 3;
         black.add(new Knight(0, new Coordinate(6, 0)));
         field[6][0] = -3;
-        white.add(new Knight(1, new Coordinate(6, 6)));
+        white.add(new Knight(1, new Coordinate(6, 7)));
         field[6][7] = 3;
         black.add(new Bishop(0, new Coordinate(2, 0)));
         field[2][0] = -4;

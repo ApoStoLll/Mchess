@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.util.Log;
 import android.view.Display;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -71,35 +72,37 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
             this.running = running;
         }
 
-        void drawMap(Canvas canvas, int field[][]){
-            int scale = width > height ? width : height;
+        void drawMap(Canvas canvas, int[][] field){
+            int scale = (width < height ? width : height) / 8;
             for(int i = 0; i < 8; i++){
                 for(int j = 0; j < 8; j++){
+                   // Log.d("FIEL", "Field " + i + j + " = " + field[i][j]);
                     if(field[i][j] == 0){
+                        //Log.d("EMPTY", "EMPTY");
                         p.setColor(Color.BLACK);
                         p.setStyle(Paint.Style.STROKE);
                     }
-                    if(field[i][j] == Math.abs(1)){ //PAWN
+                    if(field[i][j] == 1){ //PAWN
                         p.setColor(Color.GREEN);
                         p.setStyle(Paint.Style.FILL);
                     }
-                    if(field[i][j] == Math.abs(2)){ //ROOK
+                    if(field[i][j] == 2){ //ROOK
                         p.setColor(Color.RED);
                         p.setStyle(Paint.Style.FILL);
                     }
-                    if(field[i][j] == Math.abs(3)){ //KNIGHT
+                    if(field[i][j] == 3){ //KNIGHT
                         p.setColor(Color.BLUE);
                         p.setStyle(Paint.Style.FILL);
                     }
-                    if(field[i][j] == Math.abs(4)){ //BISHOP
+                    if(field[i][j] == 4){ //BISHOP
                         p.setColor(Color.GRAY);
                         p.setStyle(Paint.Style.FILL);
                     }
-                    if(field[i][j] == Math.abs(5)){ //QUEEN
+                    if(field[i][j] ==5){ //QUEEN
                         p.setColor(Color.YELLOW);
                         p.setStyle(Paint.Style.FILL);
                     }
-                    if(field[i][j] == Math.abs(6)){ //KING
+                    if(field[i][j] == 6){ //KING
                         p.setColor(Color.CYAN);
                         p.setStyle(Paint.Style.FILL);
                     }
