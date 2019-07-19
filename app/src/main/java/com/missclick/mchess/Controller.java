@@ -8,9 +8,12 @@ class Controller {
     private int[][] field;
     private ArrayList<figures> black;
     private ArrayList<figures> white;
+    private ArrayList<Coordinate> moveList;
+    private int step = 0;
     Controller(){
         black = new ArrayList<>();
         white = new ArrayList<>();
+        moveList = new ArrayList<>();
         field = new int[8][8];
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++){
@@ -19,6 +22,39 @@ class Controller {
         }
         createFigures();
     }
+    void selectFigure(Coordinate coord){
+        switch (field[coord.getX()][coord.getY()]){
+            case 0: //EMPTY
+                break;
+            case 1: //PAWN
+                moveList = findFigure(coord).check(field);
+                break;
+            case 2: //ROOK
+                break;
+            case 3: //KNIGHT
+                break;
+            case 4: //BISHOP
+                break;
+            case 5: //QUEEN
+                break;
+            case 6: //KING
+                break;
+        }
+
+    }
+
+    figures findFigure(Coordinate coord){
+        for(figures figure : black){
+            if(figure.getCoor().getY() == coord.getY() && figure.getCoor().getX() == coord.getX())
+                return figure;
+        }
+        for(figures figure : white){
+            if(figure.getCoor().getY() == coord.getY() && figure.getCoor().getX() == coord.getX())
+                return figure;
+        }
+        return null;
+    }
+
     private void createFigures(){
         for(int i = 0; i < 8; i ++) {
             black.add(new Pawn(0, new Coordinate(i, 1)));
@@ -70,4 +106,6 @@ class Controller {
     int[][] getField(){ return field; }
     ArrayList<figures> getBlack(){ return black; }
     ArrayList<figures> getWhite(){ return white; }
+    ArrayList<Coordinate> getMove(){ return moveList; }
+    int getStep(){ return step; }
 }

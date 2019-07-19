@@ -8,6 +8,10 @@ abstract class figures {
     void move(int x, int y){
         //ABSTRACT
     }
+    ArrayList check(int field[][]){
+        //ABSTRACT
+        return null;
+    }
     Coordinate getCoor(){ return coor; }
 }
 
@@ -20,6 +24,7 @@ class Pawn extends figures{
     void move(int x, int y){
 
     }
+
     ArrayList check(int field[][]){
         ArrayList movelist = new ArrayList();
         int x = this.coor.getX();
