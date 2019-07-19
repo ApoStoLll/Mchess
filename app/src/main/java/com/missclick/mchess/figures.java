@@ -27,14 +27,14 @@ class Pawn extends figures{
         if(this.color == 0){
             if(this.coor.getY() == 1) if(field[x][y+2] == 0) movelist.add(new Coordinate(x,y+2));
             if(field[x][y+1] == 0) movelist.add(new Coordinate(x,y+1));
-            if(x-1>=0 && field[x-1][y+1] > 0) movelist.add(new Coordinate(x-1,y+1));
-            if(x+1<8 && field[x+1][y+1] > 0) movelist.add(new Coordinate(x+1,y+1));
+            if(x-1>=0) if(field[x-1][y+1] > 0) movelist.add(new Coordinate(x-1,y+1));
+            if(x+1<8) if(field[x+1][y+1] > 0) movelist.add(new Coordinate(x+1,y+1));
         }
         else{
             if(this.coor.getY() == 6) if(field[x][y-2] == 0) movelist.add(new Coordinate(x,y-2));
             if(field[x][y-1] == 0) movelist.add(new Coordinate(x,y-1));
-            if(x-1>=0 && field[x-1][y-1] < 0) movelist.add(new Coordinate(x-1,y-1));
-            if(x+1<8 && field[x+1][y-1] < 0) movelist.add(new Coordinate(x+1,y-1));
+            if(x-1>=0) if(field[x-1][y-1] < 0) movelist.add(new Coordinate(x-1,y-1));
+            if(x+1<8) if(field[x+1][y-1] < 0) movelist.add(new Coordinate(x+1,y-1));
         }
         return movelist;
     }
