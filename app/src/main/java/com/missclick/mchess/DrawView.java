@@ -82,27 +82,27 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
                         p.setColor(Color.BLACK);
                         p.setStyle(Paint.Style.STROKE);
                     }
-                    if(field[i][j] == 1){ //PAWN
+                    if(field[i][j] == 1 || field[i][j] == -1){ //PAWN
                         p.setColor(Color.GREEN);
                         p.setStyle(Paint.Style.FILL);
                     }
-                    if(field[i][j] == 2){ //ROOK
+                    if(field[i][j] == 2 || field[i][j] == -2){ //ROOK
                         p.setColor(Color.RED);
                         p.setStyle(Paint.Style.FILL);
                     }
-                    if(field[i][j] == 3){ //KNIGHT
+                    if(field[i][j] == 3 || field[i][j] == -3){ //KNIGHT
                         p.setColor(Color.BLUE);
                         p.setStyle(Paint.Style.FILL);
                     }
-                    if(field[i][j] == 4){ //BISHOP
+                    if(field[i][j] == 4 || field[i][j] == -4){ //BISHOP
                         p.setColor(Color.GRAY);
                         p.setStyle(Paint.Style.FILL);
                     }
-                    if(field[i][j] ==5){ //QUEEN
+                    if(field[i][j] == 5 || field[i][j] == -5){ //QUEEN
                         p.setColor(Color.YELLOW);
                         p.setStyle(Paint.Style.FILL);
                     }
-                    if(field[i][j] == 6){ //KING
+                    if(field[i][j] == 6 || field[i][j] == -6){ //KING
                         p.setColor(Color.CYAN);
                         p.setStyle(Paint.Style.FILL);
                     }
