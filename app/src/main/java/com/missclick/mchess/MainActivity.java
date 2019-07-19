@@ -8,11 +8,12 @@ import android.view.View;
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
 
     private DrawView drawView;
+    private Controller controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Controller controller = new Controller();
+        controller = new Controller();
         drawView = new DrawView(this, controller);
         drawView.setOnTouchListener(this);
         setContentView(drawView);
@@ -23,7 +24,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         float y = event.getY();
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN: // нажатие
-
+                controller.selectFigure(new Coordinate((int) x, (int) y));
         }
         drawView.postInvalidate();
         return false;

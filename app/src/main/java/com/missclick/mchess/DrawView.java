@@ -11,6 +11,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
 
+import java.util.ArrayList;
+
 public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
 
     private DrawThread drawThread;
@@ -111,6 +113,10 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
             }
         }
 
+        void drawMoveList(Canvas canvas, ArrayList<Coordinate> moveList){
+
+        }
+
         @Override
         public void run() {
             Canvas canvas;
@@ -121,6 +127,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
                     if (canvas == null)
                         continue;
                     drawMap(canvas, controller.getField());
+                    drawMoveList(canvas, controller.getMoveList());
                 } finally {
                     if (canvas != null) {
                         surfaceHolder.unlockCanvasAndPost(canvas);
