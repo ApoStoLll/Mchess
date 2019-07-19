@@ -1,6 +1,6 @@
 package com.missclick.mchess;
 
-abstract public class figures {
+abstract class figures {
     int color;
     Coordinate coor;
     void move(int x, int y){
