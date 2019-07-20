@@ -4,9 +4,12 @@ import java.util.ArrayList;
 
 abstract class figures {
     int color;
+    boolean firstStep = true;
     Coordinate coor;
-    void move(int x, int y){
-        //ABSTRACT
+    int move(int x, int y){
+       this.coor = new Coordinate(x,y);
+       this.firstStep = false;
+       return 0;
     }
     ArrayList check(int field[][]){
         //ABSTRACT
@@ -99,8 +102,11 @@ class Pawn extends figures{
         this.color = color;
     }
     @Override
-    void move(int x, int y){
-
+    int move(int x, int y){
+        this.coor = new Coordinate(x,y);
+        this.firstStep = false;
+        if(y == 0 || y == 7) return 1;
+        else return 0;
     }
     @Override
     ArrayList check(int field[][]){
@@ -129,10 +135,6 @@ class Rook extends figures{
         this.color = color;
     }
     @Override
-    void move(int x, int y){
-
-    }
-    @Override
     ArrayList check(int field[][]){
         ArrayList movelist = new ArrayList();
         int x = this.coor.getX();
@@ -147,10 +149,6 @@ class Bishop extends figures{
         this.color = color;
     }
     @Override
-    void move(int x, int y){
-
-    }
-    @Override
     ArrayList check(int field[][]){
         ArrayList movelist = new ArrayList();
         int x = this.coor.getX();
@@ -163,10 +161,6 @@ class Knight extends figures{
     Knight(int color, Coordinate coor){
         this.coor = coor;
         this.color = color;
-    }
-    @Override
-    void move(int x, int y){
-
     }
     @Override
     ArrayList check(int field[][]){
@@ -204,10 +198,6 @@ class Queen extends figures{
         this.color = color;
     }
     @Override
-    void move(int x, int y){
-
-    }
-    @Override
     ArrayList check(int field[][]){
         ArrayList movelist = new ArrayList();
         int x = this.coor.getX();
@@ -222,11 +212,6 @@ class King extends figures{
         this.coor = coor;
         this.color = color;
     }
-    @Override
-    void move(int x, int y){
-
-    }
-
     ArrayList check(int field[][],ArrayList<figures> enemy){
         ArrayList<Coordinate> movelist = new ArrayList();
         ArrayList<Coordinate> movelistEnemy = new ArrayList();
