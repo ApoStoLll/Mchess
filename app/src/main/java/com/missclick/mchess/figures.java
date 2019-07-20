@@ -114,13 +114,13 @@ class Pawn extends figures{
         int x = this.coor.getX();
         int y = this.coor.getY();
         if(this.color == 0){
-            if(y == 1) if(field[x][y+2] == 0) movelist.add(new Coordinate(x,y+2));
+            if(this.firstStep && field[x][y+2] == 0) movelist.add(new Coordinate(x,y+2));
             if(field[x][y+1] == 0) movelist.add(new Coordinate(x,y+1));
             if(x-1>=0) if(field[x-1][y+1] > 0) movelist.add(new Coordinate(x-1,y+1));
             if(x+1<8) if(field[x+1][y+1] > 0) movelist.add(new Coordinate(x+1,y+1));
         }
         else{
-            if(this.coor.getY() == 6) if(field[x][y-2] == 0) movelist.add(new Coordinate(x,y-2));
+            if(this.firstStep && field[x][y-2] == 0) movelist.add(new Coordinate(x,y-2));
             if(field[x][y-1] == 0) movelist.add(new Coordinate(x,y-1));
             if(x-1>=0) if(field[x-1][y-1] < 0) movelist.add(new Coordinate(x-1,y-1));
             if(x+1<8) if(field[x+1][y-1] < 0) movelist.add(new Coordinate(x+1,y-1));
@@ -212,7 +212,7 @@ class King extends figures{
         this.coor = coor;
         this.color = color;
     }
-    ArrayList check(int field[][],ArrayList<figures> enemy){
+    ArrayList check(int field[][],ArrayList<figures> enemy,ArrayList<figures> allies){
         ArrayList<Coordinate> movelist = new ArrayList();
         ArrayList<Coordinate> movelistEnemy = new ArrayList();
         int x = this.coor.getX();
@@ -228,6 +228,17 @@ class King extends figures{
         for(Coordinate coord : movelist) for(Coordinate coords : movelistEnemy){
             if(coord == coords) movelist.remove(coord);
         }
+        if(this.firstStep && allies.get(8).firstStep) for(int i=1;i<4;i++){                       // long rokirovka
+            if(field[x-i][y] != 0) break;
+            for(Coordinate coords : movelistEnemy) if(new Coordinate(x-i,y)==coords) break;
+            if(i==3) movelist.add(new Coordinate(x-i,y));
+        }
+        if(this.firstStep && allies.get(0).firstStep) for(int i=1;i<3;i++){                       // short rokirovka
+            if(field[x-i][y] != 0) break;
+            for(Coordinate coords : movelistEnemy) if(new Coordinate(x+i,y)==coords) break;
+            if(i==2) movelist.add(new Coordinate(x+i,y));
+        }
         return movelist;
+
     }
 }
