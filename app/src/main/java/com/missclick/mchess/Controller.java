@@ -86,14 +86,14 @@ class Controller {
         field[5][0] = -4;
         white.add(new Bishop(1, new Coordinate(5, 7)));
         field[5][7] = 4;
-        black.add(new Queen(0, new Coordinate(3, 0)));
-        field[3][0] = -5;
+        black.add(new Queen(0, new Coordinate(4, 0)));
+        field[4][0] = -5;
         white.add(new Queen(0, new Coordinate(4, 7)));
-        field[4][7] = -5;
+        field[4][7] = 5;
         white.add(new King(1, new Coordinate(3, 7)));
         field[3][7] = 6;
-        black.add(new King(0, new Coordinate(4, 0)));
-        field[4][0] = -6;
+        black.add(new King(0, new Coordinate(3, 0)));
+        field[3][0] = -6;
         for(figures figure : black){
             Log.d("MYLOG", "BLACK X: " + figure.coor.getX());
             Log.d("MYLOG", "BLACK Y: " + figure.coor.getY());

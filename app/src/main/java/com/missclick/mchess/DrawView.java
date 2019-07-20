@@ -1,10 +1,13 @@
 package com.missclick.mchess;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.util.Log;
 import android.view.Display;
 import android.view.SurfaceHolder;
@@ -19,7 +22,9 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
     private int width;
     private int height;
     private Paint p;
+    private Paint paint;
     private Controller controller;
+    private Bitmap bitmap;
 
     public DrawView(Context context, Controller controller) {
         super(context);
@@ -32,6 +37,8 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         height = size.y;
         getHolder().addCallback(this);
         p = new Paint();
+        paint = new Paint();
+        paint.setStrokeWidth(10);
         p.setStrokeWidth(10);
     }
 
@@ -74,41 +81,47 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
             this.running = running;
         }
 
+        void drawCells(Canvas canvas){
+            int scale = (width < height ? width : height) / 8;
+            for(int i = 0; i < 8; i++){
+                for(int j = 0; j < 8; j++) {
+                    if((i + j) % 2 == 0){
+                        paint.setStyle(Paint.Style.FILL);
+                        paint.setColor(Color.GRAY);
+                    }
+                    else{
+                        paint.setStyle(Paint.Style.FILL);
+                        //paint.setColor(Color.rgb(255, 243, 176));
+                        paint.setColor(Color.WHITE);
+                    }
+                    canvas.drawRect(i * scale, j * scale, (i+1) * scale, (j+1) * scale, paint);
+                }
+            }
+        }
+
         void drawMap(Canvas canvas, int[][] field){
             int scale = (width < height ? width : height) / 8;
             for(int i = 0; i < 8; i++){
                 for(int j = 0; j < 8; j++){
-                   // Log.d("FIEL", "Field " + i + j + " = " + field[i][j]);
-                    if(field[i][j] == 0){
-                        //Log.d("EMPTY", "EMPTY");
-                        p.setColor(Color.BLACK);
-                        p.setStyle(Paint.Style.STROKE);
+                   // Log.d("FIEL", "Field " + i + j + " = " + field[i][j])
+                    if(field[i][j] == 1) bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.pawnwh);
+                    if(field[i][j] == -1) bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.pawnbl);
+                    if(field[i][j] == 2) bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.rookwh);
+                    if(field[i][j] == -2) bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.rookbl);
+                    if(field[i][j] == 3) bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.knightwh);
+                    if(field[i][j] == -3) bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.knightbl);
+                    if(field[i][j] == 4) bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bishopwh);
+                    if(field[i][j] == -4) bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bishopbl);
+                    if(field[i][j] == 5) bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.queenwh);
+                    if(field[i][j] == -5) bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.queenbl);
+                    if(field[i][j] == 6) bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.kingwh);
+                    if(field[i][j] == -6) bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.kingbl);
+                    if(field[i][j] != 0) {
+                        Rect rectSrc = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+                        Rect rectDst = new Rect(i * scale, j * scale, (i + 1) * scale, (j + 1) * scale);
+                        canvas.drawBitmap(bitmap, rectSrc, rectDst, p);
                     }
-                    if(field[i][j] == 1 || field[i][j] == -1){ //PAWN
-                        p.setColor(Color.GREEN);
-                        p.setStyle(Paint.Style.FILL);
-                    }
-                    if(field[i][j] == 2 || field[i][j] == -2){ //ROOK
-                        p.setColor(Color.RED);
-                        p.setStyle(Paint.Style.FILL);
-                    }
-                    if(field[i][j] == 3 || field[i][j] == -3){ //KNIGHT
-                        p.setColor(Color.BLUE);
-                        p.setStyle(Paint.Style.FILL);
-                    }
-                    if(field[i][j] == 4 || field[i][j] == -4){ //BISHOP
-                        p.setColor(Color.GRAY);
-                        p.setStyle(Paint.Style.FILL);
-                    }
-                    if(field[i][j] == 5 || field[i][j] == -5){ //QUEEN
-                        p.setColor(Color.YELLOW);
-                        p.setStyle(Paint.Style.FILL);
-                    }
-                    if(field[i][j] == 6 || field[i][j] == -6){ //KING
-                        p.setColor(Color.CYAN);
-                        p.setStyle(Paint.Style.FILL);
-                    }
-                    canvas.drawRect(i * scale, j * scale, (i+1) * scale, (j+1) * scale, p);
+                    //canvas.drawRect(i * scale, j * scale, (i+1) * scale, (j+1) * scale, p);
                 }
             }
         }
@@ -126,6 +139,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
                     canvas = surfaceHolder.lockCanvas(null);
                     if (canvas == null)
                         continue;
+                    drawCells(canvas);
                     drawMap(canvas, controller.getField());
                     drawMoveList(canvas, controller.getMoveList());
                 } finally {
