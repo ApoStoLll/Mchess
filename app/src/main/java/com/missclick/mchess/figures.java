@@ -226,7 +226,7 @@ class King extends figures{
     void move(int x, int y){
 
     }
-    @Override
+
     ArrayList check(int field[][],ArrayList<figures> enemy){
         ArrayList<Coordinate> movelist = new ArrayList();
         ArrayList<Coordinate> movelistEnemy = new ArrayList();
