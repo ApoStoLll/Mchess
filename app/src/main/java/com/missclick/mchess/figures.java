@@ -155,7 +155,7 @@ class Bishop extends figures{
         ArrayList movelist = new ArrayList();
         int x = this.coor.getX();
         int y = this.coor.getY();
-        return checkRook(field,x,y,movelist);
+        return checkBishop(field,x,y,movelist);
     }
 }
 
@@ -225,5 +225,24 @@ class King extends figures{
     @Override
     void move(int x, int y){
 
+    }
+    @Override
+    ArrayList check(int field[][],ArrayList<figures> enemy){
+        ArrayList<Coordinate> movelist = new ArrayList();
+        ArrayList<Coordinate> movelistEnemy = new ArrayList();
+        int x = this.coor.getX();
+        int y = this.coor.getY();
+        for(int i=-1;i<2;i++){
+            for(int j=-1;j<2;i++) if(x+i<8 && y+i<8 && x+i>=0 && y+i>=0){
+                if(i==0 && j==0) continue;
+                if(field[x+i][y+i]>=0 && this.color == 0) movelist.add(new Coordinate(x+i,y+i));
+                if(field[x+i][y+i]<=0 && this.color == 1) movelist.add(new Coordinate(x+i,y+i));
+            }
+        }
+        for(figures figure : enemy) movelistEnemy.addAll(figure.check(field));
+        for(Coordinate coord : movelist) for(Coordinate coords : movelistEnemy){
+            if(coord == coords) movelist.remove(coord);
+        }
+        return movelist;
     }
 }
