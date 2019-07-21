@@ -14,9 +14,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     private Controller controller;
     private int width;
     private int height;
-    float h;
-    int a;
-    int b;
+    private int scale;
+    private int OFFSET;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +25,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         display.getSize(size);
         width = size.x;
         height = size.y;
-        h = (float) (height * 0.82);
+        scale = (width < height ? width : height) / 8;
+        OFFSET = (height - 9 * scale) / 2;
         controller = new Controller();
         drawView = new DrawView(this, controller);
         drawView.setOnTouchListener(this);
@@ -35,15 +35,17 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         float x = event.getX();
-        float y = event.getY();
-        int scale = (width < height ? width : height) / 8;
+        float y = event.getY() - OFFSET;
+        //.d("MYLOG", "y: " + y + " OFFSET: " + OFFSET + " SCALE: " + scale);
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN: // нажатие
                 //if ((x/(width/8))  % 2 == 0 ){
-                a = (int) (x*8/width);
-                b = (int) (y*8/(width));
-                Log.d("MYLOG", "b: " + b + " y: " + y);
-                controller.selectFigure(new Coordinate(a,  b));
+                if(y <= 8 * scale + OFFSET && y >= OFFSET){
+                    int a = (int) (x/scale);
+                    int b = (int) (y/(scale));
+                    //Log.d("MYLOG", "b: " + b + " y: " + y);
+                    controller.selectFigure(new Coordinate(a,  b));
+                }
         }
         drawView.postInvalidate();
         return false;

@@ -23,8 +23,18 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
     private int height;
     private Paint p;
     private Paint paint;
+    private Paint paintSide;
+    private Paint paintMove;
     private Controller controller;
     private Bitmap bitmap;
+    private Bitmap bitmapSide;
+    private Bitmap bitmapPoint;
+    private int OFFSET;
+    private int scale;
+    private Rect sideSrc;
+    private Rect sideDstTop;
+    private Rect sideDstBot;
+    private Rect pointSrc;
 
     public DrawView(Context context, Controller controller) {
         super(context);
@@ -35,15 +45,27 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         display.getSize(size);
         width = size.x;
         height = size.y;
+        scale = (width < height ? width : height) / 8;
+        OFFSET = (height - 9 * scale) / 2;
         getHolder().addCallback(this);
         p = new Paint();
+        paintSide = new Paint();
+        paintSide.setStrokeWidth(10);
+        paintSide.setStyle(Paint.Style.FILL);
+        paintSide.setColor(Color.rgb(150,75,0));
         paint = new Paint();
         paint.setStrokeWidth(10);
         p.setStrokeWidth(10);
-        Paint paint1 = new Paint();
-        paint1.setStrokeWidth(10);
-        paint1.setStyle(Paint.Style.FILL);
-        paint1.setColor(Color.GREEN);
+        paintMove = new Paint();
+        paintMove.setStrokeWidth(10);
+        paintMove.setStyle(Paint.Style.FILL);
+        paintMove.setColor(Color.GREEN);
+        bitmapSide = bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.fon);
+        bitmapPoint = bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.point);
+        sideSrc = new Rect(0, 0, bitmapSide.getWidth(), bitmapSide.getHeight());
+        sideDstTop = new Rect(0, 0, width, OFFSET);
+        sideDstBot = new Rect(0, 8 * scale + OFFSET, width, height);
+        pointSrc = new Rect(0, 0, bitmapPoint.getWidth(), bitmapPoint.getHeight());
     }
 
     @Override
@@ -86,7 +108,6 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         void drawCells(Canvas canvas){
-            int scale = (width < height ? width : height) / 8;
             for(int i = 0; i < 8; i++){
                 for(int j = 0; j < 8; j++) {
                     if((i + j) % 2 == 0){
@@ -98,14 +119,16 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
                         //paint.setColor(Color.rgb(255, 243, 176));
                         paint.setColor(Color.WHITE);
                     }
-                    canvas.drawRect(i * scale, j * scale, (i+1) * scale, (j+1) * scale, paint);
+                    canvas.drawRect(i * scale, j * scale + OFFSET, (i+1) * scale, (j+1) * scale + OFFSET, paint);
                 }
             }
         }
-
+        void drawSide(Canvas canvas){
+            canvas.drawBitmap(bitmapSide, sideSrc, sideDstTop, paintSide);
+            canvas.drawBitmap(bitmapSide, sideSrc, sideDstBot, paintSide);
+        }
 
         void drawMap(Canvas canvas, int[][] field){
-            int scale = (width < height ? width : height) / 8;
             for(int i = 0; i < 8; i++){
                 for(int j = 0; j < 8; j++){
                    // Log.d("FIEL", "Field " + i + j + " = " + field[i][j])
@@ -123,7 +146,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
                     if(field[i][j] == -6) bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.kingbl);
                     if(field[i][j] != 0) {
                         Rect rectSrc = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-                        Rect rectDst = new Rect(i * scale, j * scale, (i + 1) * scale, (j + 1) * scale);
+                        Rect rectDst = new Rect(i * scale, j * scale + OFFSET, (i + 1) * scale, (j + 1) * scale + OFFSET);
                         canvas.drawBitmap(bitmap, rectSrc, rectDst, p);
                     }
                     //canvas.drawRect(i * scale, j * scale, (i+1) * scale, (j+1) * scale, p);
@@ -132,12 +155,13 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         void drawMoveList(Canvas canvas, ArrayList<Coordinate> moveList){
-            int scale = (width < height ? width : height) / 8;
             if(!moveList.isEmpty()){
                 for(Coordinate coor : moveList){
                     int i = coor.getX();
                     int j = coor.getY();
-                    canvas.drawRect(i * scale, j * scale, (i+1) * scale, (j+1) * scale, p);
+                    //canvas.drawRect(i * scale, j * scale + OFFSET, (i+1) * scale, (j+1) * scale + OFFSET, paintMove);
+                    Rect rectDst = new Rect(i * scale, j * scale + OFFSET, (i+1) * scale, (j+1) * scale + OFFSET);
+                    canvas.drawBitmap(bitmapPoint, pointSrc, rectDst, paintMove);
                 }
             }
         }
@@ -154,6 +178,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
                     drawCells(canvas);
                     drawMap(canvas, controller.getField());
                     drawMoveList(canvas, controller.getMoveList());
+                    drawSide(canvas);
                 } finally {
                     if (canvas != null) {
                         surfaceHolder.unlockCanvasAndPost(canvas);
