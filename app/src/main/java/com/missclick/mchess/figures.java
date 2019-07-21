@@ -168,25 +168,16 @@ class Knight extends figures{
         int x = this.coor.getX();
         int y = this.coor.getY();
         if(this.color == 0){
-            if(x+1<8 && y+2<8) if(field[x+1][y+2]>=0) movelist.add(new Coordinate(x+1,y+2));
-            if(x-1>=0 && y+2<8) if(field[x-1][y+2]>=0) movelist.add(new Coordinate(x-1,y+2));
-            if(x+2<8 && y+1<8) if(field[x+2][y+1]>=0) movelist.add(new Coordinate(x+2,y+1));
-            if(x-2>=0 && y+1<8) if(field[x+2][y+1]>=0) movelist.add(new Coordinate(x-2,y+1));
-            if(x+1<8 && y-2>=0) if(field[x+1][y+2]>=0) movelist.add(new Coordinate(x+1,y-2));
-            if(x-1>=0 && y-2>=0) if(field[x-1][y+2]>=0) movelist.add(new Coordinate(x-1,y-2));
-            if(x+2<8 && y-1>=0) if(field[x+2][y+1]>=0) movelist.add(new Coordinate(x+2,y-1));
-            if(x-2>=0 && y-1>=0) if(field[x+2][y+1]>=0) movelist.add(new Coordinate(x-2,y-1));
-
+            for(int i=0;i<2;i++) for(int j=0;j<2;j++) if(x-1+2*i<8 && x-1+2*i>=0 && y-2+4*i<8 && y-2+4*i>=0)
+                if(field[x-1+2*i][y-2+4*i]>=0) movelist.add(new Coordinate(x-1+2*i,y-2+4*i));
+            for(int i=0;i<2;i++) for(int j=0;j<2;j++) if(x-2+4*i<8 && x-2+4*i>=0 && y-1+2*i<8 && y-1+2*i>=0)
+                if(field[x-2+4*i][y-1+2*i]>=0) movelist.add(new Coordinate(x-2+4*i,y-1+2*i));
         }
         else{
-            if(x+1<8 && y+2<8) if(field[x+1][y+2]<=0) movelist.add(new Coordinate(x+1,y+2));
-            if(x-1>=0 && y+2<8) if(field[x-1][y+2]<=0) movelist.add(new Coordinate(x-1,y+2));
-            if(x+2<8 && y+1<8) if(field[x+2][y+1]<=0) movelist.add(new Coordinate(x+2,y+1));
-            if(x-2>=0 && y+1<8) if(field[x+2][y+1]<=0) movelist.add(new Coordinate(x-2,y+1));
-            if(x+1<8 && y-2>=0) if(field[x+1][y+2]<=0) movelist.add(new Coordinate(x+1,y-2));
-            if(x-1>=0 && y-2>=0) if(field[x-1][y+2]<=0) movelist.add(new Coordinate(x-1,y-2));
-            if(x+2<8 && y-1>=0) if(field[x+2][y+1]<=0) movelist.add(new Coordinate(x+2,y-1));
-            if(x-2>=0 && y-1>=0) if(field[x+2][y+1]<=0) movelist.add(new Coordinate(x-2,y-1));
+            for(int i=0;i<2;i++) for(int j=0;j<2;j++) if(x-1+2*i<8 && x-1+2*i>=0 && y-2+4*i<8 && y-2+4*i>=0)
+                if(field[x-1+2*i][y-2+4*i]<=0) movelist.add(new Coordinate(x-1+2*i,y-2+4*i));
+            for(int i=0;i<2;i++) for(int j=0;j<2;j++) if(x-2+4*i<8 && x-2+4*i>=0 && y-1+2*i<8 && y-1+2*i>=0)
+                if(field[x-2+4*i][y-1+2*i]<=0) movelist.add(new Coordinate(x-2+4*i,y-1+2*i));
         }
         return movelist;
     }
@@ -212,6 +203,13 @@ class King extends figures{
         this.coor = coor;
         this.color = color;
     }
+    int move(int x, int y,ArrayList<figures> allies){
+        if(x == 6 && y == this.coor.getY()) allies.get(9).move(5,y) ;
+        if(x == 2 && y == this.coor.getY()) allies.get(8).move(3,y) ;
+        this.coor = new Coordinate(x,y);
+        this.firstStep = false;
+        return 0;
+    }
     ArrayList check(int field[][],ArrayList<figures> enemy,ArrayList<figures> allies){
         ArrayList<Coordinate> movelist = new ArrayList();
         ArrayList<Coordinate> movelistEnemy = new ArrayList();
@@ -230,12 +228,14 @@ class King extends figures{
         }
         if(this.firstStep && allies.get(8).firstStep) for(int i=1;i<4;i++){                       // long rokirovka
             if(field[x-i][y] != 0) break;
-            for(Coordinate coords : movelistEnemy) if(new Coordinate(x-i,y)==coords) break;
+            for(Coordinate coords : movelistEnemy)
+                if(new Coordinate(x,y)==coords || new Coordinate(x-2,y)==coords) break;
             if(i==3) movelist.add(new Coordinate(x-i,y));
         }
-        if(this.firstStep && allies.get(0).firstStep) for(int i=1;i<3;i++){                       // short rokirovka
+        if(this.firstStep && allies.get(9).firstStep) for(int i=1;i<3;i++){                       // short rokirovka
             if(field[x-i][y] != 0) break;
-            for(Coordinate coords : movelistEnemy) if(new Coordinate(x+i,y)==coords) break;
+            for(Coordinate coords : movelistEnemy)
+                if(new Coordinate(x,y)==coords || new Coordinate(x+2,y)==coords) break;
             if(i==2) movelist.add(new Coordinate(x+i,y));
         }
         return movelist;
