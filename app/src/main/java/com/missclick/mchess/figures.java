@@ -203,6 +203,13 @@ class King extends figures{
         this.coor = coor;
         this.color = color;
     }
+    int move(int x, int y,ArrayList<figures> allies){
+        if(x == 6 && y == this.coor.getY()) allies.get(9).move(5,y) ;
+        if(x == 2 && y == this.coor.getY()) allies.get(8).move(3,y) ;
+        this.coor = new Coordinate(x,y);
+        this.firstStep = false;
+        return 0;
+    }
     ArrayList check(int field[][],ArrayList<figures> enemy,ArrayList<figures> allies){
         ArrayList<Coordinate> movelist = new ArrayList();
         ArrayList<Coordinate> movelistEnemy = new ArrayList();
