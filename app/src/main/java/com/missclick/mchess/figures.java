@@ -6,12 +6,15 @@ abstract class figures {
     int color;
     boolean firstStep = true;
     Coordinate coor;
-    int move(int x, int y){
+    int move(int x, int y,int field[][],ArrayList<figures> enemy,ArrayList<figures> allies){
        this.coor = new Coordinate(x,y);
        this.firstStep = false;
+       for(Coordinate coord : check(field)){
+            if(enemy.get(0).coor == coord) return 1;
+        }
        return 0;
     }
-    ArrayList check(int field[][]){
+    ArrayList<Coordinate> check(int field[][]){
         //ABSTRACT
         return null;
     }
@@ -103,14 +106,17 @@ class Pawn extends figures{
         this.color = color;
     }
     @Override
-    int move(int x, int y){
+    int move(int x, int y,int field[][],ArrayList<figures> enemy,ArrayList<figures> allies){
         this.coor = new Coordinate(x,y);
         this.firstStep = false;
-        if(y == 0 || y == 7) return 1;
-        else return 0;
+        for(Coordinate coord : check(field)){
+            if(enemy.get(0).coor == coord) return 1;
+        }
+        if(y == 0 || y == 7) return 2;
+        return 0;
     }
     @Override
-    ArrayList check(int field[][]){
+    ArrayList<Coordinate> check(int field[][]){
         ArrayList movelist = new ArrayList();
         int x = this.coor.getX();
         int y = this.coor.getY();
@@ -169,15 +175,19 @@ class Knight extends figures{
         int x = this.coor.getX();
         int y = this.coor.getY();
         if(this.color == 0){
-            for(int i=0;i<2;i++) for(int j=0;j<2;j++) if(x-1+2*i<8 && x-1+2*i>=0 && y-2+4*i<8 && y-2+4*i>=0)
+            for(int i=0;i<2;i++) for(int j=0;j<2;j++)
+                if(x-1+2*i<8 && x-1+2*i>=0 && y-2+4*i<8 && y-2+4*i>=0)
                 if(field[x-1+2*i][y-2+4*i]>=0) movelist.add(new Coordinate(x-1+2*i,y-2+4*i));
-            for(int i=0;i<2;i++) for(int j=0;j<2;j++) if(x-2+4*i<8 && x-2+4*i>=0 && y-1+2*i<8 && y-1+2*i>=0)
+            for(int i=0;i<2;i++) for(int j=0;j<2;j++)
+                if(x-2+4*i<8 && x-2+4*i>=0 && y-1+2*i<8 && y-1+2*i>=0)
                 if(field[x-2+4*i][y-1+2*i]>=0) movelist.add(new Coordinate(x-2+4*i,y-1+2*i));
         }
         else{
-            for(int i=0;i<2;i++) for(int j=0;j<2;j++) if(x-1+2*i<8 && x-1+2*i>=0 && y-2+4*i<8 && y-2+4*i>=0)
+            for(int i=0;i<2;i++) for(int j=0;j<2;j++)
+                if(x-1+2*i<8 && x-1+2*i>=0 && y-2+4*i<8 && y-2+4*i>=0)
                 if(field[x-1+2*i][y-2+4*i]<=0) movelist.add(new Coordinate(x-1+2*i,y-2+4*i));
-            for(int i=0;i<2;i++) for(int j=0;j<2;j++) if(x-2+4*i<8 && x-2+4*i>=0 && y-1+2*i<8 && y-1+2*i>=0)
+            for(int i=0;i<2;i++) for(int j=0;j<2;j++)
+                if(x-2+4*i<8 && x-2+4*i>=0 && y-1+2*i<8 && y-1+2*i>=0)
                 if(field[x-2+4*i][y-1+2*i]<=0) movelist.add(new Coordinate(x-2+4*i,y-1+2*i));
         }
         return movelist;
@@ -204,14 +214,20 @@ class King extends figures{
         this.coor = coor;
         this.color = color;
     }
-    int move(int x, int y,ArrayList<figures> allies){
-        if(x == 6 && y == this.coor.getY()) findRook(allies,false,y).move(5,y) ;
-        if(x == 2 && y == this.coor.getY()) findRook(allies,true,y).move(3,y) ;
+    @Override
+    int move(int x, int y,int field[][],ArrayList<figures> enemy,ArrayList<figures> allies){
+        if(x == 6 && y == this.coor.getY())
+            findRook(allies,false,y).move(5,y,field,enemy,allies);
+        if(x == 2 && y == this.coor.getY())
+            findRook(allies,true,y).move(3,y,field,enemy,allies);
         this.coor = new Coordinate(x,y);
         this.firstStep = false;
+        for(Coordinate coord : check(field)){
+            if(enemy.get(0).coor == coord) return 1;
+        }
         return 0;
     }
-    ArrayList check(int field[][],ArrayList<figures> enemy,ArrayList<figures> allies){
+    ArrayList<Coordinate> check(int field[][],ArrayList<figures> enemy,ArrayList<figures> allies){
         ArrayList<Coordinate> movelist = new ArrayList();
         ArrayList<Coordinate> movelistEnemy = new ArrayList();
         int x = this.coor.getX();
@@ -219,8 +235,10 @@ class King extends figures{
         for(int i=-1;i<2;i++){
             for(int j=-1;j<2;i++) if(x+i<8 && y+i<8 && x+i>=0 && y+i>=0){
                 if(i==0 && j==0) continue;
-                if(field[x+i][y+i]>=0 && this.color == 0) movelist.add(new Coordinate(x+i,y+i));
-                if(field[x+i][y+i]<=0 && this.color == 1) movelist.add(new Coordinate(x+i,y+i));
+                if(field[x+i][y+i]>=0 && this.color == 0)
+                    movelist.add(new Coordinate(x+i,y+i));
+                if(field[x+i][y+i]<=0 && this.color == 1)
+                    movelist.add(new Coordinate(x+i,y+i));
             }
         }
         for(figures figure : enemy) movelistEnemy.addAll(figure.check(field));
