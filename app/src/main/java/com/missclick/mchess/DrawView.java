@@ -40,6 +40,10 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         paint = new Paint();
         paint.setStrokeWidth(10);
         p.setStrokeWidth(10);
+        Paint paint1 = new Paint();
+        paint1.setStrokeWidth(10);
+        paint1.setStyle(Paint.Style.FILL);
+        paint1.setColor(Color.GREEN);
     }
 
     @Override
@@ -99,6 +103,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
             }
         }
 
+
         void drawMap(Canvas canvas, int[][] field){
             int scale = (width < height ? width : height) / 8;
             for(int i = 0; i < 8; i++){
@@ -127,7 +132,14 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         void drawMoveList(Canvas canvas, ArrayList<Coordinate> moveList){
-
+            int scale = (width < height ? width : height) / 8;
+            if(!moveList.isEmpty()){
+                for(Coordinate coor : moveList){
+                    int i = coor.getX();
+                    int j = coor.getY();
+                    canvas.drawRect(i * scale, j * scale, (i+1) * scale, (j+1) * scale, p);
+                }
+            }
         }
 
         @Override
