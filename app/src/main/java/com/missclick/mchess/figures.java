@@ -94,6 +94,7 @@ abstract class figures {
         }
         return movelist;
     }
+
 }
 
 class Pawn extends figures{
@@ -204,8 +205,8 @@ class King extends figures{
         this.color = color;
     }
     int move(int x, int y,ArrayList<figures> allies){
-        if(x == 6 && y == this.coor.getY()) allies.get(9).move(5,y) ;
-        if(x == 2 && y == this.coor.getY()) allies.get(8).move(3,y) ;
+        if(x == 6 && y == this.coor.getY()) findRook(allies,false,y).move(5,y) ;
+        if(x == 2 && y == this.coor.getY()) findRook(allies,true,y).move(3,y) ;
         this.coor = new Coordinate(x,y);
         this.firstStep = false;
         return 0;
@@ -226,19 +227,33 @@ class King extends figures{
         for(Coordinate coord : movelist) for(Coordinate coords : movelistEnemy){
             if(coord == coords) movelist.remove(coord);
         }
-        if(this.firstStep && allies.get(8).firstStep) for(int i=1;i<4;i++){                       // long rokirovka
+
+        if(this.firstStep && findRook(allies,false,this.coor.getY()).firstStep)
+            for(int i=1;i<4;i++){                       // long rokirovka
             if(field[x-i][y] != 0) break;
             for(Coordinate coords : movelistEnemy)
                 if(new Coordinate(x,y)==coords || new Coordinate(x-2,y)==coords) break;
             if(i==3) movelist.add(new Coordinate(x-i,y));
         }
-        if(this.firstStep && allies.get(9).firstStep) for(int i=1;i<3;i++){                       // short rokirovka
+        if(this.firstStep && findRook(allies,true,this.coor.getY()).firstStep)
+            for(int i=1;i<3;i++){                       // short rokirovka
             if(field[x-i][y] != 0) break;
             for(Coordinate coords : movelistEnemy)
                 if(new Coordinate(x,y)==coords || new Coordinate(x+2,y)==coords) break;
             if(i==2) movelist.add(new Coordinate(x+i,y));
         }
+
         return movelist;
 
+    }
+    figures findRook(ArrayList<figures> allies,boolean tiny,int y){
+        for(figures figure : allies){
+            if(tiny) if(figure.getCoor().getX() == 7)
+                if(figure.getCoor().getY() == y)
+                    if(figure.firstStep) return figure;
+                    else if(figure.getCoor().getX() == 0)
+                        if(figure.getCoor().getY() == y)
+                            if(figure.firstStep) return figure;
+        }
     }
 }
