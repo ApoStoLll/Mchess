@@ -254,6 +254,8 @@ class King extends figures{
                     else if(figure.getCoor().getX() == 0)
                         if(figure.getCoor().getY() == y)
                             if(figure.firstStep) return figure;
+
         }
+        return null;
     }
 }
