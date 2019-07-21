@@ -52,7 +52,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         paintSide = new Paint();
         paintSide.setStrokeWidth(10);
         paintSide.setStyle(Paint.Style.FILL);
-        paintSide.setColor(Color.rgb(150,75,0));
+        paintSide.setColor(Color.rgb(230,230,230));
         paint = new Paint();
         paint.setStrokeWidth(10);
         p.setStrokeWidth(10);
@@ -126,6 +126,8 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         void drawSide(Canvas canvas){
             canvas.drawBitmap(bitmapSide, sideSrc, sideDstTop, paintSide);
             canvas.drawBitmap(bitmapSide, sideSrc, sideDstBot, paintSide);
+            //canvas.drawRect(sideDstTop, paintSide);
+            //canvas.drawRect(sideDstBot, paintSide);
         }
 
         void drawMap(Canvas canvas, int[][] field){
