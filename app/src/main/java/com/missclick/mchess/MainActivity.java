@@ -44,9 +44,11 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 int a = (int) (x/scale);
                 int b = (int) (y/(scale));
                 if(b < 8 && b >= 0) {
+                    Log.d("MYLOG", "TOUCH");
                     figures figuer = controller.findFigure(new Coordinate(a, b));
                     if(figuer == null || (figuer.getColor() == 0 && controller.getStep() % 2 != 0 ||
                             figuer.getColor() == 1 && controller.getStep() % 2 == 0)) {
+                        Log.d("MYLOG", "Попал в ход");
                         figures tempFigure = controller.selectFigure(figuer);
                         if(tempFigure == null) controller.move(new Coordinate(a,b), selectedFigure);
                         else selectedFigure = tempFigure;

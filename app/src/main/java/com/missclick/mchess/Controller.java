@@ -24,10 +24,12 @@ class Controller {
     }
     figures selectFigure(figures figure){
         cancelSelected();
+        Log.d("MYLOG", "выбор фигуры");
         //figures figure = findFigure(coord);
         if(figure == null) return null;
         moveList = figure.check(field,black,white);
         figure.setSelected(true);
+        Log.d("MYLOG", "return select figure");
         return figure;
     }
 
@@ -41,18 +43,22 @@ class Controller {
     }
 
     void move(Coordinate coor, figures figure){
+        Log.d("MYLOG", "move?");
         boolean check = false;
         for(Coordinate coord : moveList){
-           if(coord == coor) check = true;
+           if(coord.getX() == coor.getX() && coord.getY() == coor.getY()) check = true;
         }
         if(check){
             if(figure == null) return;
+            Log.d("MYLOG", "startMOVE : " + field[figure.getCoor().getX()][figure.getCoor().getY()] );
             field[figure.getCoor().getX()][figure.getCoor().getY()] = 0;
             if(figure.getColor() == 0) figure.move(coor, field, white, black);
             if(figure.getColor() == 1) figure.move(coor, field, black, white);
             field[figure.getCoor().getX()][figure.getCoor().getY()] = figure.value;
+            Log.d("MYLOG", "endmove : " + field[figure.getCoor().getX()][figure.getCoor().getY()] );
+            step++;
+            moveList = null;
         }
-        step++;
         cancelSelected();
     }
 
@@ -70,7 +76,7 @@ class Controller {
 
     private void createFigures(){
         white.add(new King(1, new Coordinate(4, 7)));
-        field[4][5] = 6;
+        field[4][7] = 6;
         black.add(new King(0, new Coordinate(4, 0)));
         field[4][0] = -6;
         for(int i = 0; i < 8; i ++) {
@@ -107,14 +113,14 @@ class Controller {
         field[3][0] = -5;
         white.add(new Queen(1, new Coordinate(3, 7)));
         field[3][7] = 5;
-        for(figures figure : black){
+        /*for(figures figure : black){
             Log.d("MYLOG", "BLACK X: " + figure.coor.getX());
             Log.d("MYLOG", "BLACK Y: " + figure.coor.getY());
         }
         for(figures figure : white){
             Log.d("MYLOG", "WHITE X: " + figure.coor.getX());
             Log.d("MYLOG", "WHITE Y: " + figure.coor.getY());
-        }
+        }*/
     }
     int[][] getField(){ return field; }
     ArrayList<figures> getBlack(){ return black; }
