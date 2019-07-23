@@ -44,9 +44,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 int b = (int) (y/(scale));
                 if(b < 8 && b >= 0)  controller.selectFigure(new Coordinate(a,  b));
                 //Log.d("MYLOG", "b: " + b + " y: " + y);
-
+                drawView.postInvalidate();
         }
-        drawView.postInvalidate();
         return false;
     }
 }
