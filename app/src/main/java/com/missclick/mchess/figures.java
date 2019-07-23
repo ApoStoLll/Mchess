@@ -1,7 +1,7 @@
 package com.missclick.mchess;
 
 import java.util.ArrayList;
-//import android.util.Log;
+import android.util.Log;
 
 abstract class figures {
     int color;
@@ -234,6 +234,7 @@ class King extends figures{
     }
     ArrayList<Coordinate> check(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
         ArrayList<Coordinate> movelist = new ArrayList<>();
+        ArrayList<Coordinate> movelistOverall = new ArrayList<>();
         ArrayList<Coordinate> movelistEnemy = new ArrayList<>();
         int x = this.coor.getX();
         int y = this.coor.getY();
@@ -247,40 +248,46 @@ class King extends figures{
             }
         }
         enemy.remove(0);
-        for(figures figure : enemy) movelistEnemy.addAll(figure.check(field,enemy,allies));
+        for(figures figure : enemy)  movelistEnemy.addAll(figure.check(field,enemy,allies));
+        for(Coordinate coord : movelist) for(Coordinate coords : movelistEnemy)
+            if(coord.getX() == coords.getX() && coord.getY() == coords.getY())
+                movelistOverall.add(coord);
+        movelist.removeAll(movelistOverall);
+        if (this.firstStep && findRook(allies,false,this.coor.getY()) != null) {   //long rokirovka
+            boolean ok = true;
 
-        for(Coordinate coord : movelist) for(Coordinate coords : movelistEnemy){
-           if(coord == coords) movelist.remove(coord);
+            for (Coordinate coords : movelistEnemy){
+                if (x == coords.getX() && y == coords.getY()) ok = false;
+                if (x - 2 == coords.getX() && y == coords.getY()) ok = false;
+            }
+            for (int i = 1; i < 4; i++) {
+                if (field[x - i][y] != 0) break;
+                if (i == 3 && ok) movelist.add(new Coordinate(x - 2, y));
+            }
         }
-        /*
-        if(this.firstStep && findRook(allies,false,this.coor.getY()).firstStep)
-            for(int i=1;i<4;i++){                       // long rokirovka
-            if(field[x-i][y] != 0) break;
-            for(Coordinate coords : movelistEnemy)
-                if(new Coordinate(x,y)==coords || new Coordinate(x-2,y)==coords) break;
-            if(i==3) movelist.add(new Coordinate(x-i,y));
+        if (this.firstStep && findRook(allies,true,this.coor.getY()) != null) {        // short rokirovka
+            boolean ok = true;
+            for (Coordinate coords : movelistEnemy){
+                if (x == coords.getX() && y == coords.getY()) ok = false;
+                if (x + 2 == coords.getX() && y == coords.getY()) ok = false;
+            }
+            for (int i = 1; i < 3; i++) {
+                if (field[x + i][y] != 0) break;
+                if (i == 2 && ok) movelist.add(new Coordinate(x + 2, y));
+            }
         }
-        if(this.firstStep && findRook(allies,true,this.coor.getY()).firstStep)
-            for(int i=1;i<3;i++){                       // short rokirovka
-            if(field[x-i][y] != 0) break;
-            for(Coordinate coords : movelistEnemy)
-                if(new Coordinate(x,y)==coords || new Coordinate(x+2,y)==coords) break;
-            if(i==2) movelist.add(new Coordinate(x+i,y));
-        }
-*/
         return movelist;
-
     }
 
     private figures findRook(ArrayList<figures> allies,boolean tiny,int y){
         for(figures figure : allies){
-            if(tiny) if(figure.getCoor().getX() == 7)
+            if(tiny){ if(figure.getCoor().getX() == 7)
                 if(figure.getCoor().getY() == y)
                     if(figure.firstStep) return figure;
-                    else if(figure.getCoor().getX() == 0)
-                        if(figure.getCoor().getY() == y)
-                            if(figure.firstStep) return figure;
-
+            }
+            else if (figure.getCoor().getX() == 0)
+                        if (figure.getCoor().getY() == y)
+                            if (figure.firstStep) return figure;
         }
         return null;
     }
