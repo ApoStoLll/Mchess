@@ -45,8 +45,10 @@ class Controller {
     void move(Coordinate coor, figures figure){
         Log.d("MYLOG", "move?");
         boolean check = false;
-        for(Coordinate coord : moveList){
-           if(coord.getX() == coor.getX() && coord.getY() == coor.getY()) check = true;
+        if(moveList != null) {
+            for (Coordinate coord : moveList) {
+                if (coord.getX() == coor.getX() && coord.getY() == coor.getY()) check = true;
+            }
         }
         if(check){
             if(figure == null) return;
