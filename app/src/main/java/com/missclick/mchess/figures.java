@@ -20,7 +20,7 @@ abstract class figures {
         return null;
     }
     ArrayList<Coordinate> hit(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
-        return check(field,enemy,allies);}
+        return null;}
     Coordinate getCoor(){ return coor; }
     ArrayList<Coordinate> checkRook(int[][] field,int x,int y,ArrayList<Coordinate> movelist){
         for(int i=1;i<8;i++){
@@ -164,6 +164,9 @@ class Rook extends figures{
         int y = this.coor.getY();
         return checkRook(field,x,y,movelist);
     }
+    @Override
+    ArrayList<Coordinate> hit(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
+        return check(field,enemy,allies);}
 }
 
 class Bishop extends figures{
@@ -178,6 +181,9 @@ class Bishop extends figures{
         int y = this.coor.getY();
         return checkBishop(field,x,y,movelist);
     }
+    @Override
+    ArrayList<Coordinate> hit(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
+        return check(field,enemy,allies);}
 }
 
 class Knight extends figures{
@@ -208,6 +214,9 @@ class Knight extends figures{
         }
         return movelist;
     }
+    @Override
+    ArrayList<Coordinate> hit(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
+        return check(field,enemy,allies);}
 }
 
 class Queen extends figures{
@@ -223,6 +232,9 @@ class Queen extends figures{
         movelist = checkBishop(field,x,y,movelist);
         return checkRook(field,x,y,movelist);
     }
+    @Override
+    ArrayList<Coordinate> hit(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
+        return check(field,enemy,allies);}
 }
 
 class King extends figures{
@@ -266,7 +278,6 @@ class King extends figures{
         movelist.removeAll(movelistOverall);
         if (this.firstStep && findRook(allies,false,this.coor.getY()) != null) {   //long rokirovka
             boolean ok = true;
-
             for (Coordinate coords : movelistEnemy){
                 if (x == coords.getX() && y == coords.getY()) ok = false;
                 if (x - 2 == coords.getX() && y == coords.getY()) ok = false;
