@@ -50,7 +50,9 @@ public class GameActivity extends AppCompatActivity implements View.OnTouchListe
                 //if ((x/(width/8))  % 2 == 0 ){
                 int a = (int) (x/scale);
                 int b = (int) (y/(scale));
+                Log.d("MYLOG", "a: " + a + " b: " + b);
                 if(!one) multyPlayer(a, b);
+
         }
         return false;
     }
