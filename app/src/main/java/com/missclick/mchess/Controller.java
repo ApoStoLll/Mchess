@@ -53,15 +53,17 @@ class Controller {
         if(check){
             if(figure == null) return;
             //Log.d("MYLOG", "startMOVE : " + field[figure.getCoor().getX()][figure.getCoor().getY()] );
+            boolean clear = true;
+            if ( field[coor.getX()][coor.getY()]!=0) clear = false;
             field[coor.getX()][coor.getY()] = field[figure.getCoor().getX()][figure.getCoor().getY()];
             field[figure.getCoor().getX()][figure.getCoor().getY()] = 0;
             if(figure.getColor() == 0) {
                 figure.move(coor, field, white, black);
-                white.remove(findFigure(coor));
+                if(!clear) white.remove(findFigure(coor));
             }
             if(figure.getColor() == 1) {
                 figure.move(coor, field, black, white);
-                black.remove(findFigure(coor));
+                if(!clear) black.remove(findFigure(coor));
             }
             //Log.d("MYLOG", "endmove : " + field[figure.getCoor().getX()][figure.getCoor().getY()] );
             step++;
