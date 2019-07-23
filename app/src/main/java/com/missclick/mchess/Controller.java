@@ -63,7 +63,7 @@ class Controller {
                 figure.move(coor, field, black, white);
                 black.remove(findFigure(coor));
             }
-            //Log.d("MYLOG", "endmove : " + field[figure.getCoor().getX()][figure.getCoor().getY()] );
+            Log.d("MYLOG", "endmove : " + field[figure.getCoor().getX()][figure.getCoor().getY()] );
             step++;
             moveList = null;
         }
