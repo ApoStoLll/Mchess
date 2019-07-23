@@ -69,9 +69,9 @@ public class GameActivity extends AppCompatActivity implements View.OnTouchListe
             else if(figuer.getColor() != selectedFigure.getColor()){
                 controller.move(new Coordinate(a,b), selectedFigure);
             }
-
+            drawView.postInvalidate();
         }
-        drawView.postInvalidate();
+
     }
     void singlePlayer(){
 
