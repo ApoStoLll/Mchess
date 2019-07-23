@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         width = size.x;
         height = size.y;
         scale = (width < height ? width : height) / 8;
-        OFFSET = (height - 9 * scale) / 2;
+        OFFSET = (height - 8 * scale) / 2;
         controller = new Controller();
         drawView = new DrawView(this, controller);
         drawView.setOnTouchListener(this);
@@ -36,16 +36,15 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     public boolean onTouch(View v, MotionEvent event) {
         float x = event.getX();
         float y = event.getY() - OFFSET;
-        //.d("MYLOG", "y: " + y + " OFFSET: " + OFFSET + " SCALE: " + scale);
+        //Log.d("MYLOG", "y: " + y + " OFFSET: " + OFFSET + " SCALE: " + scale);
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN: // нажатие
                 //if ((x/(width/8))  % 2 == 0 ){
-                if(y <= 8 * scale + OFFSET && y >= OFFSET){
-                    int a = (int) (x/scale);
-                    int b = (int) (y/(scale));
-                    //Log.d("MYLOG", "b: " + b + " y: " + y);
-                    controller.selectFigure(new Coordinate(a,  b));
-                }
+                int a = (int) (x/scale);
+                int b = (int) (y/(scale));
+                if(b < 8 && b >= 0)  controller.selectFigure(new Coordinate(a,  b));
+                //Log.d("MYLOG", "b: " + b + " y: " + y);
+
         }
         drawView.postInvalidate();
         return false;

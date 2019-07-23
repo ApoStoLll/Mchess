@@ -23,7 +23,7 @@ class Controller {
         createFigures();
     }
     void selectFigure(Coordinate coord){
-        switch (field[coord.getX()][coord.getY()]){
+        /*switch (field[coord.getX()][coord.getY()]){
             case 0: //EMPTY
                 moveList = findFigure(coord).check(field);
                 break;
@@ -45,8 +45,8 @@ class Controller {
             case 6: //KING
                 moveList = findFigure(coord).check(field);
                 break;
-        }
-
+        }*/
+        moveList = findFigure(coord).check(field);
     }
 
     figures findFigure(Coordinate coord){

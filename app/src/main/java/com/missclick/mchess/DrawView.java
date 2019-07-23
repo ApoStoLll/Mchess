@@ -46,7 +46,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         width = size.x;
         height = size.y;
         scale = (width < height ? width : height) / 8;
-        OFFSET = (height - 9 * scale) / 2;
+        OFFSET = (height - 8 * scale) / 2;
         getHolder().addCallback(this);
         p = new Paint();
         paintSide = new Paint();
@@ -60,7 +60,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         paintMove.setStrokeWidth(10);
         paintMove.setStyle(Paint.Style.FILL);
         paintMove.setColor(Color.GREEN);
-        bitmapSide = bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.fon5);
+        bitmapSide = bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.fon2);
         bitmapPoint = bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.point);
         sideSrc = new Rect(0, 0, bitmapSide.getWidth(), bitmapSide.getHeight());
         sideDstTop = new Rect(0, 0, width, OFFSET);
@@ -112,12 +112,12 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
                 for(int j = 0; j < 8; j++) {
                     if((i + j) % 2 == 0){
                         paint.setStyle(Paint.Style.FILL);
-                        paint.setColor(Color.GRAY);//rgb(120, 89, 58));
+                        paint.setColor(Color.rgb(120, 89, 58));
                     }
                     else{
                         paint.setStyle(Paint.Style.FILL);
                         //paint.setColor(Color.rgb(255, 243, 176));
-                        paint.setColor(Color.WHITE);//rgb(199, 192, 186));
+                        paint.setColor(Color.rgb(199, 192, 186));
                     }
                     canvas.drawRect(i * scale, j * scale + OFFSET, (i+1) * scale, (j+1) * scale + OFFSET, paint);
                 }
