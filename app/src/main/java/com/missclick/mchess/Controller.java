@@ -22,36 +22,41 @@ class Controller {
         }
         createFigures();
     }
-    void selectFigure(Coordinate coord){
-        /*switch (field[coord.getX()][coord.getY()]){
-            case 0: //EMPTY
-                moveList = findFigure(coord).check(field);
-                break;
-            case 1: //PAWN
-                moveList = findFigure(coord).check(field);
-                break;
-            case 2: //ROOK
-                moveList = findFigure(coord).check(field);
-                break;
-            case 3: //KNIGHT
-                moveList = findFigure(coord).check(field);
-                break;
-            case 4: //BISHOP
-                moveList = findFigure(coord).check(field);
-                break;
-            case 5: //QUEEN
-                moveList = findFigure(coord).check(field);
-                break;
-            case 6: //KING
-                moveList = findFigure(coord).check(field);
-                break;
-        }*/
-        moveList = findFigure(coord).check(field,black,white);
-        //figures fig = findFigure(coord);
-        //if(fig != null) moveList = fig.check(field);
+    figures selectFigure(figures figure){
+        cancelSelected();
+        //figures figure = findFigure(coord);
+        if(figure == null) return null;
+        moveList = figure.check(field,black,white);
+        figure.setSelected(true);
+        return figure;
     }
 
-    private figures findFigure(Coordinate coord){
+    void cancelSelected(){
+        for(figures figure : black){
+            if(figure.isSelected) figure.setSelected(false);
+        }
+        for(figures figure : white){
+            if(figure.isSelected) figure.setSelected(false);
+        }
+    }
+
+    void move(Coordinate coor, figures figure){
+        boolean check = false;
+        for(Coordinate coord : moveList){
+           if(coord == coor) check = true;
+        }
+        if(check){
+            if(figure == null) return;
+            field[figure.getCoor().getX()][figure.getCoor().getY()] = 0;
+            if(figure.getColor() == 0) figure.move(coor, field, white, black);
+            if(figure.getColor() == 1) figure.move(coor, field, black, white);
+            field[figure.getCoor().getX()][figure.getCoor().getY()] = figure.value;
+        }
+        step++;
+        cancelSelected();
+    }
+
+     figures findFigure(Coordinate coord){
         for(figures figure : black){
             if(figure.getCoor().getY() == coord.getY() && figure.getCoor().getX() == coord.getX())
                 return figure;

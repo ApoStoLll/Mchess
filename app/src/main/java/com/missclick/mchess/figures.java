@@ -7,6 +7,7 @@ abstract class figures {
     int color;
     boolean firstStep = true;
     boolean isSelected = false;
+    int value = 0;
     Coordinate coor;
     int move(Coordinate coor,int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
        this.coor = coor;
@@ -23,6 +24,8 @@ abstract class figures {
     ArrayList<Coordinate> hit(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
         return null;}
     Coordinate getCoor(){ return coor; }
+    int getColor() { return color; }
+    void setSelected(boolean select){ isSelected = select; }
     ArrayList<Coordinate> checkRook(int[][] field,int x,int y,ArrayList<Coordinate> movelist){
         for(int i=1;i<8;i++){
             if(x+i<8){
@@ -108,6 +111,8 @@ class Pawn extends figures{
     Pawn(int color, Coordinate coor){
         this.coor = coor;
         this.color = color;
+        if(color == 0) this.value = -1;
+        else this.value = 1;
     }
     @Override
     int move(Coordinate coor,int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
@@ -157,6 +162,8 @@ class Rook extends figures{
     Rook(int color, Coordinate coor){
         this.coor = coor;
         this.color = color;
+        if(color == 0) this.value = -2;
+        else this.value = 2;
     }
     @Override
     ArrayList<Coordinate> check(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
@@ -174,6 +181,8 @@ class Bishop extends figures{
     Bishop(int color, Coordinate coor){
         this.coor = coor;
         this.color = color;
+        if(color == 0) this.value = -4;
+        else this.value = 4;
     }
     @Override
     ArrayList<Coordinate> check(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
@@ -191,6 +200,8 @@ class Knight extends figures{
     Knight(int color, Coordinate coor){
         this.coor = coor;
         this.color = color;
+        if(color == 0) this.value = -3;
+        else this.value = 3;
     }
     @Override
     ArrayList<Coordinate> check(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
@@ -224,6 +235,8 @@ class Queen extends figures{
     Queen(int color, Coordinate coor){
         this.coor = coor;
         this.color = color;
+        if(color == 0) this.value = -5;
+        else this.value = 5;
     }
     @Override
     ArrayList<Coordinate> check(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
@@ -242,6 +255,8 @@ class King extends figures{
     King(int color, Coordinate coor){
         this.coor = coor;
         this.color = color;
+        if(color == 0) this.value = -6;
+        else this.value = 6;
     }
     @Override
     int move(Coordinate coor,int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
