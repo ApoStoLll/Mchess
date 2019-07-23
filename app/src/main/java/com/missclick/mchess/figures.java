@@ -1,6 +1,7 @@
 package com.missclick.mchess;
 
 import java.util.ArrayList;
+import android.util.Log;
 
 abstract class figures {
     int color;
@@ -41,7 +42,7 @@ abstract class figures {
         for(int i=1;i<8;i++){
             if(y+i<8){
                 if (field[x][y+i] < 0 && this.color == 0) break;
-                if (field[x+i][y+i] > 0 && this.color == 1) break;
+                if (field[x][y+i] > 0 && this.color == 1) break;
                 movelist.add(new Coordinate(x, y+i));
                 if (field[x][y+i] != 0) break;
             }
@@ -50,7 +51,7 @@ abstract class figures {
         for(int i=1;i<8;i++){
             if(y-i>=0){
                 if (field[x][y-i] < 0 && this.color == 0) break;
-                if (field[x+i][y-i] > 0 && this.color == 1) break;
+                if (field[x][y-i] > 0 && this.color == 1) break;
                 movelist.add(new Coordinate(x, y-i));
                 if (field[x][y-i] != 0) break;
             }
@@ -78,7 +79,7 @@ abstract class figures {
             else break;
         }
         for(int i=1;i<8;i++){
-            if(x-i<8 && y+i<8){
+            if(x-i>=0 && y+i<8){
                 if (field[x-i][y+i] < 0 && this.color == 0) break;
                 if (field[x-i][y+i] > 0 && this.color == 1) break;
                 movelist.add(new Coordinate(x - i, y + i));
@@ -87,7 +88,7 @@ abstract class figures {
             else break;
         }
         for(int i=1;i<8;i++){
-            if(x+i<8 && y+i<8){
+            if(x-i>=0 && y-i>=0){
                 if (field[x-i][y-i] < 0 && this.color == 0) break;
                 if (field[x-i][y-i] > 0 && this.color == 1) break;
                 movelist.add(new Coordinate(x - i, y - i));
@@ -176,19 +177,19 @@ class Knight extends figures{
         int y = this.coor.getY();
         if(this.color == 0){
             for(int i=0;i<2;i++) for(int j=0;j<2;j++)
-                if(x-1+2*i<8 && x-1+2*i>=0 && y-2+4*i<8 && y-2+4*i>=0)
-                if(field[x-1+2*i][y-2+4*i]>=0) movelist.add(new Coordinate(x-1+2*i,y-2+4*i));
+                if(x-1+2*i<8 && x-1+2*i>=0 && y-2+4*j<8 && y-2+4*j>=0)
+                if(field[x-1+2*i][y-2+4*j]>=0) movelist.add(new Coordinate(x-1+2*i,y-2+4*j));
             for(int i=0;i<2;i++) for(int j=0;j<2;j++)
-                if(x-2+4*i<8 && x-2+4*i>=0 && y-1+2*i<8 && y-1+2*i>=0)
-                if(field[x-2+4*i][y-1+2*i]>=0) movelist.add(new Coordinate(x-2+4*i,y-1+2*i));
+                if(x-2+4*i<8 && x-2+4*i>=0 && y-1+2*j<8 && y-1+2*j>=0)
+                if(field[x-2+4*i][y-1+2*j]>=0) movelist.add(new Coordinate(x-2+4*i,y-1+2*j));
         }
         else{
             for(int i=0;i<2;i++) for(int j=0;j<2;j++)
-                if(x-1+2*i<8 && x-1+2*i>=0 && y-2+4*i<8 && y-2+4*i>=0)
-                if(field[x-1+2*i][y-2+4*i]<=0) movelist.add(new Coordinate(x-1+2*i,y-2+4*i));
+                if(x-1+2*i<8 && x-1+2*i>=0 && y-2+4*j<8 && y-2+4*j>=0)
+                if(field[x-1+2*i][y-2+4*j]<=0) movelist.add(new Coordinate(x-1+2*i,y-2+4*j));
             for(int i=0;i<2;i++) for(int j=0;j<2;j++)
-                if(x-2+4*i<8 && x-2+4*i>=0 && y-1+2*i<8 && y-1+2*i>=0)
-                if(field[x-2+4*i][y-1+2*i]<=0) movelist.add(new Coordinate(x-2+4*i,y-1+2*i));
+                if(x-2+4*i<8 && x-2+4*i>=0 && y-1+2*j<8 && y-1+2*j>=0)
+                if(field[x-2+4*i][y-1+2*j]<=0) movelist.add(new Coordinate(x-2+4*i,y-1+2*j));
         }
         return movelist;
     }
@@ -204,8 +205,8 @@ class Queen extends figures{
         ArrayList movelist = new ArrayList();
         int x = this.coor.getX();
         int y = this.coor.getY();
-        movelist = checkRook(field,x,y,movelist);
-        return checkBishop(field,x,y,movelist);
+        movelist = checkBishop(field,x,y,movelist);
+        return checkRook(field,x,y,movelist);
     }
 }
 

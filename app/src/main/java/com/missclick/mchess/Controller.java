@@ -25,19 +25,25 @@ class Controller {
     void selectFigure(Coordinate coord){
         switch (field[coord.getX()][coord.getY()]){
             case 0: //EMPTY
+                moveList = findFigure(coord).check(field);
                 break;
             case 1: //PAWN
                 moveList = findFigure(coord).check(field);
                 break;
             case 2: //ROOK
+                moveList = findFigure(coord).check(field);
                 break;
             case 3: //KNIGHT
+                moveList = findFigure(coord).check(field);
                 break;
             case 4: //BISHOP
+                moveList = findFigure(coord).check(field);
                 break;
             case 5: //QUEEN
+                moveList = findFigure(coord).check(field);
                 break;
             case 6: //KING
+                moveList = findFigure(coord).check(field);
                 break;
         }
 
@@ -57,10 +63,10 @@ class Controller {
 
     private void createFigures(){
         for(int i = 0; i < 8; i ++) {
-            black.add(new Pawn(0, new Coordinate(i, 1)));
-            field[i][1] = -1;
-            white.add(new Pawn(1, new Coordinate(i, 6)));
-            field[i][6] = 1;
+             black.add(new Pawn(0, new Coordinate(i, 1)));
+             field[i][1] = -1;
+             white.add(new Pawn(1, new Coordinate(i, 6)));
+             field[i][6] = 1;
         }
         black.add(new Rook(0, new Coordinate(0, 0)));
         field[0][0] = -2;
@@ -88,7 +94,7 @@ class Controller {
         field[5][7] = 4;
         black.add(new Queen(0, new Coordinate(4, 0)));
         field[4][0] = -5;
-        white.add(new Queen(0, new Coordinate(4, 7)));
+        white.add(new Queen(1, new Coordinate(4, 7)));
         field[4][7] = 5;
         white.add(new King(1, new Coordinate(3, 7)));
         field[3][7] = 6;
