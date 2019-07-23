@@ -117,10 +117,26 @@ class Pawn extends figures{
         this.coor = coor;
         this.firstStep = false;
         for(Coordinate coord : check(field,enemy,allies)){
-            if(enemy.get(0).coor == coord) return 1;
+            if(enemy.get(0).coor.getX() == coord.getX() && enemy.get(0).coor.getY() == coord.getY())
+                return 1;
         }
         if(coor.getY() == 0 || coor.getY() == 7) return 2;
         return 0;
+    }
+    @Override
+    ArrayList<Coordinate> hit(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
+        ArrayList<Coordinate> movelist = new ArrayList<>();
+        int x = this.coor.getX();
+        int y = this.coor.getY();
+        if(this.color == 0) {
+            if (x + 1 < 8) movelist.add(new Coordinate(x + 1, y + 1));
+            if (x - 1 >= 0) movelist.add(new Coordinate(x - 1, y + 1));
+        }
+        else{
+            if (x + 1 < 8) movelist.add(new Coordinate(x + 1, y - 1));
+            if (x - 1 >= 0) movelist.add(new Coordinate(x - 1, y - 1));
+        }
+        return movelist;
     }
     @Override
     ArrayList<Coordinate> check(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
@@ -145,21 +161,6 @@ class Pawn extends figures{
         }
         return movelist;
     }
-    @Override
-    ArrayList<Coordinate> hit(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
-        ArrayList<Coordinate> movelist = new ArrayList<>();
-        int x = this.coor.getX();
-        int y = this.coor.getY();
-        if(this.color == 0) {
-            if (x + 1 < 8) movelist.add(new Coordinate(x + 1, y + 1));
-            if (x - 1 >= 0) movelist.add(new Coordinate(x - 1, y + 1));
-        }
-        else{
-            if (x + 1 < 8) movelist.add(new Coordinate(x + 1, y - 1));
-            if (x - 1 >= 0) movelist.add(new Coordinate(x - 1, y - 1));
-        }
-        return movelist;
-    }
 }
 
 class Rook extends figures{
@@ -168,15 +169,15 @@ class Rook extends figures{
         this.color = color;
     }
     @Override
+    ArrayList<Coordinate> hit(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
+        return check(field,enemy,allies);}
+    @Override
     ArrayList<Coordinate> check(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
         ArrayList<Coordinate> movelist = new ArrayList<>();
         int x = this.coor.getX();
         int y = this.coor.getY();
         return checkRook(field,x,y,movelist);
     }
-    @Override
-    ArrayList<Coordinate> hit(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
-        return check(field,enemy,allies);}
 }
 
 class Bishop extends figures{
@@ -185,15 +186,15 @@ class Bishop extends figures{
         this.color = color;
     }
     @Override
+    ArrayList<Coordinate> hit(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
+        return check(field,enemy,allies);}
+    @Override
     ArrayList<Coordinate> check(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
         ArrayList<Coordinate> movelist = new ArrayList<>();
         int x = this.coor.getX();
         int y = this.coor.getY();
         return checkBishop(field,x,y,movelist);
     }
-    @Override
-    ArrayList<Coordinate> hit(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
-        return check(field,enemy,allies);}
 }
 
 class Knight extends figures{
@@ -201,6 +202,9 @@ class Knight extends figures{
         this.coor = coor;
         this.color = color;
     }
+    @Override
+    ArrayList<Coordinate> hit(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
+        return check(field,enemy,allies);}
     @Override
     ArrayList<Coordinate> check(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
         ArrayList<Coordinate> movelist = new ArrayList<>();
@@ -224,9 +228,6 @@ class Knight extends figures{
         }
         return movelist;
     }
-    @Override
-    ArrayList<Coordinate> hit(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
-        return check(field,enemy,allies);}
 }
 
 class Queen extends figures{
@@ -235,6 +236,9 @@ class Queen extends figures{
         this.color = color;
     }
     @Override
+    ArrayList<Coordinate> hit(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
+        return check(field,enemy,allies);}
+    @Override
     ArrayList<Coordinate> check(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
         ArrayList<Coordinate> movelist = new ArrayList<>();
         int x = this.coor.getX();
@@ -242,9 +246,6 @@ class Queen extends figures{
         movelist = checkBishop(field,x,y,movelist);
         return checkRook(field,x,y,movelist);
     }
-    @Override
-    ArrayList<Coordinate> hit(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
-        return check(field,enemy,allies);}
 }
 
 class King extends figures{
