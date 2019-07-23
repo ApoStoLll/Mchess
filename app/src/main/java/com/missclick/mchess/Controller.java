@@ -27,7 +27,8 @@ class Controller {
         Log.d("MYLOG", "выбор фигуры");
         //figures figure = findFigure(coord);
         if(figure == null) return null;
-        moveList = figure.check(field,black,white);
+        if(figure.getColor() == 1) moveList = figure.check(field,black,white);
+        else moveList = figure.check(field,white,black);
         figure.setSelected(true);
         Log.d("MYLOG", "return select figure");
         return figure;
