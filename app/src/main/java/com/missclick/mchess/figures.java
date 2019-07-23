@@ -13,7 +13,8 @@ abstract class figures {
        this.coor = coor;
        this.firstStep = false;
        for(Coordinate coord : check(field,enemy,allies)){
-            if(enemy.get(0).coor == coord) return 1;
+            if(enemy.get(0).coor.getX() == coord.getX() && enemy.get(0).coor.getY() == coord.getY())
+                return 1;
         }
        return 0;
     }
@@ -152,8 +153,14 @@ class Pawn extends figures{
         ArrayList<Coordinate> movelist = new ArrayList<>();
         int x = this.coor.getX();
         int y = this.coor.getY();
-        if(x+1 < 8) movelist.add(new Coordinate(x+1,y));
-        if(x-1 >= 0) movelist.add(new Coordinate(x+1,y));
+        if(this.color == 0) {
+            if (x + 1 < 8) movelist.add(new Coordinate(x + 1, y + 1));
+            if (x - 1 >= 0) movelist.add(new Coordinate(x - 1, y + 1));
+        }
+        else{
+            if (x + 1 < 8) movelist.add(new Coordinate(x + 1, y - 1));
+            if (x - 1 >= 0) movelist.add(new Coordinate(x - 1, y - 1));
+        }
         return movelist;
     }
 }
@@ -260,10 +267,12 @@ class King extends figures{
     }
     @Override
     int move(Coordinate coor,int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
+        /*
         if(coor.getX() == 6 && coor.getY() == this.coor.getY())
             findRook(allies,false,coor.getY()).move(new Coordinate(5,coor.getY()),field,enemy,allies);
         if(coor.getX() == 2 && coor.getY() == this.coor.getY())
             findRook(allies,true,coor.getY()).move(new Coordinate(5,coor.getY()),field,enemy,allies);
+        */
         this.coor = coor;
         this.firstStep = false;
         for(Coordinate coord : check(field,enemy,allies)){
