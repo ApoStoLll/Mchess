@@ -10,12 +10,12 @@ abstract class figures {
     int move(Coordinate coor,int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
        this.coor = coor;
        this.firstStep = false;
-       for(Coordinate coord : check(field)){
+       for(Coordinate coord : check(field,enemy,allies)){
             if(enemy.get(0).coor == coord) return 1;
         }
        return 0;
     }
-    ArrayList<Coordinate> check(int[][] field){
+    ArrayList<Coordinate> check(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
         //ABSTRACT
         return null;
     }
@@ -110,14 +110,14 @@ class Pawn extends figures{
     int move(Coordinate coor,int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
         this.coor = coor;
         this.firstStep = false;
-        for(Coordinate coord : check(field)){
+        for(Coordinate coord : check(field,enemy,allies)){
             if(enemy.get(0).coor == coord) return 1;
         }
         if(coor.getY() == 0 || coor.getY() == 7) return 2;
         return 0;
     }
     @Override
-    ArrayList<Coordinate> check(int[][] field){
+    ArrayList<Coordinate> check(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
         ArrayList<Coordinate> movelist = new ArrayList<>();
         int x = this.coor.getX();
         int y = this.coor.getY();
@@ -147,7 +147,7 @@ class Rook extends figures{
         this.color = color;
     }
     @Override
-    ArrayList<Coordinate> check(int[][] field){
+    ArrayList<Coordinate> check(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
         ArrayList<Coordinate> movelist = new ArrayList<>();
         int x = this.coor.getX();
         int y = this.coor.getY();
@@ -161,7 +161,7 @@ class Bishop extends figures{
         this.color = color;
     }
     @Override
-    ArrayList<Coordinate> check(int[][] field){
+    ArrayList<Coordinate> check(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
         ArrayList<Coordinate> movelist = new ArrayList<>();
         int x = this.coor.getX();
         int y = this.coor.getY();
@@ -175,7 +175,7 @@ class Knight extends figures{
         this.color = color;
     }
     @Override
-    ArrayList<Coordinate> check(int[][] field){
+    ArrayList<Coordinate> check(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
         ArrayList<Coordinate> movelist = new ArrayList<>();
         int x = this.coor.getX();
         int y = this.coor.getY();
@@ -205,7 +205,7 @@ class Queen extends figures{
         this.color = color;
     }
     @Override
-    ArrayList<Coordinate> check(int[][] field){
+    ArrayList<Coordinate> check(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
         ArrayList<Coordinate> movelist = new ArrayList<>();
         int x = this.coor.getX();
         int y = this.coor.getY();
@@ -227,7 +227,7 @@ class King extends figures{
             findRook(allies,true,coor.getY()).move(new Coordinate(5,coor.getY()),field,enemy,allies);
         this.coor = coor;
         this.firstStep = false;
-        for(Coordinate coord : check(field)){
+        for(Coordinate coord : check(field,enemy,allies)){
             if(enemy.get(0).coor == coord) return 1;
         }
         return 0;
@@ -238,20 +238,21 @@ class King extends figures{
         int x = this.coor.getX();
         int y = this.coor.getY();
         for(int i=-1;i<2;i++){
-            for(int j=-1;j<2;j++) if(x+i<8 && y+i<8 && x+i>=0 && y+i>=0){
+            for(int j=-1;j<2;j++) if(x+i<8 && y+j<8 && x+i>=0 && y+j>=0){
                 if(i==0 && j==0) continue;
-                if(field[x+i][y+i]>=0 && this.color == 0)
-                    movelist.add(new Coordinate(x+i,y+i));
-                if(field[x+i][y+i]<=0 && this.color == 1)
-                    movelist.add(new Coordinate(x+i,y+i));
+                if(field[x+i][y+j]>=0 && this.color == 0)
+                    movelist.add(new Coordinate(x+i,y+j));
+                if(field[x+i][y+j]<=0 && this.color == 1)
+                    movelist.add(new Coordinate(x+i,y+j));
             }
         }
+        enemy.remove(0);
+        for(figures figure : enemy) movelistEnemy.addAll(figure.check(field,enemy,allies));
 
-        for(figures figure : enemy) movelistEnemy.addAll(figure.check(field));
         for(Coordinate coord : movelist) for(Coordinate coords : movelistEnemy){
-            if(coord == coords) movelist.remove(coord);
+           if(coord == coords) movelist.remove(coord);
         }
-
+        /*
         if(this.firstStep && findRook(allies,false,this.coor.getY()).firstStep)
             for(int i=1;i<4;i++){                       // long rokirovka
             if(field[x-i][y] != 0) break;
@@ -266,7 +267,7 @@ class King extends figures{
                 if(new Coordinate(x,y)==coords || new Coordinate(x+2,y)==coords) break;
             if(i==2) movelist.add(new Coordinate(x+i,y));
         }
-
+*/
         return movelist;
 
     }

@@ -46,7 +46,7 @@ class Controller {
                 moveList = findFigure(coord).check(field);
                 break;
         }*/
-        moveList = findFigure(coord).check(field);
+        moveList = findFigure(coord).check(field,black,white);
         //figures fig = findFigure(coord);
         //if(fig != null) moveList = fig.check(field);
     }
@@ -64,8 +64,8 @@ class Controller {
     }
 
     private void createFigures(){
-        white.add(new King(1, new Coordinate(5, 5)));// 3 7
-        field[5][5] = 6; // 3 7
+        white.add(new King(1, new Coordinate(5, 3)));// 3 7
+        field[5][3] = 6; // 3 7
         black.add(new King(0, new Coordinate(3, 0)));
         field[3][0] = -6;
         for(int i = 0; i < 8; i ++) {
