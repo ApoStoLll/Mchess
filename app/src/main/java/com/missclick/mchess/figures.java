@@ -1,7 +1,7 @@
 package com.missclick.mchess;
 
 import java.util.ArrayList;
-import android.util.Log;
+//import android.util.Log;
 
 abstract class figures {
     int color;
@@ -15,7 +15,7 @@ abstract class figures {
         }
        return 0;
     }
-    ArrayList<Coordinate> check(int field[][]){
+    ArrayList<Coordinate> check(int[][] field){
         //ABSTRACT
         return null;
     }
@@ -118,18 +118,22 @@ class Pawn extends figures{
     }
     @Override
     ArrayList<Coordinate> check(int[][] field){
-        ArrayList<Coordinate> movelist = new ArrayList<Coordinate>();
+        ArrayList<Coordinate> movelist = new ArrayList<>();
         int x = this.coor.getX();
         int y = this.coor.getY();
         if(this.color == 0){
-            if(this.firstStep && field[x][y+2] == 0) movelist.add(new Coordinate(x,y+2));
-            if(field[x][y+1] == 0) movelist.add(new Coordinate(x,y+1));
+            if(field[x][y+1] == 0) {
+                movelist.add(new Coordinate(x,y+1));
+                if(this.firstStep && field[x][y+2] == 0) movelist.add(new Coordinate(x,y+2));
+            }
             if(x-1>=0) if(field[x-1][y+1] > 0) movelist.add(new Coordinate(x-1,y+1));
             if(x+1<8) if(field[x+1][y+1] > 0) movelist.add(new Coordinate(x+1,y+1));
         }
         else{
-            if(this.firstStep && field[x][y-2] == 0) movelist.add(new Coordinate(x,y-2));
-            if(field[x][y-1] == 0) movelist.add(new Coordinate(x,y-1));
+            if(field[x][y-1] == 0) {
+                movelist.add(new Coordinate(x,y-1));
+                if(this.firstStep && field[x][y-2] == 0) movelist.add(new Coordinate(x,y-2));
+            }
             if(x-1>=0) if(field[x-1][y-1] < 0) movelist.add(new Coordinate(x-1,y-1));
             if(x+1<8) if(field[x+1][y-1] < 0) movelist.add(new Coordinate(x+1,y-1));
         }
@@ -144,7 +148,7 @@ class Rook extends figures{
     }
     @Override
     ArrayList<Coordinate> check(int[][] field){
-        ArrayList<Coordinate> movelist = new ArrayList<Coordinate>();
+        ArrayList<Coordinate> movelist = new ArrayList<>();
         int x = this.coor.getX();
         int y = this.coor.getY();
         return checkRook(field,x,y,movelist);
@@ -158,7 +162,7 @@ class Bishop extends figures{
     }
     @Override
     ArrayList<Coordinate> check(int[][] field){
-        ArrayList<Coordinate> movelist = new ArrayList<Coordinate>();
+        ArrayList<Coordinate> movelist = new ArrayList<>();
         int x = this.coor.getX();
         int y = this.coor.getY();
         return checkBishop(field,x,y,movelist);
@@ -172,7 +176,7 @@ class Knight extends figures{
     }
     @Override
     ArrayList<Coordinate> check(int[][] field){
-        ArrayList<Coordinate> movelist = new ArrayList<Coordinate>();
+        ArrayList<Coordinate> movelist = new ArrayList<>();
         int x = this.coor.getX();
         int y = this.coor.getY();
         if(this.color == 0){
@@ -202,7 +206,7 @@ class Queen extends figures{
     }
     @Override
     ArrayList<Coordinate> check(int[][] field){
-        ArrayList<Coordinate> movelist = new ArrayList<Coordinate>();
+        ArrayList<Coordinate> movelist = new ArrayList<>();
         int x = this.coor.getX();
         int y = this.coor.getY();
         movelist = checkBishop(field,x,y,movelist);
@@ -229,8 +233,8 @@ class King extends figures{
         return 0;
     }
     ArrayList<Coordinate> check(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
-        ArrayList<Coordinate> movelist = new ArrayList<Coordinate>();
-        ArrayList<Coordinate> movelistEnemy = new ArrayList<Coordinate>();
+        ArrayList<Coordinate> movelist = new ArrayList<>();
+        ArrayList<Coordinate> movelistEnemy = new ArrayList<>();
         int x = this.coor.getX();
         int y = this.coor.getY();
         for(int i=-1;i<2;i++){
