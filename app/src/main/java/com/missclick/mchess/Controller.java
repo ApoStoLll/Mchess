@@ -54,18 +54,26 @@ class Controller {
             if(figure == null) return;
             //Log.d("MYLOG", "startMOVE : " + field[figure.getCoor().getX()][figure.getCoor().getY()] );
             boolean clear = true;
-            if ( field[coor.getX()][coor.getY()]!=0) clear = false;
+            if ( field[coor.getX()][coor.getY()] != 0) clear = false;
             field[coor.getX()][coor.getY()] = field[figure.getCoor().getX()][figure.getCoor().getY()];
             field[figure.getCoor().getX()][figure.getCoor().getY()] = 0;
             if(figure.getColor() == 0) {
                 figure.move(coor, field, white, black);
-                if(!clear) white.remove(findFigure(coor));
+                if(!clear){
+                    Log.d("MYLOG", "удаляем белую");
+                    Log.d("MYLOG", "Х: " + coor.getX() + " Y: " + coor.getY());
+                    white.remove(findFigure(coor));
+                }
             }
             if(figure.getColor() == 1) {
                 figure.move(coor, field, black, white);
-                if(!clear) black.remove(findFigure(coor));
+                if(!clear){
+                    Log.d("MYLOG", "удаляем черную");
+                    Log.d("MYLOG", "Х: " + coor.getX() + " Y: " + coor.getY());
+                    black.remove(findFigure(coor));
+                }
             }
-            //Log.d("MYLOG", "endmove : " + field[figure.getCoor().getX()][figure.getCoor().getY()] );
+            Log.d("MYLOG", "endmove : " + field[figure.getCoor().getX()][figure.getCoor().getY()] );
             step++;
             moveList = null;
         }
@@ -73,14 +81,21 @@ class Controller {
     }
 
      figures findFigure(Coordinate coord){
+        Log.d("MYLOG", "ищем фигуру");
         for(figures figure : black){
-            if(figure.getCoor().getY() == coord.getY() && figure.getCoor().getX() == coord.getX())
+           // Log.d("MYLOG", "X: " + figure.getCoor().getX() + " Y: " + figure.getCoor().getY());
+            if(figure.getCoor().getY() == coord.getY() && figure.getCoor().getX() == coord.getX()) {
+                Log.d("MYLOG", "нашли черную");
                 return figure;
+            }
         }
         for(figures figure : white){
-            if(figure.getCoor().getY() == coord.getY() && figure.getCoor().getX() == coord.getX())
+            if(figure.getCoor().getY() == coord.getY() && figure.getCoor().getX() == coord.getX()){
+                Log.d("MYLOG", "нашли белую");
                 return figure;
+            }
         }
+         Log.d("MYLOG", "не нашли");
         return null;
     }
 
