@@ -7,8 +7,8 @@ abstract class figures {
     int color;
     boolean firstStep = true;
     Coordinate coor;
-    int move(int x, int y,int field[][],ArrayList<figures> enemy,ArrayList<figures> allies){
-       this.coor = new Coordinate(x,y);
+    int move(Coordinate coor,int field[][],ArrayList<figures> enemy,ArrayList<figures> allies){
+       this.coor = coor;
        this.firstStep = false;
        for(Coordinate coord : check(field)){
             if(enemy.get(0).coor == coord) return 1;
@@ -107,13 +107,13 @@ class Pawn extends figures{
         this.color = color;
     }
     @Override
-    int move(int x, int y,int field[][],ArrayList<figures> enemy,ArrayList<figures> allies){
-        this.coor = new Coordinate(x,y);
+    int move(Coordinate coor,int field[][],ArrayList<figures> enemy,ArrayList<figures> allies){
+        this.coor = coor;
         this.firstStep = false;
         for(Coordinate coord : check(field)){
             if(enemy.get(0).coor == coord) return 1;
         }
-        if(y == 0 || y == 7) return 2;
+        if(coor.getY() == 0 || coor.getY() == 7) return 2;
         return 0;
     }
     @Override
@@ -216,12 +216,12 @@ class King extends figures{
         this.color = color;
     }
     @Override
-    int move(int x, int y,int field[][],ArrayList<figures> enemy,ArrayList<figures> allies){
-        if(x == 6 && y == this.coor.getY())
-            findRook(allies,false,y).move(5,y,field,enemy,allies);
-        if(x == 2 && y == this.coor.getY())
-            findRook(allies,true,y).move(3,y,field,enemy,allies);
-        this.coor = new Coordinate(x,y);
+    int move(Coordinate coor,int field[][],ArrayList<figures> enemy,ArrayList<figures> allies){
+        if(coor.getX() == 6 && coor.getY() == this.coor.getY())
+            findRook(allies,false,coor.getY()).move(new Coordinate(5,coor.getY()),field,enemy,allies);
+        if(coor.getX() == 2 && coor.getY() == this.coor.getY())
+            findRook(allies,true,coor.getY()).move(new Coordinate(5,coor.getY()),field,enemy,allies);
+        this.coor = coor;
         this.firstStep = false;
         for(Coordinate coord : check(field)){
             if(enemy.get(0).coor == coord) return 1;
@@ -242,6 +242,7 @@ class King extends figures{
                     movelist.add(new Coordinate(x+i,y+i));
             }
         }
+
         for(figures figure : enemy) movelistEnemy.addAll(figure.check(field));
         for(Coordinate coord : movelist) for(Coordinate coords : movelistEnemy){
             if(coord == coords) movelist.remove(coord);
@@ -265,6 +266,7 @@ class King extends figures{
         return movelist;
 
     }
+
     figures findRook(ArrayList<figures> allies,boolean tiny,int y){
         for(figures figure : allies){
             if(tiny) if(figure.getCoor().getX() == 7)
