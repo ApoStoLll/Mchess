@@ -19,6 +19,8 @@ abstract class figures {
         //ABSTRACT
         return null;
     }
+    ArrayList<Coordinate> hit(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
+        return check(field,enemy,allies);}
     Coordinate getCoor(){ return coor; }
     ArrayList<Coordinate> checkRook(int[][] field,int x,int y,ArrayList<Coordinate> movelist){
         for(int i=1;i<8;i++){
@@ -139,6 +141,15 @@ class Pawn extends figures{
         }
         return movelist;
     }
+    @Override
+    ArrayList<Coordinate> hit(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
+        ArrayList<Coordinate> movelist = new ArrayList<>();
+        int x = this.coor.getX();
+        int y = this.coor.getY();
+        if(x+1 < 8) movelist.add(new Coordinate(x+1,y));
+        if(x-1 >= 0) movelist.add(new Coordinate(x+1,y));
+        return movelist;
+    }
 }
 
 class Rook extends figures{
@@ -248,7 +259,7 @@ class King extends figures{
             }
         }
         enemy.remove(0);
-        for(figures figure : enemy)  movelistEnemy.addAll(figure.check(field,enemy,allies));
+        for(figures figure : enemy)  movelistEnemy.addAll(figure.hit(field,enemy,allies));
         for(Coordinate coord : movelist) for(Coordinate coords : movelistEnemy)
             if(coord.getX() == coords.getX() && coord.getY() == coords.getY())
                 movelistOverall.add(coord);
