@@ -157,7 +157,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         void drawMoveList(Canvas canvas, ArrayList<Coordinate> moveList){
-            if(!moveList.isEmpty()){
+            if(moveList != null && !moveList.isEmpty()){
                 for(Coordinate coor : moveList){
                     int i = coor.getX();
                     int j = coor.getY();

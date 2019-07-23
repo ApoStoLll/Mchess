@@ -47,9 +47,11 @@ class Controller {
                 break;
         }*/
         moveList = findFigure(coord).check(field);
+        //figures fig = findFigure(coord);
+        //if(fig != null) moveList = fig.check(field);
     }
 
-    figures findFigure(Coordinate coord){
+    private figures findFigure(Coordinate coord){
         for(figures figure : black){
             if(figure.getCoor().getY() == coord.getY() && figure.getCoor().getX() == coord.getX())
                 return figure;
