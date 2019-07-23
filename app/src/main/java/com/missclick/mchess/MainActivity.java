@@ -54,6 +54,9 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                         else selectedFigure = tempFigure;
 
                     }
+                    else if(figuer.getColor() != selectedFigure.getColor()){
+                        controller.move(new Coordinate(a,b), selectedFigure);
+                    }
 
                 }
                 //figures figuer = controller.findFigure(new Coordinate(a,  b));
