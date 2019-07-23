@@ -6,6 +6,7 @@ import android.util.Log;
 abstract class figures {
     int color;
     boolean firstStep = true;
+    boolean isSelected = false;
     Coordinate coor;
     int move(Coordinate coor,int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
        this.coor = coor;
