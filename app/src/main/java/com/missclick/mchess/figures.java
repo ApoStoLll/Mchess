@@ -274,26 +274,15 @@ class King extends figures{
         }
         return 0;
     }
-
+    @Override
     ArrayList<Coordinate> check(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
         ArrayList<Coordinate> movelist = new ArrayList<>();
         ArrayList<Coordinate> movelistOverall = new ArrayList<>();
         ArrayList<Coordinate> movelistEnemy = new ArrayList<>();
         int x = this.coor.getX();
         int y = this.coor.getY();
-        for(int i=-1;i<2;i++){
-            for(int j=-1;j<2;j++) if(x+i<8 && y+j<8 && x+i>=0 && y+j>=0){
-                if(i==0 && j==0) continue;
-                if(field[x+i][y+j]>=0 && this.color == 0)
-                    movelist.add(new Coordinate(x+i,y+j));
-                if(field[x+i][y+j]<=0 && this.color == 1)
-                    movelist.add(new Coordinate(x+i,y+j));
-            }
-        }
-        for(figures figure : enemy) {
-            if(enemy.get(0) == figure) continue;
-            movelistEnemy.addAll(figure.hit(field,enemy,allies));
-        }
+        movelist = hit(field,enemy,allies);
+        for(figures figure : enemy) movelistEnemy.addAll(figure.hit(field,enemy,allies));
         for(Coordinate coord : movelist) for(Coordinate coords : movelistEnemy)
             if(coord.getX() == coords.getX() && coord.getY() == coords.getY())
                 movelistOverall.add(coord);
@@ -322,7 +311,22 @@ class King extends figures{
         }
         return movelist;
     }
-
+    @Override
+    ArrayList<Coordinate> hit(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
+        ArrayList<Coordinate> movelist = new ArrayList<>();
+        int x = this.coor.getX();
+        int y = this.coor.getY();
+        for(int i=-1;i<2;i++){
+            for(int j=-1;j<2;j++) if(x+i<8 && y+j<8 && x+i>=0 && y+j>=0){
+                if(i==0 && j==0) continue;
+                if(field[x+i][y+j]>=0 && this.color == 0)
+                    movelist.add(new Coordinate(x+i,y+j));
+                if(field[x+i][y+j]<=0 && this.color == 1)
+                    movelist.add(new Coordinate(x+i,y+j));
+            }
+        }
+        return movelist;
+    }
     private figures findRook(ArrayList<figures> allies,boolean tiny,int y){
         for(figures figure : allies){
             if(tiny){ if(figure.getCoor().getX() == 7)
