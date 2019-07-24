@@ -53,28 +53,20 @@ class Controller {
         }
         if(check){
             if(figure == null) return;
-            //Log.d("MYLOG", "startMOVE : " + field[figure.getCoor().getX()][figure.getCoor().getY()] );
             boolean clear = true;
             if ( field[coor.getX()][coor.getY()] != 0) clear = false;
             field[coor.getX()][coor.getY()] = field[figure.getCoor().getX()][figure.getCoor().getY()];
             field[figure.getCoor().getX()][figure.getCoor().getY()] = 0;
             if(figure.getColor() == 0) {
-                figure.move(coor, field, white, black);
-                if(!clear){
-                    Log.d("MYLOG", "удаляем белую");
-                    Log.d("MYLOG", "Х: " + coor.getX() + " Y: " + coor.getY());
-                    white.remove(findFigure(coor));
-                }
+                if(figure.move(coor, field, white, black) == 1) Log.d("MYLOG","ШАХ!!!");
+                if(!clear) white.remove(findFigure(coor));
             }
             if(figure.getColor() == 1) {
                 figure.move(coor, field, black, white);
                 if(!clear){
-                    Log.d("MYLOG", "удаляем черную");
-                    Log.d("MYLOG", "Х: " + coor.getX() + " Y: " + coor.getY());
                     black.remove(findFigure(coor));
                 }
             }
-            Log.d("MYLOG", "endmove : " + field[figure.getCoor().getX()][figure.getCoor().getY()] );
             step++;
             moveList = null;
         }

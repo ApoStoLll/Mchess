@@ -7,13 +7,17 @@ abstract class figures {
     int color;
     boolean firstStep = true;
     boolean isSelected = false;
+    boolean shag = false;
     Coordinate coor;
     int move(Coordinate coor,int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
        this.coor = coor;
        this.firstStep = false;
-       for(Coordinate coord : check(field,enemy,allies)){
+       for(Coordinate coord : hit(field,enemy,allies)){
             if(enemy.get(0).coor.getX() == coord.getX() && enemy.get(0).coor.getY() == coord.getY())
+            {
+                enemy.get(0).shag = true;
                 return 1;
+            }
         }
        return 0;
     }
@@ -26,7 +30,8 @@ abstract class figures {
     Coordinate getCoor(){ return coor; }
     int getColor() { return color; }
     void setSelected(boolean select){ isSelected = select; }
-    ArrayList<Coordinate> checkRook(int[][] field,int x,int y,ArrayList<Coordinate> movelist){
+    ArrayList<Coordinate> checkRook(int[][] field,int x,int y,ArrayList<Coordinate> movelist,
+                                    ArrayList<figures> enemy,ArrayList<figures> allies){
         for(int i=1;i<8;i++){
             if(x+i<8){
                 if (field[x+i][y] < 0 && this.color == 0) break;
@@ -63,9 +68,27 @@ abstract class figures {
             }
             else break;
         }
-        return movelist;
+        return movelist;/*
+        if (!allies.get(0).shag) return movelist;
+        else {
+            ArrayList<Coordinate> movelistOverall = new ArrayList<>();
+            for (Coordinate coord : movelist) {
+                int old = field[coord.getX()][coord.getY()];
+                field[coord.getX()][coord.getY()] = field[this.coor.getX()][this.coor.getY()];
+                for (figures figur : enemy)
+                    for (Coordinate coords : figur.hit(field, enemy, allies)) {
+                        if (coords.getX() == allies.get(0).getCoor().getX() &&
+                                coords.getY() == allies.get(0).getCoor().getY())
+                            movelistOverall.add(coord);
+                    }
+                field[coord.getX()][coord.getY()] = old;
+            }
+            movelist.removeAll(movelistOverall);
+            return movelist;
+        }*/
     }
-    ArrayList<Coordinate> checkBishop(int[][] field,int x,int y,ArrayList<Coordinate> movelist){
+    ArrayList<Coordinate> checkBishop(int[][] field,int x,int y,ArrayList<Coordinate> movelist,
+                                      ArrayList<figures> enemy,ArrayList<figures> allies){
         for(int i=1;i<8;i++){
             if(x+i<8 && y+i<8){
                 if (field[x+i][y+i] < 0 && this.color == 0) break;
@@ -103,41 +126,62 @@ abstract class figures {
             else break;
         }
         return movelist;
+        /*if (!allies.get(0).shag) return movelist;
+        else {
+            ArrayList<Coordinate> movelistOverall = new ArrayList<>();
+            for (Coordinate coord : movelist) {
+                int old = field[coord.getX()][coord.getY()];
+                field[coord.getX()][coord.getY()] = field[this.coor.getX()][this.coor.getY()];
+                for (figures figur : enemy)
+                    for (Coordinate coords : figur.hit(field, enemy, allies)) {
+                        if (coords.getX() == allies.get(0).getCoor().getX() &&
+                                coords.getY() == allies.get(0).getCoor().getY())
+                            movelistOverall.add(coord);
+                    }
+                field[coord.getX()][coord.getY()] = old;
+            }
+            movelist.removeAll(movelistOverall);
+            return movelist;
+        }*/
     }
 
 }
 
-class Pawn extends figures{
-    Pawn(int color, Coordinate coor){
+class Pawn extends figures {
+    Pawn(int color, Coordinate coor) {
         this.coor = coor;
         this.color = color;
     }
+
     @Override
-    int move(Coordinate coor,int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
+    int move(Coordinate coor, int[][] field, ArrayList<figures> enemy, ArrayList<figures> allies) {
         this.coor = coor;
         this.firstStep = false;
-        for(Coordinate coord : check(field,enemy,allies)){
-            if(enemy.get(0).coor.getX() == coord.getX() && enemy.get(0).coor.getY() == coord.getY())
+        for (Coordinate coord : hit(field, enemy, allies)) {
+            if (enemy.get(0).coor.getX() == coord.getX() && enemy.get(0).coor.getY() == coord.getY()) {
+                enemy.get(0).shag = true;
                 return 1;
+            }
         }
-        if(coor.getY() == 0 || coor.getY() == 7) return 2;
+        if (coor.getY() == 0 || coor.getY() == 7) return 2;
         return 0;
     }
+
     @Override
-    ArrayList<Coordinate> hit(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
+    ArrayList<Coordinate> hit(int[][] field, ArrayList<figures> enemy, ArrayList<figures> allies) {
         ArrayList<Coordinate> movelist = new ArrayList<>();
         int x = this.coor.getX();
         int y = this.coor.getY();
-        if(this.color == 0) {
+        if (this.color == 0) {
             if (x + 1 < 8) movelist.add(new Coordinate(x + 1, y + 1));
             if (x - 1 >= 0) movelist.add(new Coordinate(x - 1, y + 1));
-        }
-        else{
+        } else {
             if (x + 1 < 8) movelist.add(new Coordinate(x + 1, y - 1));
             if (x - 1 >= 0) movelist.add(new Coordinate(x - 1, y - 1));
         }
         return movelist;
     }
+
     @Override
     ArrayList<Coordinate> check(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
         ArrayList<Coordinate> movelist = new ArrayList<>();
@@ -159,7 +203,23 @@ class Pawn extends figures{
             if(x-1>=0) if(field[x-1][y-1] < 0) movelist.add(new Coordinate(x-1,y-1));
             if(x+1<8) if(field[x+1][y-1] < 0) movelist.add(new Coordinate(x+1,y-1));
         }
-        return movelist;
+        if (!allies.get(0).shag) return movelist;
+        else {
+            ArrayList<Coordinate> movelistOverall = new ArrayList<>();
+            for (Coordinate coord : movelist) {
+                int old = field[coord.getX()][coord.getY()];
+                field[coord.getX()][coord.getY()] = field[this.coor.getX()][this.coor.getY()];
+                for (figures figur : enemy)
+                    for (Coordinate coords : figur.hit(field, enemy, allies)) {
+                        if (coords.getX() == allies.get(0).getCoor().getX() &&
+                                coords.getY() == allies.get(0).getCoor().getY())
+                                movelistOverall.add(coord);
+                    }
+                field[coord.getX()][coord.getY()] = old;
+            }
+            movelist.removeAll(movelistOverall);
+            return movelist;
+        }
     }
 }
 
@@ -176,7 +236,7 @@ class Rook extends figures{
         ArrayList<Coordinate> movelist = new ArrayList<>();
         int x = this.coor.getX();
         int y = this.coor.getY();
-        return checkRook(field,x,y,movelist);
+        return checkRook(field,x,y,movelist,enemy,allies);
     }
 }
 
@@ -193,7 +253,7 @@ class Bishop extends figures{
         ArrayList<Coordinate> movelist = new ArrayList<>();
         int x = this.coor.getX();
         int y = this.coor.getY();
-        return checkBishop(field,x,y,movelist);
+        return checkBishop(field,x,y,movelist,enemy,allies);
     }
 }
 
@@ -226,7 +286,23 @@ class Knight extends figures{
                 if(x-2+4*i<8 && x-2+4*i>=0 && y-1+2*j<8 && y-1+2*j>=0)
                 if(field[x-2+4*i][y-1+2*j]<=0) movelist.add(new Coordinate(x-2+4*i,y-1+2*j));
         }
-        return movelist;
+        if (!allies.get(0).shag) return movelist;
+        else {
+            ArrayList<Coordinate> movelistOverall = new ArrayList<>();
+            for (Coordinate coord : movelist) {
+                int old = field[coord.getX()][coord.getY()];
+                field[coord.getX()][coord.getY()] = field[this.coor.getX()][this.coor.getY()];
+                for (figures figur : enemy)
+                    for (Coordinate coords : figur.hit(field, enemy, allies)) {
+                        if (coords.getX() == allies.get(0).getCoor().getX() &&
+                                coords.getY() == allies.get(0).getCoor().getY())
+                            movelistOverall.add(coord);
+                    }
+                field[coord.getX()][coord.getY()] = old;
+            }
+            movelist.removeAll(movelistOverall);
+            return movelist;
+        }
     }
 }
 
@@ -243,8 +319,8 @@ class Queen extends figures{
         ArrayList<Coordinate> movelist = new ArrayList<>();
         int x = this.coor.getX();
         int y = this.coor.getY();
-        movelist = checkBishop(field,x,y,movelist);
-        return checkRook(field,x,y,movelist);
+        movelist = checkBishop(field,x,y,movelist,enemy,allies);
+        return checkRook(field,x,y,movelist,enemy,allies);
     }
 }
 
@@ -270,7 +346,10 @@ class King extends figures{
         this.coor = coor;
         this.firstStep = false;
         for(Coordinate coord : check(field,enemy,allies)){
-            if(enemy.get(0).coor == coord) return 1;
+            if(enemy.get(0).coor.getX() == coord.getX() && enemy.get(0).coor.getY() == coord.getY()){
+                enemy.get(0).shag = true;
+                return 1;
+            }
         }
         return 0;
     }
