@@ -125,24 +125,33 @@ abstract class figures {
             }
             else break;
         }
-        return movelist;
-        /*if (!allies.get(0).shag) return movelist;
+        //return movelist;
+        if (!allies.get(0).shag) return movelist;
         else {
+            int[][] fieldCopy = new int[8][8];
+            for(int i = 0; i < 8; i++){
+                for(int j = 0; j < 8; j++){
+                    fieldCopy[i][j] = field[i][j];
+                }
+            }
             ArrayList<Coordinate> movelistOverall = new ArrayList<>();
             for (Coordinate coord : movelist) {
                 int old = field[coord.getX()][coord.getY()];
-                field[coord.getX()][coord.getY()] = field[this.coor.getX()][this.coor.getY()];
+                fieldCopy[coord.getX()][coord.getY()] = field[this.coor.getX()][this.coor.getY()];
+                Log.d("MYLOG", "checkimg");
                 for (figures figur : enemy)
-                    for (Coordinate coords : figur.hit(field, enemy, allies)) {
+                    for (Coordinate coords : figur.hit(fieldCopy, enemy, allies)) {
+                        Log.d("MYLOG", "working before if");
                         if (coords.getX() == allies.get(0).getCoor().getX() &&
                                 coords.getY() == allies.get(0).getCoor().getY())
+                            Log.d("MYLOG", "working.... (if)");
                             movelistOverall.add(coord);
                     }
-                field[coord.getX()][coord.getY()] = old;
+                fieldCopy[coord.getX()][coord.getY()] = old;
             }
             movelist.removeAll(movelistOverall);
             return movelist;
-        }*/
+        }
     }
 
 }
