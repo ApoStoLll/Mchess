@@ -58,11 +58,11 @@ class Controller {
             field[coor.getX()][coor.getY()] = field[figure.getCoor().getX()][figure.getCoor().getY()];
             field[figure.getCoor().getX()][figure.getCoor().getY()] = 0;
             if(figure.getColor() == 0) {
-                if(figure.move(coor, field, white, black) == 1) Log.d("MYLOG","ШАХ!!!");
+                if(figure.move(coor, field, white, black) == 1) Log.d("MYLOG","ШАХ белым!!!");
                 if(!clear) white.remove(findFigure(coor));
             }
             if(figure.getColor() == 1) {
-                figure.move(coor, field, black, white);
+                if(figure.move(coor, field, black, white) == 1) Log.d("MYLOG","ШАХ черным!!!");
                 if(!clear){
                     black.remove(findFigure(coor));
                 }
