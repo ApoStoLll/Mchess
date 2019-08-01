@@ -20,6 +20,7 @@ public class GameActivity extends AppCompatActivity implements View.OnTouchListe
     private int OFFSET;
     private figures selectedFigure;
     private boolean one;
+    private II ii;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +38,11 @@ public class GameActivity extends AppCompatActivity implements View.OnTouchListe
         Intent intent = getIntent();
         int type = intent.getIntExtra("type", 0);
         if(type == 2) one = false;
-        if(type == 1) one = true;
+        if(type == 1) {
+            Log.d("MYLOG", "ONE player");
+            one = true;
+            ii = new II(controller.getField(),controller);
+        }
         setContentView(drawView);
     }
     @Override
@@ -52,6 +57,7 @@ public class GameActivity extends AppCompatActivity implements View.OnTouchListe
                 int b = (int) (y/(scale));
                 Log.d("MYLOG", "a: " + a + " b: " + b);
                 if(!one) multyPlayer(a, b);
+                else singlePlayer(a,b);
 
         }
         return false;
@@ -68,15 +74,26 @@ public class GameActivity extends AppCompatActivity implements View.OnTouchListe
                 else selectedFigure = tempFigure;
 
             }
-            else if(selectedFigure != null &&figuer.getColor() != selectedFigure.getColor()){
+            else if(selectedFigure != null && figuer.getColor() != selectedFigure.getColor()){
                 controller.move(new Coordinate(a,b), selectedFigure);
             }
             drawView.postInvalidate();
         }
 
     }
-    void singlePlayer(){
-
+    void singlePlayer(int a, int b){
+        if(b < 8 && b >= 0) {
+            figures figuer = controller.findFigure(new Coordinate(a, b));
+            if(figuer == null && selectedFigure != null){
+                controller.move(new Coordinate(a,b), selectedFigure);
+                ii.randomStep();
+            }
+            else{
+                controller.selectFigure(figuer);
+                selectedFigure = figuer;
+            }
+            drawView.postInvalidate();
+        }
     }
 
 
