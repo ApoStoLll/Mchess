@@ -282,22 +282,12 @@ class Pawn extends figures {
         int a = 0;
         if(this.color == 0) a = 1;
         if(this.color == 1) a =-1;
-        //if(this.color == 0){
-            if(field[x][y+a] == 0) {
-                movelist.add(new Coordinate(x,y+a));
-                if(this.firstStep && field[x][y+2*a] == 0) movelist.add(new Coordinate(x,y+2*a));
-            }
-            if(x-1>=0) if(field[x-1][y+a] > 0) movelist.add(new Coordinate(x-1,y+a));
-            if(x+1<8) if(field[x+1][y+a] > 0) movelist.add(new Coordinate(x+1,y+a));
-        //}
-        /*else{
-            if(field[x][y-1] == 0) {
-                movelist.add(new Coordinate(x,y-1));
-                if(this.firstStep && field[x][y-2] == 0) movelist.add(new Coordinate(x,y-2));
-            }
-            if(x-1>=0) if(field[x-1][y-1] < 0) movelist.add(new Coordinate(x-1,y-1));
-            if(x+1<8) if(field[x+1][y-1] < 0) movelist.add(new Coordinate(x+1,y-1));
-        }*/
+        if(field[x][y+a] == 0) {
+            movelist.add(new Coordinate(x,y+a));
+            if(this.firstStep && field[x][y+2*a] == 0) movelist.add(new Coordinate(x,y+2*a));
+        }
+        if(x-1>=0) if(field[x-1][y+a] > 0) movelist.add(new Coordinate(x-1,y+a));
+        if(x+1<8) if(field[x+1][y+a] > 0) movelist.add(new Coordinate(x+1,y+a));
         if (!allies.get(0).shag) return movelist;
         else return checkShag(movelist, field, enemy, allies);
     }
