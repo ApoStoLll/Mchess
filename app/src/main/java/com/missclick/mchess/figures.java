@@ -43,6 +43,8 @@ abstract class figures {
         isSelected = select;
     }
 
+
+
     ArrayList<Coordinate> checkRook(int[][] field, int x, int y, ArrayList<Coordinate> movelist,
                                     ArrayList<figures> enemy, ArrayList<figures> allies) {
         for (int i = 1; i < 8; i++) {
@@ -97,6 +99,32 @@ abstract class figures {
         }*/
     }
 
+    ArrayList<Coordinate> checkShag(ArrayList<Coordinate> movelist, int[][] field, ArrayList<figures> enemy, ArrayList<figures> allies){
+        ArrayList<Coordinate> movelistOverall = new ArrayList<>();
+        int[][] fieldCopy = new int[8][8];
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                fieldCopy[i][j] = field[i][j];
+            }
+        }
+        for (Coordinate coord : movelist) {
+            int old = field[coord.getX()][coord.getY()];
+            fieldCopy[coord.getX()][coord.getY()] = field[this.coor.getX()][this.coor.getY()];
+            Log.d("MYLOG", "checkimg");
+            for (figures figur : enemy)
+                for (Coordinate coords : figur.hit(fieldCopy, enemy, allies)) {
+                    Log.d("MYLOG", "working before if");
+                    if (coords.getX() == allies.get(0).getCoor().getX() &&
+                            coords.getY() == allies.get(0).getCoor().getY())
+                        Log.d("MYLOG", "working.... (if)");
+                    movelistOverall.add(coord);
+                }
+            fieldCopy[coord.getX()][coord.getY()] = old;
+        }
+        movelist.removeAll(movelistOverall);
+        return movelist;
+    }
+
     ArrayList<Coordinate> checkBishop(int[][] field, int x, int y, ArrayList<Coordinate> movelist,
                                       ArrayList<figures> enemy, ArrayList<figures> allies) {
         for (int i = 1; i < 8; i++) {
@@ -133,31 +161,7 @@ abstract class figures {
         }
         //return movelist;
         if (!allies.get(0).shag) return movelist;
-        else {
-            int[][] fieldCopy = new int[8][8];
-            for (int i = 0; i < 8; i++) {
-                for (int j = 0; j < 8; j++) {
-                    fieldCopy[i][j] = field[i][j];
-                }
-            }
-            ArrayList<Coordinate> movelistOverall = new ArrayList<>();
-            for (Coordinate coord : movelist) {
-                int old = field[coord.getX()][coord.getY()];
-                fieldCopy[coord.getX()][coord.getY()] = field[this.coor.getX()][this.coor.getY()];
-                Log.d("MYLOG", "checkimg");
-                for (figures figur : enemy)
-                    for (Coordinate coords : figur.hit(fieldCopy, enemy, allies)) {
-                        Log.d("MYLOG", "working before if");
-                        if (coords.getX() == allies.get(0).getCoor().getX() &&
-                                coords.getY() == allies.get(0).getCoor().getY())
-                            Log.d("MYLOG", "working.... (if)");
-                        movelistOverall.add(coord);
-                    }
-                fieldCopy[coord.getX()][coord.getY()] = old;
-            }
-            movelist.removeAll(movelistOverall);
-            return movelist;
-        }
+        else return checkShag(movelist, field, enemy, allies);
     }
 
     ArrayList<Coordinate> hitBishop(int[][] field, int x, int y, ArrayList<Coordinate> movelist,
@@ -275,22 +279,25 @@ class Pawn extends figures {
         ArrayList<Coordinate> movelist = new ArrayList<>();
         int x = this.coor.getX();
         int y = this.coor.getY();
-        if(this.color == 0){
-            if(field[x][y+1] == 0) {
-                movelist.add(new Coordinate(x,y+1));
-                if(this.firstStep && field[x][y+2] == 0) movelist.add(new Coordinate(x,y+2));
+        int a = 0;
+        if(this.color == 0) a = 1;
+        if(this.color == 1) a =-1;
+        //if(this.color == 0){
+            if(field[x][y+a] == 0) {
+                movelist.add(new Coordinate(x,y+a));
+                if(this.firstStep && field[x][y+2*a] == 0) movelist.add(new Coordinate(x,y+2*a));
             }
-            if(x-1>=0) if(field[x-1][y+1] > 0) movelist.add(new Coordinate(x-1,y+1));
-            if(x+1<8) if(field[x+1][y+1] > 0) movelist.add(new Coordinate(x+1,y+1));
-        }
-        else{
+            if(x-1>=0) if(field[x-1][y+a] > 0) movelist.add(new Coordinate(x-1,y+a));
+            if(x+1<8) if(field[x+1][y+a] > 0) movelist.add(new Coordinate(x+1,y+a));
+        //}
+        /*else{
             if(field[x][y-1] == 0) {
                 movelist.add(new Coordinate(x,y-1));
                 if(this.firstStep && field[x][y-2] == 0) movelist.add(new Coordinate(x,y-2));
             }
             if(x-1>=0) if(field[x-1][y-1] < 0) movelist.add(new Coordinate(x-1,y-1));
             if(x+1<8) if(field[x+1][y-1] < 0) movelist.add(new Coordinate(x+1,y-1));
-        }
+        }*/
         if (!allies.get(0).shag) return movelist;
         else {
             ArrayList<Coordinate> movelistOverall = new ArrayList<>();
