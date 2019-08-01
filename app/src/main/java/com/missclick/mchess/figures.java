@@ -326,43 +326,7 @@ class Knight extends figures{
     }
     @Override
     ArrayList<Coordinate> hit(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
-        ArrayList<Coordinate> movelist = new ArrayList<>();
-        int x = this.coor.getX();
-        int y = this.coor.getY();
-        if(this.color == 0){
-            for(int i=0;i<2;i++) for(int j=0;j<2;j++)
-                if(x-1+2*i<8 && x-1+2*i>=0 && y-2+4*j<8 && y-2+4*j>=0)
-                    if(field[x-1+2*i][y-2+4*j]>=0) movelist.add(new Coordinate(x-1+2*i,y-2+4*j));
-            for(int i=0;i<2;i++) for(int j=0;j<2;j++)
-                if(x-2+4*i<8 && x-2+4*i>=0 && y-1+2*j<8 && y-1+2*j>=0)
-                    if(field[x-2+4*i][y-1+2*j]>=0) movelist.add(new Coordinate(x-2+4*i,y-1+2*j));
-        }
-        else{
-            for(int i=0;i<2;i++) for(int j=0;j<2;j++)
-                if(x-1+2*i<8 && x-1+2*i>=0 && y-2+4*j<8 && y-2+4*j>=0)
-                    if(field[x-1+2*i][y-2+4*j]<=0) movelist.add(new Coordinate(x-1+2*i,y-2+4*j));
-            for(int i=0;i<2;i++) for(int j=0;j<2;j++)
-                if(x-2+4*i<8 && x-2+4*i>=0 && y-1+2*j<8 && y-1+2*j>=0)
-                    if(field[x-2+4*i][y-1+2*j]<=0) movelist.add(new Coordinate(x-2+4*i,y-1+2*j));
-        }
-        if (!allies.get(0).shag) return movelist;
-        else {
-            ArrayList<Coordinate> movelistOverall = new ArrayList<>();
-            for (Coordinate coord : movelist) {
-                int old = field[coord.getX()][coord.getY()];
-                field[coord.getX()][coord.getY()] = field[this.coor.getX()][this.coor.getY()];
-                for (figures figur : enemy)
-                    for (Coordinate coords : figur.hit(field, enemy, allies)) {
-                        if (coords.getX() == allies.get(0).getCoor().getX() &&
-                                coords.getY() == allies.get(0).getCoor().getY())
-                            movelistOverall.add(coord);
-                    }
-                field[coord.getX()][coord.getY()] = old;
-            }
-            movelist.removeAll(movelistOverall);
-            return movelist;
-    }
-    }
+        return check(field,enemy,allies);}
     @Override
     ArrayList<Coordinate> check(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
         ArrayList<Coordinate> movelist = new ArrayList<>();
@@ -384,7 +348,23 @@ class Knight extends figures{
                 if(x-2+4*i<8 && x-2+4*i>=0 && y-1+2*j<8 && y-1+2*j>=0)
                 if(field[x-2+4*i][y-1+2*j]<=0) movelist.add(new Coordinate(x-2+4*i,y-1+2*j));
         }
-        return movelist;
+        if (!allies.get(0).shag) return movelist;
+        else {
+            ArrayList<Coordinate> movelistOverall = new ArrayList<>();
+            for (Coordinate coord : movelist) {
+                int old = field[coord.getX()][coord.getY()];
+                field[coord.getX()][coord.getY()] = field[this.coor.getX()][this.coor.getY()];
+                for (figures figur : enemy)
+                    for (Coordinate coords : figur.hit(field, enemy, allies)) {
+                        if (coords.getX() == allies.get(0).getCoor().getX() &&
+                                coords.getY() == allies.get(0).getCoor().getY())
+                            movelistOverall.add(coord);
+                    }
+                field[coord.getX()][coord.getY()] = old;
+            }
+            movelist.removeAll(movelistOverall);
+            return movelist;
+        }
     }
 }
 
