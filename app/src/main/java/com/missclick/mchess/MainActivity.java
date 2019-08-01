@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
             case R.id.button3:
-                intent.putExtra("type", 2);
+                intent.putExtra("type", 1);
                 startActivity(intent);
                 break;
         }
