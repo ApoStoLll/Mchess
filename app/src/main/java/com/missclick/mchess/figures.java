@@ -18,10 +18,14 @@ abstract class figures {
         for (Coordinate coord : figur.hit(field, enemy, allies)) {
             if (enemy.get(0).coor.getX() == coord.getX() && enemy.get(0).coor.getY() == coord.getY()) {
                 enemy.get(0).shag = true;
-                return 1;
+                for (figures figure : enemy)
+                    if(!figure.check(field, allies, enemy).isEmpty()) return 1;
+                return 3;
             }
         }
-        return 0;
+        for (figures figure : enemy)
+            if(!figure.check(field, allies, enemy).isEmpty()) return 0;
+        return 4;
     }
 
     ArrayList<Coordinate> check(int[][] field, ArrayList<figures> enemy, ArrayList<figures> allies) {
@@ -152,11 +156,15 @@ class Pawn extends figures {
         for (Coordinate coord : figur.hit(field, enemy, allies)) {
             if (enemy.get(0).coor.getX() == coord.getX() && enemy.get(0).coor.getY() == coord.getY()) {
                 enemy.get(0).shag = true;
-                return 1;
+                for (figures figure : enemy)
+                    if(!figure.check(field, enemy, allies).isEmpty()) return 1;
+                return 3;
             }
         }
         if (coor.getY() == 0 || coor.getY() == 7) return 2;
-        return 0;
+        for (figures figure : enemy)
+            if(!figure.check(field, allies, enemy).isEmpty()) return 0;
+        return 4;
     }
     @Override
     ArrayList<Coordinate> hit(int[][] field, ArrayList<figures> enemy, ArrayList<figures> allies) {
@@ -301,10 +309,14 @@ class King extends figures {
         for (Coordinate coord : figur.hit(field, enemy, allies)) {
             if (enemy.get(0).coor.getX() == coord.getX() && enemy.get(0).coor.getY() == coord.getY()) {
                 enemy.get(0).shag = true;
-                return 1;
+                for (figures figure : enemy)
+                    if(!figure.check(field, enemy, allies).isEmpty()) return 1;
+                return 3;
             }
         }
-        return 0;
+        for (figures figure : enemy)
+            if(!figure.check(field, allies, enemy).isEmpty()) return 0;
+        return 4;
     }
 
     @Override
