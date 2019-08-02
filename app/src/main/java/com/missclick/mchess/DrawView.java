@@ -112,7 +112,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         void drawCells(Canvas canvas){
             for(int i = 0; i < 8; i++){
                 for(int j = 0; j < 8; j++) {
-                    if((i + j) % 2 == 0){
+                    if((i + j) % 2 == 1){
                         paint.setStyle(Paint.Style.FILL);
                         paint.setColor(Color.rgb(120, 89, 58));
                     }
