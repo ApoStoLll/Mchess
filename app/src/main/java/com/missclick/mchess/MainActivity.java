@@ -12,7 +12,7 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     Button btnSingle;
-    Button btnMult;
+    Button btnMulti;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,8 +20,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         btnSingle = (Button) findViewById(R.id.button3);
         btnSingle.setOnClickListener(this);
-        btnMult = (Button) findViewById(R.id.button2);
-        btnMult.setOnClickListener(this);
+        btnMulti = (Button) findViewById(R.id.button2);
+        btnMulti.setOnClickListener(this);
     }
 
     @Override

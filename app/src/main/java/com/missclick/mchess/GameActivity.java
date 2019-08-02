@@ -49,30 +49,22 @@ public class GameActivity extends AppCompatActivity implements View.OnTouchListe
     public boolean onTouch(View v, MotionEvent event) {
         float x = event.getX();
         float y = event.getY() - OFFSET;
-        //Log.d("MYLOG", "y: " + y + " OFFSET: " + OFFSET + " SCALE: " + scale);
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN: // нажатие
-                //if ((x/(width/8))  % 2 == 0 ){
+        if (event.getAction() == MotionEvent.ACTION_DOWN){ // нажатие
                 int a = (int) (x/scale);
                 int b = (int) (y/(scale));
-                Log.d("MYLOG", "a: " + a + " b: " + b);
-                if(!one) multyPlayer(a, b);
+                if(!one) multiPlayer(a, b);
                 else singlePlayer(a,b);
-
         }
         return false;
     }
-    void multyPlayer(int a, int b){
+    void multiPlayer(int a, int b){
         if(b < 8 && b >= 0) {
-            Log.d("MYLOG", "TOUCH");
             figures figuer = controller.findFigure(new Coordinate(a, b));
             if(figuer == null || (figuer.getColor() == 0 && controller.getStep() % 2 != 0 ||
                     figuer.getColor() == 1 && controller.getStep() % 2 == 0)) {
-                Log.d("MYLOG", "Попал в ход");
                 figures tempFigure = controller.selectFigure(figuer);
                 if(tempFigure == null) controller.move(new Coordinate(a,b), selectedFigure);
                 else selectedFigure = tempFigure;
-
             }
             else if(selectedFigure != null && figuer.getColor() != selectedFigure.getColor()){
                 controller.move(new Coordinate(a,b), selectedFigure);
@@ -95,6 +87,5 @@ public class GameActivity extends AppCompatActivity implements View.OnTouchListe
             drawView.postInvalidate();
         }
     }
-
 
 }
