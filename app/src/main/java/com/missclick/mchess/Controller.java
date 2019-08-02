@@ -54,12 +54,12 @@ class Controller {
             field[coor.getX()][coor.getY()] = field[figure.getCoor().getX()][figure.getCoor().getY()];
             field[figure.getCoor().getX()][figure.getCoor().getY()] = 0;
             if(figure.getColor() == 0) {
+                if(!clear) white.remove(findFigure(coor));
                 switch (figure.move(coor, field, white, black)){
                     case 1:
                         Log.d("MYLOG","ШАХ белым!!!");
                         break;
                     case 2:
-                        Log.d("MYLOG","Спавним черную королеву!!!");
                         black.remove(findFigure(coor));
                         black.add(new Queen(0, new Coordinate(coor.getX(), coor.getY())));
                         field[coor.getX()][coor.getY()] = -5;
@@ -71,15 +71,14 @@ class Controller {
                         Log.d("MYLOG","ПАТ!!!");
                         break;
                 }
-                if(!clear) white.remove(findFigure(coor));
             }
             if(figure.getColor() == 1) {
+                if(!clear) black.remove(findFigure(coor));
                 switch (figure.move(coor, field, black, white)){
                     case 1:
                         Log.d("MYLOG","ШАХ черным!!!");
                         break;
                     case 2:
-                        Log.d("MYLOG","Спавним белую королеву!!!");
                         white.remove(findFigure(coor));
                         white.add(new Queen(1, new Coordinate(coor.getX(), coor.getY())));
                         field[coor.getX()][coor.getY()] = 5;
@@ -90,9 +89,6 @@ class Controller {
                     case 4:
                         Log.d("MYLOG","ПАТ!!!");
                         break;
-                }
-                if(!clear){
-                    black.remove(findFigure(coor));
                 }
             }
             step++;
