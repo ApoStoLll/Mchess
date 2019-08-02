@@ -63,7 +63,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         paintMove.setColor(Color.GREEN);
         bitmapSide = bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.fon2);
         bitmapPoint = bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.point);
-        bitmapPointSecond = bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.point); // вставить другую картинку
+        bitmapPointSecond = bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.point2); // вставить другую картинку
         sideSrc = new Rect(0, 0, bitmapSide.getWidth(), bitmapSide.getHeight());
         sideDstTop = new Rect(0, 0, width, OFFSET);
         sideDstBot = new Rect(0, 8 * scale + OFFSET, width, height);
