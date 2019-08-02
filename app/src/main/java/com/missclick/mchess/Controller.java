@@ -24,17 +24,14 @@ class Controller {
     }
     figures selectFigure(figures figure){
         cancelSelected();
-        Log.d("MYLOG", "выбор фигуры");
-        //figures figure = findFigure(coord);
         if(figure == null) return null;
         if(figure.getColor() == 1) moveList = figure.check(field,black,white);
         else moveList = figure.check(field,white,black);
         figure.setSelected(true);
-        Log.d("MYLOG", "return select figure");
         return figure;
     }
 
-    void cancelSelected(){
+    private void cancelSelected(){
         for(figures figure : black){
             if(figure.isSelected) figure.setSelected(false);
         }
@@ -44,7 +41,6 @@ class Controller {
     }
 
     void move(Coordinate coor, figures figure){
-        Log.d("MYLOG", "move?");
         boolean check = false;
         if(moveList != null) {
             for (Coordinate coord : moveList) {
@@ -62,6 +58,12 @@ class Controller {
                     case 1:
                         Log.d("MYLOG","ШАХ белым!!!");
                         break;
+                    case 2:
+                        Log.d("MYLOG","Спавним черную королеву!!!");
+                        black.remove(findFigure(coor));
+                        black.add(new Queen(0, new Coordinate(coor.getX(), coor.getY())));
+                        field[coor.getX()][coor.getY()] = -5;
+                        break;
                     case 3:
                         Log.d("MYLOG","МАТ белым!!!");
                         break;
@@ -75,6 +77,12 @@ class Controller {
                 switch (figure.move(coor, field, black, white)){
                     case 1:
                         Log.d("MYLOG","ШАХ черным!!!");
+                        break;
+                    case 2:
+                        Log.d("MYLOG","Спавним белую королеву!!!");
+                        white.remove(findFigure(coor));
+                        white.add(new Queen(1, new Coordinate(coor.getX(), coor.getY())));
+                        field[coor.getX()][coor.getY()] = 5;
                         break;
                     case 3:
                         Log.d("MYLOG","МАТ черным!!!");
@@ -94,21 +102,16 @@ class Controller {
     }
 
      figures findFigure(Coordinate coord){
-        Log.d("MYLOG", "ищем фигуру");
         for(figures figure : black){
-           // Log.d("MYLOG", "X: " + figure.getCoor().getX() + " Y: " + figure.getCoor().getY());
             if(figure.getCoor().getY() == coord.getY() && figure.getCoor().getX() == coord.getX()) {
-                Log.d("MYLOG", "нашли черную");
                 return figure;
             }
         }
         for(figures figure : white){
             if(figure.getCoor().getY() == coord.getY() && figure.getCoor().getX() == coord.getX()){
-                Log.d("MYLOG", "нашли белую");
                 return figure;
             }
         }
-         Log.d("MYLOG", "не нашли");
         return null;
     }
 
@@ -151,14 +154,6 @@ class Controller {
         field[3][0] = -5;
         white.add(new Queen(1, new Coordinate(3, 7)));
         field[3][7] = 5;
-        /*for(figures figure : black){
-            Log.d("MYLOG", "BLACK X: " + figure.coor.getX());
-            Log.d("MYLOG", "BLACK Y: " + figure.coor.getY());
-        }
-        for(figures figure : white){
-            Log.d("MYLOG", "WHITE X: " + figure.coor.getX());
-            Log.d("MYLOG", "WHITE Y: " + figure.coor.getY());
-        }*/
     }
     int[][] getField(){ return field; }
     ArrayList<figures> getBlack(){ return black; }
