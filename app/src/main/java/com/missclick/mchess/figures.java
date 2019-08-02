@@ -7,17 +7,14 @@ abstract class figures {
     int color;
     boolean firstStep = true;
     boolean isSelected = false;
-    boolean shag = false;
     Coordinate coor;
 
     int move(Coordinate coor, int[][] field, ArrayList<figures> enemy, ArrayList<figures> allies) {
         this.coor = coor;
         this.firstStep = false;
-        if(allies.get(0).shag) allies.get(0).shag = false;
         for (figures figur : allies)
         for (Coordinate coord : figur.hit(field, enemy, allies)) {
             if (enemy.get(0).coor.getX() == coord.getX() && enemy.get(0).coor.getY() == coord.getY()) {
-                enemy.get(0).shag = true;
                 for (figures figure : enemy)
                     if(!figure.check(field, allies, enemy).isEmpty()) return 1;
                 return 3;
@@ -149,11 +146,9 @@ class Pawn extends figures {
     int move(Coordinate coor, int[][] field, ArrayList<figures> enemy, ArrayList<figures> allies) {
         this.coor = coor;
         this.firstStep = false;
-        if(allies.get(0).shag) allies.get(0).shag = false;
         for (figures figur : allies)
         for (Coordinate coord : figur.hit(field, enemy, allies)) {
             if (enemy.get(0).coor.getX() == coord.getX() && enemy.get(0).coor.getY() == coord.getY()) {
-                enemy.get(0).shag = true;
                 for (figures figure : enemy)
                     if(!figure.check(field, enemy, allies).isEmpty()) return 1;
                 return 3;
@@ -187,8 +182,7 @@ class Pawn extends figures {
         if(this.color == 0) colour = -1;
         if(x-1>=0) if(field[x-1][y+1-2*this.color]*colour < 0) movelist.add(new Coordinate(x-1,y+1-2*this.color));
         if(x+1<8) if(field[x+1][y+1-2*this.color]*colour < 0) movelist.add(new Coordinate(x+1,y+1-2*this.color));
-        if (!allies.get(0).shag) return movelist;
-        else return checkShag(movelist, field, enemy, allies);
+        return checkShag(movelist, field, enemy, allies);
     }
 }
 
@@ -302,11 +296,9 @@ class King extends figures {
         }
         this.coor = coor;
         this.firstStep = false;
-        if(allies.get(0).shag) allies.get(0).shag = false;
         for (figures figur : allies)
         for (Coordinate coord : figur.hit(field, enemy, allies)) {
             if (enemy.get(0).coor.getX() == coord.getX() && enemy.get(0).coor.getY() == coord.getY()) {
-                enemy.get(0).shag = true;
                 for (figures figure : enemy)
                     if(!figure.check(field, enemy, allies).isEmpty()) return 1;
                 return 3;
