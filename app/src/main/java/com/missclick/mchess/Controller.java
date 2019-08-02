@@ -9,6 +9,7 @@ class Controller {
     private ArrayList<figures> black;
     private ArrayList<figures> white;
     private ArrayList<Coordinate> moveList;
+    private Coordinate selected = null;
     private int step = 0;
     Controller(){
         black = new ArrayList<>();
@@ -28,10 +29,12 @@ class Controller {
         if(figure.getColor() == 1) moveList = figure.check(field,black,white);
         else moveList = figure.check(field,white,black);
         figure.setSelected(true);
+        selected = figure.getCoor();
         return figure;
     }
 
     private void cancelSelected(){
+        selected = null;
         for(figures figure : black){
             if(figure.isSelected) figure.setSelected(false);
         }
@@ -156,4 +159,5 @@ class Controller {
     ArrayList<figures> getWhite(){ return white; }
     ArrayList<Coordinate> getMoveList(){ return moveList; }
     int getStep(){ return step; }
+    Coordinate getSelected(){return selected;}
 }

@@ -29,6 +29,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
     private Bitmap bitmap;
     private Bitmap bitmapSide;
     private Bitmap bitmapPoint;
+    private Bitmap bitmapPointSecond;
     private int OFFSET;
     private int scale;
     private Rect sideSrc;
@@ -62,6 +63,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         paintMove.setColor(Color.GREEN);
         bitmapSide = bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.fon2);
         bitmapPoint = bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.point);
+        bitmapPointSecond = bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.point); // вставить другую картинку
         sideSrc = new Rect(0, 0, bitmapSide.getWidth(), bitmapSide.getHeight());
         sideDstTop = new Rect(0, 0, width, OFFSET);
         sideDstBot = new Rect(0, 8 * scale + OFFSET, width, height);
@@ -153,7 +155,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
             }
         }
 
-        void drawMoveList(Canvas canvas, ArrayList<Coordinate> moveList){
+        void drawMoveList(Canvas canvas, ArrayList<Coordinate> moveList,Coordinate selected){
             if(moveList != null && !moveList.isEmpty()){
                 for(Coordinate coor : moveList){
                     int i = coor.getX();
@@ -161,6 +163,12 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
                     Rect rectDst = new Rect(i * scale, j * scale + OFFSET, (i+1) * scale, (j+1) * scale + OFFSET);
                     canvas.drawBitmap(bitmapPoint, pointSrc, rectDst, paintMove);
                 }
+            }
+            if(selected != null){
+                int i = selected.getX();
+                int j = selected.getY();
+                Rect rectDst = new Rect(i * scale, j * scale + OFFSET, (i+1) * scale, (j+1) * scale + OFFSET);
+                canvas.drawBitmap(bitmapPointSecond, pointSrc, rectDst, paintMove);
             }
         }
 
@@ -175,7 +183,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
                         continue;
                     drawCells(canvas);
                     drawMap(canvas, controller.getField());
-                    drawMoveList(canvas, controller.getMoveList());
+                    drawMoveList(canvas, controller.getMoveList(), controller.getSelected());
                     drawSide(canvas);
                 } finally {
                     if (canvas != null) {
