@@ -81,6 +81,7 @@ public class GameActivity extends AppCompatActivity implements View.OnTouchListe
                 ii.randomStep();
             }
             else{
+                if(figuer != null && figuer.getColor() == 0)
                 controller.selectFigure(figuer);
                 selectedFigure = figuer;
             }
