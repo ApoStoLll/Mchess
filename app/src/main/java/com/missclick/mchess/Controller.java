@@ -60,8 +60,8 @@ class Controller {
             field[figure.getCoor().getX()][figure.getCoor().getY()] = 0;
             if(figure.getColor() == 0) {
                 if(!clear) {
+                    //deadWhite.add(findFigure(coor));
                     white.remove(findFigure(coor));
-                    deadWhite.add(findFigure(coor));
                 }
                 switch (figure.move(coor, field, white, black)){
                     case 1:
@@ -82,8 +82,8 @@ class Controller {
             }
             if(figure.getColor() == 1) {
                 if(!clear) {
+                    //deadBlack.add(findFigure(coor));
                     black.remove(findFigure(coor));
-                    deadBlack.add(findFigure(coor));
                 }
                 switch (figure.move(coor, field, black, white)){
                     case 1:
