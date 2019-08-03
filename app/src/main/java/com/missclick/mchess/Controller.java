@@ -165,6 +165,8 @@ class Controller {
     int[][] getField(){ return field; }
     ArrayList<figures> getBlack(){ return black; }
     ArrayList<figures> getWhite(){ return white; }
+    ArrayList<figures> getDeadBlack(){ return deadBlack; }
+    ArrayList<figures> getDeadWhite(){ return deadWhite; }
     ArrayList<Coordinate> getMoveList(){ return moveList; }
     int getStep(){ return step; }
     Coordinate getSelected(){return selected;}

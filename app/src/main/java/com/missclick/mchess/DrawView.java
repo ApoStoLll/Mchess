@@ -172,6 +172,18 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
             }
         }
 
+        void drawDead(Canvas canvas, ArrayList<figures> deadBlack, ArrayList<figures> deadWhite){
+            if(deadBlack != null && !deadBlack.isEmpty()){
+                if(true) {
+                    bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.pawnwh);
+                    Rect rectSrc = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+                    Rect rectDst = new Rect(0 * scale, 0 * scale + OFFSET, (0 + 1) * scale, (0 + 1) * scale + OFFSET);
+                    canvas.drawBitmap(bitmap, rectSrc, rectDst, p);
+                }
+            }
+
+        }
+
         @Override
         public void run() {
             Canvas canvas;
@@ -184,6 +196,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
                     drawCells(canvas);
                     drawMap(canvas, controller.getField());
                     drawMoveList(canvas, controller.getMoveList(), controller.getSelected());
+                    drawDead(canvas, controller.getDeadBlack(), controller.getDeadWhite());
                     drawSide(canvas);
                 } finally {
                     if (canvas != null) {
