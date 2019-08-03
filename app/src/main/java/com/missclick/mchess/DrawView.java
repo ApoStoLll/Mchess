@@ -174,12 +174,32 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         void drawDead(Canvas canvas, ArrayList<figures> deadBlack, ArrayList<figures> deadWhite){
-            if(deadBlack != null && !deadBlack.isEmpty()){
-                if(true) {
-                    bitmapDead = BitmapFactory.decodeResource(getResources(), R.drawable.pawnbl);
+            if(!deadWhite.isEmpty()){
+                int i = 0;
+                for(figures figur : deadWhite) {
+                    if(figur.getClass().getName().equals("com.missclick.mchess.Pawn")) bitmapDead = BitmapFactory.decodeResource(getResources(), R.drawable.pawnwh);
+                    if(figur.getClass().getName().equals("com.missclick.mchess.Knight")) bitmapDead = BitmapFactory.decodeResource(getResources(), R.drawable.knightwh);
+                    if(figur.getClass().getName().equals("com.missclick.mchess.Bishop")) bitmapDead = BitmapFactory.decodeResource(getResources(), R.drawable.bishopwh);
+                    if(figur.getClass().getName().equals("com.missclick.mchess.Rook")) bitmapDead = BitmapFactory.decodeResource(getResources(), R.drawable.rookwh);
+                    if(figur.getClass().getName().equals("com.missclick.mchess.Queen")) bitmapDead = BitmapFactory.decodeResource(getResources(), R.drawable.queenwh);
                     Rect rectSrc = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-                    Rect rectDst = new Rect(0 * scale, -1 * scale + OFFSET, 1 * scale, (0) * scale + OFFSET);
+                    Rect rectDst = new Rect(i * scale, -1 * scale + OFFSET, (1+i) * scale, OFFSET);
                     canvas.drawBitmap(bitmapDead, rectSrc, rectDst, p);
+                    i++;
+                }
+            }
+            if(!deadBlack.isEmpty()){
+                int i = 0;
+                for(figures figur : deadBlack) {
+                    if(figur.getClass().getName().equals("com.missclick.mchess.Pawn")) bitmapDead = BitmapFactory.decodeResource(getResources(), R.drawable.pawnbl);
+                    if(figur.getClass().getName().equals("com.missclick.mchess.Knight")) bitmapDead = BitmapFactory.decodeResource(getResources(), R.drawable.knightbl);
+                    if(figur.getClass().getName().equals("com.missclick.mchess.Bishop")) bitmapDead = BitmapFactory.decodeResource(getResources(), R.drawable.bishopbl);
+                    if(figur.getClass().getName().equals("com.missclick.mchess.Rook")) bitmapDead = BitmapFactory.decodeResource(getResources(), R.drawable.rookbl);
+                    if(figur.getClass().getName().equals("com.missclick.mchess.Queen")) bitmapDead = BitmapFactory.decodeResource(getResources(), R.drawable.queenbl);
+                    Rect rectSrc = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+                    Rect rectDst = new Rect(i * scale, 8 * scale + OFFSET, (1+i) * scale, OFFSET + 9*scale);
+                    canvas.drawBitmap(bitmapDead, rectSrc, rectDst, p);
+                    i++;
                 }
             }
         }
@@ -196,8 +216,8 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
                     drawCells(canvas);
                     drawMap(canvas, controller.getField());
                     drawMoveList(canvas, controller.getMoveList(), controller.getSelected());
-                    drawDead(canvas, controller.getDeadBlack(), controller.getDeadWhite());
                     drawSide(canvas);
+                    drawDead(canvas, controller.getDeadBlack(), controller.getDeadWhite());
                 } finally {
                     if (canvas != null) {
                         surfaceHolder.unlockCanvasAndPost(canvas);
