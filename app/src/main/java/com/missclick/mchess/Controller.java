@@ -8,6 +8,8 @@ class Controller {
     private int[][] field;
     private ArrayList<figures> black;
     private ArrayList<figures> white;
+    private ArrayList<figures> deadBlack;
+    private ArrayList<figures> deadWhite;
     private ArrayList<Coordinate> moveList;
     private Coordinate selected = null;
     private int step = 0;
@@ -57,7 +59,10 @@ class Controller {
             field[coor.getX()][coor.getY()] = field[figure.getCoor().getX()][figure.getCoor().getY()];
             field[figure.getCoor().getX()][figure.getCoor().getY()] = 0;
             if(figure.getColor() == 0) {
-                if(!clear) white.remove(findFigure(coor));
+                if(!clear) {
+                    white.remove(findFigure(coor));
+                    deadWhite.add(findFigure(coor));
+                }
                 switch (figure.move(coor, field, white, black)){
                     case 1:
                         Log.d("MYLOG","ШАХ белым!!!");
@@ -76,7 +81,10 @@ class Controller {
                 }
             }
             if(figure.getColor() == 1) {
-                if(!clear) black.remove(findFigure(coor));
+                if(!clear) {
+                    black.remove(findFigure(coor));
+                    deadBlack.add(findFigure(coor));
+                }
                 switch (figure.move(coor, field, black, white)){
                     case 1:
                         Log.d("MYLOG","ШАХ черным!!!");
@@ -157,6 +165,8 @@ class Controller {
     int[][] getField(){ return field; }
     ArrayList<figures> getBlack(){ return black; }
     ArrayList<figures> getWhite(){ return white; }
+    ArrayList<figures> getDeadBlack(){ return deadBlack; }
+    ArrayList<figures> getDeadWhite(){ return deadWhite; }
     ArrayList<Coordinate> getMoveList(){ return moveList; }
     int getStep(){ return step; }
     Coordinate getSelected(){return selected;}
