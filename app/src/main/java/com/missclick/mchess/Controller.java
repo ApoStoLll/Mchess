@@ -16,6 +16,8 @@ class Controller {
     Controller(){
         black = new ArrayList<>();
         white = new ArrayList<>();
+        deadBlack = new ArrayList<>();
+        deadWhite = new ArrayList<>();
         moveList = new ArrayList<>();
         field = new int[8][8];
         for(int i = 0; i < 8; i++){
@@ -60,7 +62,7 @@ class Controller {
             field[figure.getCoor().getX()][figure.getCoor().getY()] = 0;
             if(figure.getColor() == 0) {
                 if(!clear) {
-                    //deadWhite.add(findFigure(coor));
+                    deadWhite.add(findFigure(coor));
                     white.remove(findFigure(coor));
                 }
                 switch (figure.move(coor, field, white, black)){
@@ -82,7 +84,7 @@ class Controller {
             }
             if(figure.getColor() == 1) {
                 if(!clear) {
-                    //deadBlack.add(findFigure(coor));
+                    deadBlack.add(findFigure(coor));
                     black.remove(findFigure(coor));
                 }
                 switch (figure.move(coor, field, black, white)){

@@ -30,7 +30,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
     private Bitmap bitmapSide;
     private Bitmap bitmapPoint;
     private Bitmap bitmapPointSecond;
-   // private Bitmap bitmapDead;
+    private Bitmap bitmapDead;
     private int OFFSET;
     private int scale;
     private Rect sideSrc;
@@ -173,16 +173,16 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
             }
         }
 
-        //void drawDead(Canvas canvas, ArrayList<figures> deadBlack, ArrayList<figures> deadWhite){
-            /*if(deadBlack != null && !deadBlack.isEmpty()){
+        void drawDead(Canvas canvas, ArrayList<figures> deadBlack, ArrayList<figures> deadWhite){
+            if(deadBlack != null && !deadBlack.isEmpty()){
                 if(true) {
-                    bitmapDead = BitmapFactory.decodeResource(getResources(), R.drawable.pawnwh);
+                    bitmapDead = BitmapFactory.decodeResource(getResources(), R.drawable.pawnbl);
                     Rect rectSrc = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-                    Rect rectDst = new Rect(1 * scale, 1 * scale + OFFSET, (1 + 1) * scale, (1 + 1) * scale + OFFSET);
+                    Rect rectDst = new Rect(0 * scale, -1 * scale + OFFSET, 1 * scale, (0) * scale + OFFSET);
                     canvas.drawBitmap(bitmapDead, rectSrc, rectDst, p);
                 }
-            }*/
-        //}
+            }
+        }
 
         @Override
         public void run() {
@@ -196,7 +196,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
                     drawCells(canvas);
                     drawMap(canvas, controller.getField());
                     drawMoveList(canvas, controller.getMoveList(), controller.getSelected());
-                    //drawDead(canvas, controller.getDeadBlack(), controller.getDeadWhite());
+                    drawDead(canvas, controller.getDeadBlack(), controller.getDeadWhite());
                     drawSide(canvas);
                 } finally {
                     if (canvas != null) {
