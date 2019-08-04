@@ -1,5 +1,8 @@
 package com.missclick.mchess;
 
+import android.media.MediaPlayer;
+import android.media.SoundPool;
+import android.provider.MediaStore;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -27,6 +30,7 @@ class Controller {
             }
         }
         createFigures();
+
     }
     figures selectFigure(figures figure){
         cancelSelected();
