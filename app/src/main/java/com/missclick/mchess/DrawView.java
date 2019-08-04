@@ -48,7 +48,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         width = size.x;
         height = size.y;
         scale = (width < height ? width : height) / 8;
-        OFFSET = (height - 8 * scale) / 2;
+        OFFSET = (height - 9 * scale) / 2;
         getHolder().addCallback(this);
         p = new Paint();
         paintSide = new Paint();
@@ -62,9 +62,10 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         paintMove.setStrokeWidth(10);
         paintMove.setStyle(Paint.Style.FILL);
         paintMove.setColor(Color.GREEN);
+        p.setTextSize(7 * scale / 10);
         bitmapSide = bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.fon2);
         bitmapPoint = bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.point);
-        bitmapPointSecond = bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.point21); // вставить другую картинку
+        bitmapPointSecond = bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.point21);
         sideSrc = new Rect(0, 0, bitmapSide.getWidth(), bitmapSide.getHeight());
         sideDstTop = new Rect(0, 0, width, OFFSET);
         sideDstBot = new Rect(0, 8 * scale + OFFSET, width, height);
@@ -176,8 +177,12 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         void drawDead(Canvas canvas, ArrayList<figures> deadBlack, ArrayList<figures> deadWhite){
             if(!deadWhite.isEmpty()){
                 int i = 0;
+                int pawn = 0;
                 for(figures figur : deadWhite) {
-                    if(figur.getClass().getName().equals("com.missclick.mchess.Pawn")) bitmapDead = BitmapFactory.decodeResource(getResources(), R.drawable.pawnwh);
+                    if(figur.getClass().getName().equals("com.missclick.mchess.Pawn")) {
+                        pawn++;
+                        continue;
+                    }
                     if(figur.getClass().getName().equals("com.missclick.mchess.Knight")) bitmapDead = BitmapFactory.decodeResource(getResources(), R.drawable.knightwh);
                     if(figur.getClass().getName().equals("com.missclick.mchess.Bishop")) bitmapDead = BitmapFactory.decodeResource(getResources(), R.drawable.bishopwh);
                     if(figur.getClass().getName().equals("com.missclick.mchess.Rook")) bitmapDead = BitmapFactory.decodeResource(getResources(), R.drawable.rookwh);
@@ -187,11 +192,22 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
                     canvas.drawBitmap(bitmapDead, rectSrc, rectDst, p);
                     i++;
                 }
+                if(pawn !=0) {
+                    bitmapDead = BitmapFactory.decodeResource(getResources(), R.drawable.pawnwh);
+                    Rect rectSrc = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+                    Rect rectDst = new Rect(i * scale, -1 * scale + OFFSET, (1 + i) * scale, OFFSET);
+                    canvas.drawBitmap(bitmapDead, rectSrc, rectDst, p);
+                    if(pawn > 1) canvas.drawText("x"+ pawn, (i + 1) * scale - (scale/7), OFFSET - (scale/5), p);
+                }
             }
             if(!deadBlack.isEmpty()){
                 int i = 0;
+                int pawn = 0;
                 for(figures figur : deadBlack) {
-                    if(figur.getClass().getName().equals("com.missclick.mchess.Pawn")) bitmapDead = BitmapFactory.decodeResource(getResources(), R.drawable.pawnbl);
+                    if(figur.getClass().getName().equals("com.missclick.mchess.Pawn")) {
+                        pawn++;
+                        continue;
+                    }
                     if(figur.getClass().getName().equals("com.missclick.mchess.Knight")) bitmapDead = BitmapFactory.decodeResource(getResources(), R.drawable.knightbl);
                     if(figur.getClass().getName().equals("com.missclick.mchess.Bishop")) bitmapDead = BitmapFactory.decodeResource(getResources(), R.drawable.bishopbl);
                     if(figur.getClass().getName().equals("com.missclick.mchess.Rook")) bitmapDead = BitmapFactory.decodeResource(getResources(), R.drawable.rookbl);
@@ -201,9 +217,21 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
                     canvas.drawBitmap(bitmapDead, rectSrc, rectDst, p);
                     i++;
                 }
+                if(pawn !=0) {
+                    bitmapDead = BitmapFactory.decodeResource(getResources(), R.drawable.pawnbl);
+                    Rect rectSrc = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+                    Rect rectDst = new Rect(i * scale, 8 * scale + OFFSET, (1+i) * scale, OFFSET + 9*scale);
+                    canvas.drawBitmap(bitmapDead, rectSrc, rectDst, p);
+                    if(pawn > 1) canvas.drawText("x"+ pawn, (i + 1) * scale - (scale/7), OFFSET + 9*scale - (scale/5), p);
+                }
             }
         }
 
+        void drawSituation(Canvas canvas, String situation){
+            if(situation != null){
+                canvas.drawText(situation, 3*scale + scale/4 , scale, p);
+            }
+        }
         @Override
         public void run() {
             Canvas canvas;
@@ -218,6 +246,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
                     drawMoveList(canvas, controller.getMoveList(), controller.getSelected());
                     drawSide(canvas);
                     drawDead(canvas, controller.getDeadBlack(), controller.getDeadWhite());
+                    drawSituation(canvas, controller.getSituation());
                 } finally {
                     if (canvas != null) {
                         surfaceHolder.unlockCanvasAndPost(canvas);

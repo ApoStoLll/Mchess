@@ -31,7 +31,7 @@ public class GameActivity extends AppCompatActivity implements View.OnTouchListe
         width = size.x;
         height = size.y;
         scale = (width < height ? width : height) / 8;
-        OFFSET = (height - 8 * scale) / 2;
+        OFFSET = (height - 9 * scale) / 2;
         controller = new Controller();
         drawView = new DrawView(this, controller);
         drawView.setOnTouchListener(this);
