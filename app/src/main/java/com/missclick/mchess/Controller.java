@@ -18,7 +18,7 @@ class Controller {
         black = new ArrayList<>();
         white = new ArrayList<>();
         deadBlack = new ArrayList<>();
-        deadWhite = new ArrayList<>();
+        deadWhite = new ArrayList<>(); //
         moveList = new ArrayList<>();
         field = new int[8][8];
         for(int i = 0; i < 8; i++){
