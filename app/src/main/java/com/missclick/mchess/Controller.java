@@ -30,6 +30,7 @@ class Controller {
             }
         }
         createFigures();
+        //MediaPlayer.create(GameActivity.class,R.raw.shah).start();
 
     }
     figures selectFigure(figures figure){
