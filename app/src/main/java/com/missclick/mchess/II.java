@@ -95,7 +95,7 @@ public class II {
         Log.d("logII", "moving from X:" + figure.getCoor().getX() + " Y: " + figure.getCoor().getY() +
                 "to X: " + moveList.get(index).getX() + " Y: " + moveList.get(index).getY());
         controller.selectFigure(figure);
-        controller.move(new Step(moveList.get(index), figure));
+        controller.move(new Step(moveList.get(index), figure), false);
     }
 
     figures randFigure(){
