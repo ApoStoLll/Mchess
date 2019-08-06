@@ -65,13 +65,13 @@ class Controller {
                 figures figur = new Pawn(1,step.getTo());
                 if(step.getTo().getY() != 6) figur.setFirstStep(false);
                 white.add(figur);
-                deadWhite.remove(deadWhite.size()-1);
+                if(deadBlack.size() > 0) deadWhite.remove(deadWhite.size()-1);
             }
             if(field[step.getTo().getX()][step.getTo().getY()] == -1) {
                 figures figur = new Pawn(0,step.getTo());
                 if(step.getTo().getY() != 1) figur.setFirstStep(false);
                 black.add(figur);
-                deadBlack.remove(deadWhite.size()-1);
+                if(deadBlack.size() > 0) deadBlack.remove(deadWhite.size()-1);
             }
         }
     }
