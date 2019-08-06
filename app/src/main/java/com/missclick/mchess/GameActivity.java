@@ -57,6 +57,7 @@ public class GameActivity extends AppCompatActivity implements View.OnTouchListe
                 if(!one) multiPlayer(a, b);
                 else singlePlayer(a,b);
         }
+
         return false;
     }
     void multiPlayer(int a, int b){
