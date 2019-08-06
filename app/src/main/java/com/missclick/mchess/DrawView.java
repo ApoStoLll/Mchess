@@ -30,6 +30,19 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
     private Bitmap bitmapSide;
     private Bitmap bitmapPoint;
     private Bitmap bitmapPointSecond;
+    private Bitmap bitmapDead;
+    private Bitmap bitmapPawnwh;
+    private Bitmap bitmapPawnbl;
+    private Bitmap bitmapKnightwh;
+    private Bitmap bitmapKnightbl;
+    private Bitmap bitmapRookwh;
+    private Bitmap bitmapRookbl;
+    private Bitmap bitmapBishopwh;
+    private Bitmap bitmapBishopbl;
+    private Bitmap bitmapQueenwh;
+    private Bitmap bitmapQueenbl;
+    private Bitmap bitmapKingwh;
+    private Bitmap bitmapKingbl;
     private int OFFSET;
     private int scale;
     private Rect sideSrc;
@@ -47,7 +60,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         width = size.x;
         height = size.y;
         scale = (width < height ? width : height) / 8;
-        OFFSET = (height - 8 * scale) / 2;
+        OFFSET = (height - 9 * scale) / 2;
         getHolder().addCallback(this);
         p = new Paint();
         paintSide = new Paint();
@@ -61,9 +74,23 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         paintMove.setStrokeWidth(10);
         paintMove.setStyle(Paint.Style.FILL);
         paintMove.setColor(Color.GREEN);
-        bitmapSide = bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.fon2);
-        bitmapPoint = bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.point);
-        bitmapPointSecond = bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.point21); // вставить другую картинку
+        p.setTextSize(7 * scale / 10);
+        bitmapSide = BitmapFactory.decodeResource(getResources(), R.drawable.fon2);
+        bitmapPoint = BitmapFactory.decodeResource(getResources(), R.drawable.point);
+        bitmapPointSecond  = BitmapFactory.decodeResource(getResources(), R.drawable.point21);
+        bitmapPawnwh = BitmapFactory.decodeResource(getResources(), R.drawable.pawnwh);
+        bitmapPawnbl = BitmapFactory.decodeResource(getResources(), R.drawable.pawnbl);
+        bitmapRookwh = BitmapFactory.decodeResource(getResources(), R.drawable.rookwh);
+        bitmapRookbl = BitmapFactory.decodeResource(getResources(), R.drawable.rookbl);
+        bitmapKnightwh = BitmapFactory.decodeResource(getResources(), R.drawable.knightwh);
+        bitmapKnightbl = BitmapFactory.decodeResource(getResources(), R.drawable.knightbl);
+        bitmapBishopwh = BitmapFactory.decodeResource(getResources(), R.drawable.bishopwh);
+        bitmapBishopbl = BitmapFactory.decodeResource(getResources(), R.drawable.bishopbl);
+        bitmapQueenwh = BitmapFactory.decodeResource(getResources(), R.drawable.queenwh);
+        bitmapQueenbl = BitmapFactory.decodeResource(getResources(), R.drawable.queenbl);
+        bitmapKingwh = BitmapFactory.decodeResource(getResources(), R.drawable.kingwh);
+        bitmapKingbl = BitmapFactory.decodeResource(getResources(), R.drawable.kingbl);
+
         sideSrc = new Rect(0, 0, bitmapSide.getWidth(), bitmapSide.getHeight());
         sideDstTop = new Rect(0, 0, width, OFFSET);
         sideDstBot = new Rect(0, 8 * scale + OFFSET, width, height);
@@ -133,19 +160,18 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         void drawMap(Canvas canvas, int[][] field){
             for(int i = 0; i < 8; i++){
                 for(int j = 0; j < 8; j++){
-                   // Log.d("FIEL", "Field " + i + j + " = " + field[i][j])
-                    if(field[i][j] == 1) bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.pawnwh);
-                    if(field[i][j] == -1) bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.pawnbl);
-                    if(field[i][j] == 2) bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.rookwh);
-                    if(field[i][j] == -2) bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.rookbl);
-                    if(field[i][j] == 3) bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.knightwh);
-                    if(field[i][j] == -3) bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.knightbl);
-                    if(field[i][j] == 4) bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bishopwh);
-                    if(field[i][j] == -4) bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bishopbl);
-                    if(field[i][j] == 5) bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.queenwh);
-                    if(field[i][j] == -5) bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.queenbl);
-                    if(field[i][j] == 6) bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.kingwh);
-                    if(field[i][j] == -6) bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.kingbl);
+                    if(field[i][j] == 1) bitmap = bitmapPawnwh;
+                    if(field[i][j] == -1) bitmap = bitmapPawnbl;
+                    if(field[i][j] == 2) bitmap = bitmapRookwh;
+                    if(field[i][j] == -2) bitmap = bitmapRookbl;
+                    if(field[i][j] == 3) bitmap = bitmapKnightwh;
+                    if(field[i][j] == -3) bitmap = bitmapKnightbl;
+                    if(field[i][j] == 4) bitmap = bitmapBishopwh;
+                    if(field[i][j] == -4) bitmap = bitmapBishopbl;
+                    if(field[i][j] == 5) bitmap = bitmapQueenwh;
+                    if(field[i][j] == -5) bitmap = bitmapQueenbl;
+                    if(field[i][j] == 6) bitmap = bitmapKingwh;
+                    if(field[i][j] == -6) bitmap = bitmapKingbl;
                     if(field[i][j] != 0) {
                         Rect rectSrc = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
                         Rect rectDst = new Rect(i * scale, j * scale + OFFSET, (i + 1) * scale, (j + 1) * scale + OFFSET);
@@ -173,17 +199,63 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         void drawDead(Canvas canvas, ArrayList<figures> deadBlack, ArrayList<figures> deadWhite){
-            if(deadBlack != null && !deadBlack.isEmpty()){
-                if(true) {
-                    bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.pawnwh);
+            if(!deadWhite.isEmpty()){
+                int i = 0;
+                int pawn = 0;
+                for(figures figur : deadWhite) {
+                    if(figur.getClass().getName().equals("com.missclick.mchess.Pawn")) {
+                        pawn++;
+                        continue;
+                    }
+                    if(figur.getClass().getName().equals("com.missclick.mchess.Knight")) bitmapDead = bitmapKnightwh;
+                    if(figur.getClass().getName().equals("com.missclick.mchess.Bishop")) bitmapDead = bitmapBishopwh;
+                    if(figur.getClass().getName().equals("com.missclick.mchess.Rook")) bitmapDead = bitmapBishopwh;
+                    if(figur.getClass().getName().equals("com.missclick.mchess.Queen")) bitmapDead = bitmapQueenwh;
                     Rect rectSrc = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-                    Rect rectDst = new Rect(0 * scale, 0 * scale + OFFSET, (0 + 1) * scale, (0 + 1) * scale + OFFSET);
-                    canvas.drawBitmap(bitmap, rectSrc, rectDst, p);
+                    Rect rectDst = new Rect(i * scale, -1 * scale + OFFSET, (1+i) * scale, OFFSET);
+                    canvas.drawBitmap(bitmapDead, rectSrc, rectDst, p);
+                    i++;
+                }
+                if(pawn !=0) {
+                    bitmapDead = bitmapPawnwh;
+                    Rect rectSrc = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+                    Rect rectDst = new Rect(i * scale, -1 * scale + OFFSET, (1 + i) * scale, OFFSET);
+                    canvas.drawBitmap(bitmapDead, rectSrc, rectDst, p);
+                    if(pawn > 1) canvas.drawText("x"+ pawn, (i + 1) * scale - (scale/7), OFFSET - (scale/5), p);
                 }
             }
-
+            if(!deadBlack.isEmpty()){
+                int i = 0;
+                int pawn = 0;
+                for(figures figur : deadBlack) {
+                    if(figur.getClass().getName().equals("com.missclick.mchess.Pawn")) {
+                        pawn++;
+                        continue;
+                    }
+                    if(figur.getClass().getName().equals("com.missclick.mchess.Knight")) bitmapDead = bitmapKnightbl;
+                    if(figur.getClass().getName().equals("com.missclick.mchess.Bishop")) bitmapDead = bitmapBishopbl;
+                    if(figur.getClass().getName().equals("com.missclick.mchess.Rook")) bitmapDead = bitmapRookbl;
+                    if(figur.getClass().getName().equals("com.missclick.mchess.Queen")) bitmapDead = bitmapQueenbl;
+                    Rect rectSrc = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+                    Rect rectDst = new Rect(i * scale, 8 * scale + OFFSET, (1+i) * scale, OFFSET + 9*scale);
+                    canvas.drawBitmap(bitmapDead, rectSrc, rectDst, p);
+                    i++;
+                }
+                if(pawn !=0) {
+                    bitmapDead = bitmapPawnbl;
+                    Rect rectSrc = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+                    Rect rectDst = new Rect(i * scale, 8 * scale + OFFSET, (1+i) * scale, OFFSET + 9*scale);
+                    canvas.drawBitmap(bitmapDead, rectSrc, rectDst, p);
+                    if(pawn > 1) canvas.drawText("x"+ pawn, (i + 1) * scale - (scale/7), OFFSET + 9*scale - (scale/5), p);
+                }
+            }
         }
 
+        void drawSituation(Canvas canvas, String situation){
+            if(situation != null){
+                canvas.drawText(situation, 3*scale + scale/4 , scale, p);
+            }
+        }
         @Override
         public void run() {
             Canvas canvas;
@@ -196,8 +268,9 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
                     drawCells(canvas);
                     drawMap(canvas, controller.getField());
                     drawMoveList(canvas, controller.getMoveList(), controller.getSelected());
-                    drawDead(canvas, controller.getDeadBlack(), controller.getDeadWhite());
                     drawSide(canvas);
+                    drawDead(canvas, controller.getDeadBlack(), controller.getDeadWhite());
+                    drawSituation(canvas, controller.getSituation());
                 } finally {
                     if (canvas != null) {
                         surfaceHolder.unlockCanvasAndPost(canvas);

@@ -1,5 +1,8 @@
 package com.missclick.mchess;
 
+import android.media.MediaPlayer;
+import android.media.SoundPool;
+import android.provider.MediaStore;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -13,9 +16,12 @@ class Controller {
     private ArrayList<Coordinate> moveList;
     private Coordinate selected = null;
     private int step = 0;
+    private String situation = null;
     Controller(){
         black = new ArrayList<>();
         white = new ArrayList<>();
+        deadBlack = new ArrayList<>();
+        deadWhite = new ArrayList<>(); //
         moveList = new ArrayList<>();
         field = new int[8][8];
         for(int i = 0; i < 8; i++){
@@ -24,6 +30,8 @@ class Controller {
             }
         }
         createFigures();
+        //MediaPlayer.create(GameActivity.class,R.raw.shah).start();
+
     }
     figures selectFigure(figures figure){
         cancelSelected();
@@ -60,12 +68,13 @@ class Controller {
             field[figure.getCoor().getX()][figure.getCoor().getY()] = 0;
             if(figure.getColor() == 0) {
                 if(!clear) {
-                    white.remove(findFigure(coor));
                     deadWhite.add(findFigure(coor));
+                    white.remove(findFigure(coor));
                 }
+                situation = null;
                 switch (figure.move(coor, field, white, black)){
                     case 1:
-                        Log.d("MYLOG","ШАХ белым!!!");
+                        situation = "ШАХ";
                         break;
                     case 2:
                         black.remove(findFigure(coor));
@@ -73,21 +82,22 @@ class Controller {
                         field[coor.getX()][coor.getY()] = -5;
                         break;
                     case 3:
-                        Log.d("MYLOG","МАТ белым!!!");
+                        situation = "МАТ";
                         break;
                     case 4:
-                        Log.d("MYLOG","ПАТ!!!");
+                        situation = "ПАТ";
                         break;
                 }
             }
             if(figure.getColor() == 1) {
                 if(!clear) {
-                    black.remove(findFigure(coor));
                     deadBlack.add(findFigure(coor));
+                    black.remove(findFigure(coor));
                 }
+                situation = null;
                 switch (figure.move(coor, field, black, white)){
                     case 1:
-                        Log.d("MYLOG","ШАХ черным!!!");
+                        situation = "ШАХ";
                         break;
                     case 2:
                         white.remove(findFigure(coor));
@@ -95,10 +105,10 @@ class Controller {
                         field[coor.getX()][coor.getY()] = 5;
                         break;
                     case 3:
-                        Log.d("MYLOG","МАТ черным!!!");
+                        situation = "МАТ";
                         break;
                     case 4:
-                        Log.d("MYLOG","ПАТ!!!");
+                        situation = "ПАТ";
                         break;
                 }
             }
@@ -170,4 +180,5 @@ class Controller {
     ArrayList<Coordinate> getMoveList(){ return moveList; }
     int getStep(){ return step; }
     Coordinate getSelected(){return selected;}
+    String getSituation() {return situation;}
 }

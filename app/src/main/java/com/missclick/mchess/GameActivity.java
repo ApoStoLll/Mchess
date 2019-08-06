@@ -2,6 +2,7 @@ package com.missclick.mchess;
 
 import android.content.Intent;
 import android.graphics.Point;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +22,7 @@ public class GameActivity extends AppCompatActivity implements View.OnTouchListe
     private figures selectedFigure;
     private boolean one;
     private II ii;
+   // private MediaPlayer shah;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +33,7 @@ public class GameActivity extends AppCompatActivity implements View.OnTouchListe
         width = size.x;
         height = size.y;
         scale = (width < height ? width : height) / 8;
-        OFFSET = (height - 8 * scale) / 2;
+        OFFSET = (height - 9 * scale) / 2;
         controller = new Controller();
         drawView = new DrawView(this, controller);
         drawView.setOnTouchListener(this);
@@ -70,6 +72,7 @@ public class GameActivity extends AppCompatActivity implements View.OnTouchListe
                 controller.move(new Coordinate(a,b), selectedFigure);
             }
             drawView.postInvalidate();
+            //shah = MediaPlayer.create(this,R.raw.shah);
         }
 
     }
