@@ -94,6 +94,7 @@ class Controller {
             if(figure.getColor() == 1) {
                 if(!clear) {
                     deadBlack.add(findFigure(coor));
+                    step.setHit(true);
                     black.remove(findFigure(coor));
                 }
                 situation = null;

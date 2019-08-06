@@ -4,6 +4,7 @@ public class Step {
     private figures figure;
     private Coordinate to;
     private int[][] currentField;
+    private boolean hit = false;
     Step(Coordinate to, figures figure){
         this.to = to;
         this.figure = figure;
@@ -21,6 +22,8 @@ public class Step {
     public Coordinate getTo() {
         return to;
     }
+
+    public void setHit(boolean hit) { this.hit = hit;}
 
     public void setTo(Coordinate to) {
         this.to = to;
