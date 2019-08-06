@@ -57,7 +57,7 @@ class Controller {
 
     void moveBack(Step step){
         field = II.arrCopy(step.getCurrentField());
-        Log.d("mylog", "move(IF)");
+        Log.d("mylog", "back");
         step.getFigure().setCoordinate(step.getFrom());
         step.getFigure().setFirstStep(step.getFirstStep());
         if(step.isHit()) {
@@ -76,6 +76,7 @@ class Controller {
         }
     }
     void move(Step step){
+        Log.d("MOVE", "move");
             step.setCurrentField(II.arrCopy(field));
             boolean check = false;
             Coordinate coor = step.getTo();
@@ -95,6 +96,7 @@ class Controller {
                     if (!clear) {
                         deadWhite.add(findFigure(coor));
                         white.remove(findFigure(coor));
+                        Log.d("MOVE", "hit");
                         step.setHit(true);
                     }
                     situation = null;
@@ -120,7 +122,7 @@ class Controller {
                         deadBlack.add(findFigure(coor));
                         step.setHit(true);
                         black.remove(findFigure(coor));
-                        step.setHit(true);
+                        Log.d("MOVE", "hit");
                     }
                     situation = null;
                     switch (figure.move(coor, field, black, white)) {

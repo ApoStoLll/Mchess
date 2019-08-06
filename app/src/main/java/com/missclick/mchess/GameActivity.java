@@ -43,7 +43,7 @@ public class GameActivity extends AppCompatActivity implements View.OnTouchListe
         if(type == 1) {
             Log.d("MYLOG", "ONE player");
             one = true;
-            ii = new II(controller.getField(),controller);
+            ii = new II(controller);
         }
         setContentView(drawView);
     }
@@ -84,7 +84,7 @@ public class GameActivity extends AppCompatActivity implements View.OnTouchListe
             figures figuer = controller.findFigure(new Coordinate(a, b));
             if((figuer == null && selectedFigure != null) || (figuer != null && figuer.getColor() == 0 && selectedFigure != null)){
                 controller.move(new Step(new Coordinate(a, b), selectedFigure));
-                ii.calculateBest();
+                ii.move();
             }
             else{
                 if(figuer != null && figuer.getColor() == 1)
