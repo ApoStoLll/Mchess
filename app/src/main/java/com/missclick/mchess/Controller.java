@@ -55,28 +55,27 @@ class Controller {
         }
     }
 
-    void move(Step step, boolean ii){
-        if(step.getCurrentField() != null && !ii){
-            field = II.arrCopy(step.getCurrentField());
-            Log.d("mylog", "move(IF)");
-            step.getFigure().setCoordinate(step.getFrom());
-            step.getFigure().setFirstStep(step.getFirstStep());
-            if(step.isHit()) {
-                if(field[step.getTo().getX()][step.getTo().getY()] == 1) {
-                    figures figur = new Pawn(1,step.getTo());
-                    if(step.getTo().getY() != 6) figur.setFirstStep(false);
-                    white.add(figur);
-                    deadWhite.remove(step.getFigure());
-                }
-                if(field[step.getTo().getX()][step.getTo().getY()] == -1) {
-                    figures figur = new Pawn(0,step.getTo());
-                    if(step.getTo().getY() != 1) figur.setFirstStep(false);
-                    black.add(figur);
-                    deadBlack.remove(step.getFigure());
-                }
+    void moveBack(Step step){
+        field = II.arrCopy(step.getCurrentField());
+        Log.d("mylog", "move(IF)");
+        step.getFigure().setCoordinate(step.getFrom());
+        step.getFigure().setFirstStep(step.getFirstStep());
+        if(step.isHit()) {
+            if(field[step.getTo().getX()][step.getTo().getY()] == 1) {
+                figures figur = new Pawn(1,step.getTo());
+                if(step.getTo().getY() != 6) figur.setFirstStep(false);
+                white.add(figur);
+                deadWhite.remove(deadWhite.size()-1);
+            }
+            if(field[step.getTo().getX()][step.getTo().getY()] == -1) {
+                figures figur = new Pawn(0,step.getTo());
+                if(step.getTo().getY() != 1) figur.setFirstStep(false);
+                black.add(figur);
+                deadBlack.remove(deadWhite.size()-1);
             }
         }
-        else {
+    }
+    void move(Step step){
             step.setCurrentField(II.arrCopy(field));
             boolean check = false;
             Coordinate coor = step.getTo();
@@ -146,7 +145,6 @@ class Controller {
             }
             cancelSelected();
             steps.add(step);
-        }
     }
 
      figures findFigure(Coordinate coord){
@@ -214,6 +212,6 @@ class Controller {
     Coordinate getSelected(){return selected;}
     String getSituation() {return situation;}
     void revert(){
-        if(steps.size() > 0) move(steps.get(steps.size()-1), false);
+        if(steps.size() > 0) moveBack(steps.get(steps.size()-1));
     }
 }
