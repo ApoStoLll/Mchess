@@ -40,7 +40,7 @@ public class II {
     int makeMove(Step step){//, ArrayList<figures> allies, ArrayList<figures> enemy){
         int[][] copy = arrCopy(field);
         //step.getFigure().move(step.getTo(), field, enemy, allies);
-        controller.move(step);
+        controller.move(step, false);
         return 0;
     }
 
@@ -57,7 +57,7 @@ public class II {
 
     int alphaBeta(int alpha, int beta, int depth, ArrayList<figures> allies, ArrayList<figures> enemy){
         int value;
-        ArrayList<Step> moves = getMoves(black);
+        ArrayList<Step> moves = getMoves(allies);
         for(Step move : moves){
             makeMove(move);
             if(depth > 1)
@@ -81,7 +81,7 @@ public class II {
     void calculateBest(){
         alphaBeta(-5, 5, 30, black, white);
         controller.selectFigure(bestStep.getFigure());
-        controller.move(bestStep);
+        controller.move(bestStep, true);
     }
 
     void move(){

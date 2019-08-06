@@ -55,10 +55,10 @@ class Controller {
         }
     }
 
-    void move(Step step){
-        if(step.getCurrentField() != null){
+    void move(Step step, boolean ii){
+        if(step.getCurrentField() != null && !ii){
             field = II.arrCopy(step.getCurrentField());
-            //Log.d();
+            Log.d("mylog", "move(IF)");
             step.getFigure().setCoordinate(step.getFrom());
             //if(step.getHit()) ;
         }
@@ -200,6 +200,6 @@ class Controller {
     Coordinate getSelected(){return selected;}
     String getSituation() {return situation;}
     void revert(){
-        if(steps.size() > 0) move(steps.get(steps.size()-1));
+        if(steps.size() > 0) move(steps.get(steps.size()-1), false);
     }
 }

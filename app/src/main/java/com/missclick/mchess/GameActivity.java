@@ -66,11 +66,11 @@ public class GameActivity extends AppCompatActivity implements View.OnTouchListe
             if(figuer == null || (figuer.getColor() == 0 && controller.getNum() % 2 != 0 ||
                     figuer.getColor() == 1 && controller.getNum() % 2 == 0)) {
                 figures tempFigure = controller.selectFigure(figuer);
-                if(tempFigure == null) controller.move(new Step(new Coordinate(a, b), selectedFigure));//new Coordinate(a,b), selectedFigure);
+                if(tempFigure == null) controller.move(new Step(new Coordinate(a, b), selectedFigure), false);//new Coordinate(a,b), selectedFigure);
                 else selectedFigure = tempFigure;
             }
             else if(selectedFigure != null && figuer.getColor() != selectedFigure.getColor()){
-                controller.move(new Step(new Coordinate(a,b), selectedFigure));
+                controller.move(new Step(new Coordinate(a,b), selectedFigure), false);
             }
             if(selectedFigure.getCoor().getX() == 4 && selectedFigure.getCoor().getY() == 7)
                 controller.revert();
@@ -83,7 +83,7 @@ public class GameActivity extends AppCompatActivity implements View.OnTouchListe
         if(b < 8 && b >= 0) {
             figures figuer = controller.findFigure(new Coordinate(a, b));
             if(figuer == null && selectedFigure != null){
-                controller.move(new Step(new Coordinate(a, b), selectedFigure));
+                controller.move(new Step(new Coordinate(a, b), selectedFigure), false);
                 ii.calculateBest();
             }
             else{
