@@ -22,13 +22,33 @@ public class II {
             ArrayList<Coordinate> moveList = figure.check(field, white, black);
             if(moveList != null && !moveList.isEmpty())
                 for(int i = 0; i < moveList.size(); i++)
-                    moves.add(new Step(moveList.get(i), figure, field));
+                    moves.add(new Step(moveList.get(i), figure));
         }
         return moves;
     }
 
-    int evaluate(Step step){
+    public static int[][] arrCopy(int[][] arr){
+        int[][] copy = new int[8][8];
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++)
+                copy[i][j] = arr[i][j];
+        }
+        return copy;
+    }
 
+    int makeMove(Step step, ArrayList<figures> allies, ArrayList<figures> enemy){
+        int[][] copy = arrCopy(field);
+        step.getFigure().move(step.getTo(), copy, enemy, allies);
+
+        return 0;
+    }
+
+    int evaluateBoard(int[][] field){
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++) {
+
+            }
+        }
         return 0;
     }
 
@@ -47,7 +67,7 @@ public class II {
         Log.d("logII", "moving from X:" + figure.getCoor().getX() + " Y: " + figure.getCoor().getY() +
                 "to X: " + moveList.get(index).getX() + " Y: " + moveList.get(index).getY());
         controller.selectFigure(figure);
-        controller.move(moveList.get(index), figure);
+        controller.move(new Step(moveList.get(index), figure));
     }
 
     figures randFigure(){

@@ -62,14 +62,14 @@ public class GameActivity extends AppCompatActivity implements View.OnTouchListe
     void multiPlayer(int a, int b){
         if(b < 8 && b >= 0) {
             figures figuer = controller.findFigure(new Coordinate(a, b));
-            if(figuer == null || (figuer.getColor() == 0 && controller.getStep() % 2 != 0 ||
-                    figuer.getColor() == 1 && controller.getStep() % 2 == 0)) {
+            if(figuer == null || (figuer.getColor() == 0 && controller.getNum() % 2 != 0 ||
+                    figuer.getColor() == 1 && controller.getNum() % 2 == 0)) {
                 figures tempFigure = controller.selectFigure(figuer);
-                if(tempFigure == null) controller.move(new Coordinate(a,b), selectedFigure);
+                if(tempFigure == null) controller.move(new Step(new Coordinate(a, b), selectedFigure));//new Coordinate(a,b), selectedFigure);
                 else selectedFigure = tempFigure;
             }
             else if(selectedFigure != null && figuer.getColor() != selectedFigure.getColor()){
-                controller.move(new Coordinate(a,b), selectedFigure);
+                controller.move(new Step(new Coordinate(a,b), selectedFigure));
             }
             drawView.postInvalidate();
             //shah = MediaPlayer.create(this,R.raw.shah);
@@ -80,7 +80,7 @@ public class GameActivity extends AppCompatActivity implements View.OnTouchListe
         if(b < 8 && b >= 0) {
             figures figuer = controller.findFigure(new Coordinate(a, b));
             if(figuer == null && selectedFigure != null){
-                controller.move(new Coordinate(a,b), selectedFigure);
+                controller.move(new Step(new Coordinate(a, b), selectedFigure));
                 ii.randomStep();
             }
             else{

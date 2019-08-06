@@ -15,7 +15,7 @@ class Controller {
     private ArrayList<figures> deadWhite;
     private ArrayList<Coordinate> moveList;
     private Coordinate selected = null;
-    private int step = 0;
+    private int num = 0;
     private String situation = null;
     Controller(){
         black = new ArrayList<>();
@@ -53,8 +53,10 @@ class Controller {
         }
     }
 
-    void move(Coordinate coor, figures figure){
+    void move(Step step){
         boolean check = false;
+        Coordinate coor = step.getTo();
+        figures figure = step.getFigure();
         if(moveList != null) {
             for (Coordinate coord : moveList) {
                 if (coord.getX() == coor.getX() && coord.getY() == coor.getY()) check = true;
@@ -112,7 +114,7 @@ class Controller {
                         break;
                 }
             }
-            step++;
+            num++;
             moveList = null;
         }
         cancelSelected();
@@ -178,7 +180,7 @@ class Controller {
     ArrayList<figures> getDeadBlack(){ return deadBlack; }
     ArrayList<figures> getDeadWhite(){ return deadWhite; }
     ArrayList<Coordinate> getMoveList(){ return moveList; }
-    int getStep(){ return step; }
+    int getNum(){ return num; }
     Coordinate getSelected(){return selected;}
     String getSituation() {return situation;}
 }

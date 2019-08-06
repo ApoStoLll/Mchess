@@ -4,7 +4,7 @@ public class Step {
     private figures figure;
     private Coordinate to;
     private int[][] currentField;
-    Step(Coordinate to, figures figure, int[][] currentField){
+    Step(Coordinate to, figures figure){
         this.to = to;
         this.figure = figure;
         this.currentField = currentField;
