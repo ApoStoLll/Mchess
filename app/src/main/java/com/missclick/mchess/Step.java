@@ -9,6 +9,7 @@ public class Step {
     }
 
     private Coordinate from;
+    private Boolean firstStep = false;
     private int[][] currentField;
 
     private boolean hit = false;
@@ -16,11 +17,16 @@ public class Step {
         this.to = to;
         this.figure = figure;
         from = new Coordinate(figure.getCoor().getX(), figure.getCoor().getY());
+        firstStep = figure.getFirstStep();
         //this.currentField = currentField;
     }
 
     public figures getFigure() {
         return figure;
+    }
+
+    public boolean getFirstStep() {
+        return firstStep;
     }
 
     public void setFigure(figures figure) {

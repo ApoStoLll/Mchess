@@ -9,6 +9,8 @@ abstract class figures {
     boolean isSelected = false;
     Coordinate coor;
     void setCoordinate(Coordinate coor) {this.coor = coor;}
+    boolean getFirstStep() {return this.firstStep;}
+    void setFirstStep(boolean firstStep) {this.firstStep = firstStep;}
     int move(Coordinate coor, int[][] field, ArrayList<figures> enemy, ArrayList<figures> allies) {
         this.coor = coor;
         this.firstStep = false;

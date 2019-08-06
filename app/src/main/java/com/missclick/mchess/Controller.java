@@ -60,6 +60,7 @@ class Controller {
             field = II.arrCopy(step.getCurrentField());
             Log.d("mylog", "move(IF)");
             step.getFigure().setCoordinate(step.getFrom());
+            step.getFigure().setFirstStep(step.getFirstStep());
             //if(step.getHit()) ;
         }
         else {
