@@ -96,7 +96,7 @@ public class II {
         bestStep = randomStep();
         ArrayList<Step> moves = getMoves(controller.getBlack());
         for(Step move : moves){
-            controller.selectFigure(bestStep.getFigure());
+            controller.selectFigure(move.getFigure());
             controller.move(move);
             int boardValue = evaluateBoard(controller.getBlack()) + evaluateBoard(controller.getWhite());
             Log.d("Calculate", "boardValue: " + boardValue);
@@ -108,6 +108,8 @@ public class II {
             }
         }
     }
+
+    //void minimax(int depth, )
 
     void move(){
         calculateBest();
