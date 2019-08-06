@@ -177,6 +177,7 @@ class Controller {
         white.add(new Queen(1, new Coordinate(3, 7)));
         field[3][7] = 5;
     }
+    Step getLastStep() {return steps.get(steps.size() - 1); }
     int[][] getField(){ return field; }
     ArrayList<figures> getBlack(){ return black; }
     ArrayList<figures> getWhite(){ return white; }
