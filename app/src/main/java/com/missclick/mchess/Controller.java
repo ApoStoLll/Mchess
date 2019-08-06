@@ -186,4 +186,7 @@ class Controller {
     int getNum(){ return num; }
     Coordinate getSelected(){return selected;}
     String getSituation() {return situation;}
+    void revert(){
+        move(steps.get(steps.size()-1));
+    }
 }
