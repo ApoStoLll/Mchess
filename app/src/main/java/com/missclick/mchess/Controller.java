@@ -17,6 +17,7 @@ class Controller {
     private Coordinate selected = null;
     private int num = 0;
     private String situation = null;
+    private ArrayList<Step> steps;
     Controller(){
         black = new ArrayList<>();
         white = new ArrayList<>();
@@ -54,6 +55,7 @@ class Controller {
     }
 
     void move(Step step){
+        steps.add(step);
         boolean check = false;
         Coordinate coor = step.getTo();
         figures figure = step.getFigure();
