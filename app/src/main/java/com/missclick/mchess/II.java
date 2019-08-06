@@ -27,6 +27,11 @@ public class II {
         return moves;
     }
 
+    int evaluate(Step step){
+
+        return 0;
+    }
+
     void calculateBest(){
 
     }
