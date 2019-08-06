@@ -61,7 +61,20 @@ class Controller {
             Log.d("mylog", "move(IF)");
             step.getFigure().setCoordinate(step.getFrom());
             step.getFigure().setFirstStep(step.getFirstStep());
-            //if(step.getHit()) ;
+            if(step.isHit()) {
+                if(field[step.getTo().getX()][step.getTo().getY()] == 1) {
+                    figures figur = new Pawn(1,step.getTo());
+                    if(step.getTo().getY() != 6) figur.setFirstStep(false);
+                    white.add(figur);
+                    deadWhite.remove(step.getFigure());
+                }
+                if(field[step.getTo().getX()][step.getTo().getY()] == -1) {
+                    figures figur = new Pawn(0,step.getTo());
+                    if(step.getTo().getY() != 1) figur.setFirstStep(false);
+                    black.add(figur);
+                    deadBlack.remove(step.getFigure());
+                }
+            }
         }
         else {
             step.setCurrentField(II.arrCopy(field));
