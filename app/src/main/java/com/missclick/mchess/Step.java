@@ -3,12 +3,19 @@ package com.missclick.mchess;
 public class Step {
     private figures figure;
     private Coordinate to;
+
+    public Coordinate getFrom() {
+        return from;
+    }
+
+    private Coordinate from;
     private int[][] currentField;
 
     private boolean hit = false;
     Step(Coordinate to, figures figure){
         this.to = to;
         this.figure = figure;
+        from = new Coordinate(figure.getCoor().getX(), figure.getCoor().getY());
         //this.currentField = currentField;
     }
 
