@@ -55,72 +55,82 @@ class Controller {
     }
 
     void move(Step step){
-        steps.add(step);
-        boolean check = false;
-        Coordinate coor = step.getTo();
-        figures figure = step.getFigure();
-        if(moveList != null) {
-            for (Coordinate coord : moveList) {
-                if (coord.getX() == coor.getX() && coord.getY() == coor.getY()) check = true;
-            }
+        if(step.getCurrentField() != null){
+            field = step.getCurrentField();
+            findFigure(step.getTo()).setCoordinate(step.getFigure().getCoor());
+            if(step.getHit()) ;
         }
-        if(check){
-            if(figure == null) return;
-            boolean clear = true;
-            if ( field[coor.getX()][coor.getY()] != 0) clear = false;
-            field[coor.getX()][coor.getY()] = field[figure.getCoor().getX()][figure.getCoor().getY()];
-            field[figure.getCoor().getX()][figure.getCoor().getY()] = 0;
-            if(figure.getColor() == 0) {
-                if(!clear) {
-                    deadWhite.add(findFigure(coor));
-                    white.remove(findFigure(coor));
-                }
-                situation = null;
-                switch (figure.move(coor, field, white, black)){
-                    case 1:
-                        situation = "ШАХ";
-                        break;
-                    case 2:
-                        black.remove(findFigure(coor));
-                        black.add(new Queen(0, new Coordinate(coor.getX(), coor.getY())));
-                        field[coor.getX()][coor.getY()] = -5;
-                        break;
-                    case 3:
-                        situation = "МАТ";
-                        break;
-                    case 4:
-                        situation = "ПАТ";
-                        break;
+        else {
+            step.setCurrentField(field);
+            boolean check = false;
+            Coordinate coor = step.getTo();
+            figures figure = step.getFigure();
+            if (moveList != null) {
+                for (Coordinate coord : moveList) {
+                    if (coord.getX() == coor.getX() && coord.getY() == coor.getY()) check = true;
                 }
             }
-            if(figure.getColor() == 1) {
-                if(!clear) {
-                    deadBlack.add(findFigure(coor));
-                    step.setHit(true);
-                    black.remove(findFigure(coor));
-                }
-                situation = null;
-                switch (figure.move(coor, field, black, white)){
-                    case 1:
-                        situation = "ШАХ";
-                        break;
-                    case 2:
+            if (check) {
+                if (figure == null) return;
+                boolean clear = true;
+                if (field[coor.getX()][coor.getY()] != 0) clear = false;
+                field[coor.getX()][coor.getY()] = field[figure.getCoor().getX()][figure.getCoor().getY()];
+                field[figure.getCoor().getX()][figure.getCoor().getY()] = 0;
+                if (figure.getColor() == 0) {
+                    if (!clear) {
+                        deadWhite.add(findFigure(coor));
                         white.remove(findFigure(coor));
-                        white.add(new Queen(1, new Coordinate(coor.getX(), coor.getY())));
-                        field[coor.getX()][coor.getY()] = 5;
-                        break;
-                    case 3:
-                        situation = "МАТ";
-                        break;
-                    case 4:
-                        situation = "ПАТ";
-                        break;
+                        step.setHit(true);
+                    }
+                    situation = null;
+                    switch (figure.move(coor, field, white, black)) {
+                        case 1:
+                            situation = "ШАХ";
+                            break;
+                        case 2:
+                            black.remove(findFigure(coor));
+                            black.add(new Queen(0, new Coordinate(coor.getX(), coor.getY())));
+                            field[coor.getX()][coor.getY()] = -5;
+                            break;
+                        case 3:
+                            situation = "МАТ";
+                            break;
+                        case 4:
+                            situation = "ПАТ";
+                            break;
+                    }
                 }
+                if (figure.getColor() == 1) {
+                    if (!clear) {
+                        deadBlack.add(findFigure(coor));
+                        step.setHit(true);
+                        black.remove(findFigure(coor));
+                        step.setHit(true);
+                    }
+                    situation = null;
+                    switch (figure.move(coor, field, black, white)) {
+                        case 1:
+                            situation = "ШАХ";
+                            break;
+                        case 2:
+                            white.remove(findFigure(coor));
+                            white.add(new Queen(1, new Coordinate(coor.getX(), coor.getY())));
+                            field[coor.getX()][coor.getY()] = 5;
+                            break;
+                        case 3:
+                            situation = "МАТ";
+                            break;
+                        case 4:
+                            situation = "ПАТ";
+                            break;
+                    }
+                }
+                num++;
+                moveList = null;
             }
-            num++;
-            moveList = null;
+            cancelSelected();
+            steps.add(step);
         }
-        cancelSelected();
     }
 
      figures findFigure(Coordinate coord){
