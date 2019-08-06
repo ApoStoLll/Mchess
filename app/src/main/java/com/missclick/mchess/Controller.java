@@ -58,8 +58,8 @@ class Controller {
     void move(Step step){
         if(step.getCurrentField() != null){
             field = II.arrCopy(step.getCurrentField());
-            Log.d("MYLOG", findFigure(step.getTo()).getCoor().getY()+"+"+findFigure(step.getTo()).getCoor().getY());
-            findFigure(step.getTo()).setCoordinate(step.getFigure().getCoor());
+            //Log.d();
+            step.getFigure().setCoordinate(step.getFrom());
             //if(step.getHit()) ;
         }
         else {
