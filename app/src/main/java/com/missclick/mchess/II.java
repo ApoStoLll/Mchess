@@ -40,7 +40,7 @@ public class II {
     int makeMove(Step step){//, ArrayList<figures> allies, ArrayList<figures> enemy){
         int[][] copy = arrCopy(field);
         //step.getFigure().move(step.getTo(), field, enemy, allies);
-        controller.move(step, false);
+        controller.move(step, true);
         return 0;
     }
 
@@ -62,24 +62,35 @@ public class II {
             makeMove(move);
             if(depth > 1)
                 value = alphaBeta(alpha, beta, depth - 1, enemy, allies);
-            else
-                value = evaluateBoard(field, allies) - evaluateBoard(field, enemy);
+            else{
+                if(move.isHit()) value = evaluateBoard(field, allies) + evaluateBoard(field, enemy);
+                else{
+                    bestStep = randomStep();
+                    controller.revert();
+                    continue;
+                }
+            }
+            //value = evaluateBoard(field, allies) + evaluateBoard(field, enemy);
+            Log.d("II", "value = " + value);
             controller.revert();
             if(value > alpha){
                 if(value >= beta) {
                     bestStep = move;
+                    Log.d("II", "BETA");
                     return beta;
                 }
                 if(bestStep == null) bestStep = move;
+                Log.d("II", "al = val");
                 alpha = value;
             }
         }
         //proverka na shag
+        Log.d("II", "ALPHA");
         return alpha;
     }
 
     void calculateBest(){
-        alphaBeta(-5, 5, 30, black, white);
+        alphaBeta(-30, 30, 4, black, white);
         controller.selectFigure(bestStep.getFigure());
         controller.move(bestStep, true);
     }
@@ -88,14 +99,15 @@ public class II {
         randomStep();
     }
 
-    void randomStep(){
+    Step randomStep(){
         figures figure = randFigure();
         ArrayList<Coordinate> moveList = figure.check(field, white, black);
         int index = (int) (Math.random() * moveList.size());
-        Log.d("logII", "moving from X:" + figure.getCoor().getX() + " Y: " + figure.getCoor().getY() +
+        /*Log.d("logII", "moving from X:" + figure.getCoor().getX() + " Y: " + figure.getCoor().getY() +
                 "to X: " + moveList.get(index).getX() + " Y: " + moveList.get(index).getY());
         controller.selectFigure(figure);
-        controller.move(new Step(moveList.get(index), figure), false);
+        controller.move(new Step(moveList.get(index), figure), false);*/
+        return new Step(moveList.get(index), figure);
     }
 
     figures randFigure(){

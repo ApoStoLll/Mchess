@@ -82,7 +82,7 @@ public class GameActivity extends AppCompatActivity implements View.OnTouchListe
     void singlePlayer(int a, int b){
         if(b < 8 && b >= 0) {
             figures figuer = controller.findFigure(new Coordinate(a, b));
-            if(figuer == null && selectedFigure != null){
+            if((figuer == null && selectedFigure != null) || (figuer != null && figuer.getColor() == 0 && selectedFigure != null)){
                 controller.move(new Step(new Coordinate(a, b), selectedFigure), false);
                 ii.calculateBest();
             }
