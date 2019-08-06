@@ -8,7 +8,7 @@ public class Step {
     Step(Coordinate to, figures figure){
         this.to = to;
         this.figure = figure;
-        this.currentField = currentField;
+        //this.currentField = currentField;
     }
 
     public figures getFigure() {
