@@ -56,11 +56,12 @@ public class II {
         return value;
     }
 
-    /*int alphaBeta(int alpha, int beta, int depth, ArrayList<figures> allies, ArrayList<figures> enemy){
+   /* int alphaBeta(int alpha, int beta, int depth, ArrayList<figures> allies, ArrayList<figures> enemy){
         int value;
-        ArrayList<Step> moves = getMoves(allies);
+        ArrayList<Step> moves = getMoves(ene);
         for(Step move : moves){
-            makeMove(move);
+            controller.selectFigure(move.getFigure());
+            controller.move(move);
             if(depth > 1)
                 value = alphaBeta(alpha, beta, depth - 1, enemy, allies);
             else{
@@ -119,7 +120,6 @@ public class II {
             for(Step move : moves){
                 controller.selectFigure(move.getFigure());
                 controller.move(move);
-                //bestMove = Math.min(bestMove, minimax(depth - 1, controller.getWhite()));
                 int boardValue = minimax(depth - 1, controller.getWhite());
                 controller.revert();
                 if(bestMove > boardValue){
@@ -148,7 +148,7 @@ public class II {
     }
 
     void move(){
-        minimax(2, controller.getBlack());
+        minimax(3, controller.getBlack());
         if(bestStep != null){
             Log.d("Calculate", "        MOVING     ");
             controller.selectFigure(bestStep.getFigure());

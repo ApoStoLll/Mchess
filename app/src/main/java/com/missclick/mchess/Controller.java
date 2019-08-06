@@ -74,6 +74,7 @@ class Controller {
                 //if(deadBlack.size() > 0) deadBlack.remove(deadWhite.size()-1);
             }
         }
+        steps.remove(step);
     }
     void move(Step step){
         Log.d("MOVE", "move");
