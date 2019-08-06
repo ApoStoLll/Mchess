@@ -90,7 +90,7 @@ public class II {
         return alpha;
     }*/
 
-    void calculateBest(){
+    /*void calculateBest(){
         //alphaBeta(-30, 30, 4, black, white);
         int bestValue = 0;
         bestStep = randomStep();
@@ -107,12 +107,38 @@ public class II {
                 bestStep = move;
             }
         }
+    }*/
+
+    int minimax(int depth, ArrayList<figures> allies){
+        if(depth == 0)
+            return evaluateBoard(controller.getBlack()) + evaluateBoard(controller.getWhite());
+        if(allies.get(0).getColor() == 0){
+            //black
+            ArrayList<Step> moves = getMoves(controller.getBlack());
+            int bestMove = -999;
+            for(Step move : moves){
+                controller.selectFigure(move.getFigure());
+                controller.move(move);
+                bestMove = Math.max(bestMove, minimax(depth - 1, controller.getWhite()));
+                controller.revert();
+            }
+            return bestMove;
+        }
+        else{
+            int bestMove = -999;
+            ArrayList<Step> moves = getMoves(controller.getWhite());
+            for(Step move : moves){
+                controller.selectFigure(move.getFigure());
+                controller.move(move);
+                bestMove = Math.min(bestMove, minimax(depth - 1, controller.getBlack()));
+                controller.revert();
+            }
+            return bestMove;
+        }
     }
 
-    //void minimax(int depth, )
-
     void move(){
-        calculateBest();
+        minimax(3, controller.getBlack());
         controller.selectFigure(bestStep.getFigure());
         controller.move(bestStep);
     }
