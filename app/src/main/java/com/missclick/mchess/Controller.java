@@ -59,7 +59,7 @@ class Controller {
         if(step.getCurrentField() != null){
             field = step.getCurrentField();
             findFigure(step.getTo()).setCoordinate(step.getFigure().getCoor());
-            if(step.getHit()) ;
+            if(step.isHit()) ;
         }
         else {
             step.setCurrentField(field);

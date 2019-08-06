@@ -3,7 +3,8 @@ package com.missclick.mchess;
 public class Step {
     private figures figure;
     private Coordinate to;
-    private int[][] currentField = null;
+    private int[][] currentField;
+
     private boolean hit = false;
     Step(Coordinate to, figures figure){
         this.to = to;
@@ -24,7 +25,7 @@ public class Step {
     }
 
     public void setHit(boolean hit) { this.hit = hit;}
-    public boolean getHit() {return hit;}
+
     public void setTo(Coordinate to) {
         this.to = to;
     }
@@ -35,5 +36,9 @@ public class Step {
 
     public void setCurrentField(int[][] currentField) {
         this.currentField = currentField;
+    }
+
+    public boolean isHit() {
+        return hit;
     }
 }

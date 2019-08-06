@@ -82,7 +82,7 @@ public class GameActivity extends AppCompatActivity implements View.OnTouchListe
             figures figuer = controller.findFigure(new Coordinate(a, b));
             if(figuer == null && selectedFigure != null){
                 controller.move(new Step(new Coordinate(a, b), selectedFigure));
-                ii.randomStep();
+                ii.calculateBest();
             }
             else{
                 if(figuer != null && figuer.getColor() == 0)

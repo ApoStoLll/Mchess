@@ -9,6 +9,7 @@ public class II {
     private ArrayList<figures> white;
     private ArrayList<figures> black;
     private Controller controller;
+    private Step bestStep;
     II(int[][] field, Controller controller){
         this.field = field;
         this.white = controller.getWhite();
@@ -36,24 +37,51 @@ public class II {
         return copy;
     }
 
-    int makeMove(Step step, ArrayList<figures> allies, ArrayList<figures> enemy){
+    int makeMove(Step step){//, ArrayList<figures> allies, ArrayList<figures> enemy){
         int[][] copy = arrCopy(field);
-        step.getFigure().move(step.getTo(), copy, enemy, allies);
-
+        //step.getFigure().move(step.getTo(), field, enemy, allies);
+        controller.move(step);
         return 0;
     }
 
-    int evaluateBoard(int[][] field){
+    int evaluateBoard(int[][] field, ArrayList<figures> allies){
+        int value = 0;
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++) {
-
+                if(allies.get(0).getColor() == 0 && field[i][j] < 0) value += field[i][j];
+                if(allies.get(0).getColor() == 1 && field[i][j] > 0) value += field[i][j];
             }
         }
-        return 0;
+        return value;
+    }
+
+    int alphaBeta(int alpha, int beta, int depth, ArrayList<figures> allies, ArrayList<figures> enemy){
+        int value;
+        ArrayList<Step> moves = getMoves(black);
+        for(Step move : moves){
+            makeMove(move);
+            if(depth > 1)
+                value = alphaBeta(alpha, beta, depth - 1, enemy, allies);
+            else
+                value = evaluateBoard(field, allies) - evaluateBoard(field, enemy);
+            controller.revert();
+            if(value > alpha){
+                if(value >= beta) {
+                    bestStep = move;
+                    return beta;
+                }
+                if(bestStep == null) bestStep = move;
+                alpha = value;
+            }
+        }
+        //proverka na shag
+        return alpha;
     }
 
     void calculateBest(){
-
+        alphaBeta(-5, 5, 30, black, white);
+        controller.selectFigure(bestStep.getFigure());
+        controller.move(bestStep);
     }
 
     void move(){
