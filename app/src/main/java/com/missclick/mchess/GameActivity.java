@@ -87,7 +87,7 @@ public class GameActivity extends AppCompatActivity implements View.OnTouchListe
                 ii.calculateBest();
             }
             else{
-                if(figuer != null && figuer.getColor() == 0)
+                if(figuer != null && figuer.getColor() == 1)
                 controller.selectFigure(figuer);
                 selectedFigure = figuer;
             }
