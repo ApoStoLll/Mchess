@@ -40,7 +40,7 @@ public class II {
     int makeMove(Step step){//, ArrayList<figures> allies, ArrayList<figures> enemy){
         int[][] copy = arrCopy(field);
         //step.getFigure().move(step.getTo(), field, enemy, allies);
-        controller.move(step, true);
+        controller.move(step);
         return 0;
     }
 
@@ -92,7 +92,7 @@ public class II {
     void calculateBest(){
         alphaBeta(-30, 30, 4, black, white);
         controller.selectFigure(bestStep.getFigure());
-        controller.move(bestStep, true);
+        controller.move(bestStep);
     }
 
     void move(){
