@@ -57,12 +57,13 @@ class Controller {
 
     void move(Step step){
         if(step.getCurrentField() != null){
-            field = step.getCurrentField();
+            field = II.arrCopy(step.getCurrentField());
+            Log.d("MYLOG", findFigure(step.getTo()).getCoor().getY()+"+"+findFigure(step.getTo()).getCoor().getY());
             findFigure(step.getTo()).setCoordinate(step.getFigure().getCoor());
-            if(step.getHit()) ;
+            //if(step.getHit()) ;
         }
         else {
-            step.setCurrentField(field);
+            step.setCurrentField(II.arrCopy(field));
             boolean check = false;
             Coordinate coor = step.getTo();
             figures figure = step.getFigure();
@@ -198,6 +199,6 @@ class Controller {
     Coordinate getSelected(){return selected;}
     String getSituation() {return situation;}
     void revert(){
-        if(steps.size() > 0) move(steps.get(steps.size()-1));
+        if(steps.size() > 1) move(steps.get(steps.size() - 1));
     }
 }
