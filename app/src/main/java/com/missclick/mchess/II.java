@@ -17,10 +17,10 @@ public class II {
         this.controller = controller;
     }
 
-    ArrayList<Step> getMoves(ArrayList<figures> black){
+    ArrayList<Step> getMoves(ArrayList<figures> enemy, ArrayList<figures> allies){
         ArrayList<Step> moves = new ArrayList<>();
-        for(figures figure : black){
-            ArrayList<Coordinate> moveList = figure.check(controller.getField(), controller.getWhite(), black);
+        for(figures figure : allies){
+            ArrayList<Coordinate> moveList = figure.check(controller.getField(), enemy, allies);
             if(moveList != null && !moveList.isEmpty())
                 for(int i = 0; i < moveList.size(); i++)
                     moves.add(new Step(moveList.get(i), figure));
@@ -93,7 +93,7 @@ public class II {
     /*void calculateBest(){
         //alphaBeta(-30, 30, 4, black, white);
         int bestValue = 0;
-        bestStep = randomStep();
+
         ArrayList<Step> moves = getMoves(controller.getBlack());
         for(Step move : moves){
             controller.selectFigure(move.getFigure());
@@ -114,33 +114,47 @@ public class II {
             return evaluateBoard(controller.getBlack()) + evaluateBoard(controller.getWhite());
         if(allies.get(0).getColor() == 0){
             //black
-            ArrayList<Step> moves = getMoves(controller.getBlack());
-            int bestMove = -999;
+            ArrayList<Step> moves = getMoves(controller.getWhite(), controller.getBlack());
+            int bestMove = 999;
             for(Step move : moves){
                 controller.selectFigure(move.getFigure());
                 controller.move(move);
-                bestMove = Math.max(bestMove, minimax(depth - 1, controller.getWhite()));
+                //bestMove = Math.min(bestMove, minimax(depth - 1, controller.getWhite()));
+                int boardValue = minimax(depth - 1, controller.getWhite());
                 controller.revert();
+                if(bestMove > boardValue){
+                    bestMove = boardValue;
+                    Log.d("Calculate", "bestValue: " + bestMove);
+                    bestStep = move;
+                }
             }
             return bestMove;
-        }
-        else{
+        } else{ //white
             int bestMove = -999;
-            ArrayList<Step> moves = getMoves(controller.getWhite());
+            ArrayList<Step> moves = getMoves(controller.getBlack(), controller.getWhite());
             for(Step move : moves){
                 controller.selectFigure(move.getFigure());
                 controller.move(move);
-                bestMove = Math.min(bestMove, minimax(depth - 1, controller.getBlack()));
+                int boardValue = minimax(depth - 1, controller.getBlack());
                 controller.revert();
+                if(bestMove < boardValue){
+                    bestMove = boardValue;
+                    Log.d("Calculate", "bestValue: " + bestMove);
+                    bestStep = move;
+                }
             }
             return bestMove;
         }
     }
 
     void move(){
-        minimax(3, controller.getBlack());
-        controller.selectFigure(bestStep.getFigure());
-        controller.move(bestStep);
+        minimax(2, controller.getBlack());
+        if(bestStep != null){
+            Log.d("Calculate", "        MOVING     ");
+            controller.selectFigure(bestStep.getFigure());
+            controller.move(bestStep);
+        }
+        else Log.d("II", "best = null");
     }
 
     Step randomStep(){
