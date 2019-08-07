@@ -54,6 +54,10 @@ public class GameActivity extends AppCompatActivity implements View.OnTouchListe
         if (event.getAction() == MotionEvent.ACTION_DOWN){ // нажатие
                 int a = (int) (x/scale);
                 int b = (int) (y/(scale));
+                if(a == 7 && (int)(event.getY()/(scale)) == 0) {
+                    selectedFigure = null;
+                    controller.revert();
+                }
                 if(!one) multiPlayer(a, b);
                 else singlePlayer(a,b);
         }
@@ -72,8 +76,6 @@ public class GameActivity extends AppCompatActivity implements View.OnTouchListe
             else if(selectedFigure != null && figuer.getColor() != selectedFigure.getColor()){
                 controller.move(new Step(new Coordinate(a,b), selectedFigure));
             }
-            if(selectedFigure.getCoor().getX() == 4 && selectedFigure.getCoor().getY() == 7)
-                controller.revert();
             drawView.postInvalidate();
             //shah = MediaPlayer.create(this,R.raw.shah);
         }

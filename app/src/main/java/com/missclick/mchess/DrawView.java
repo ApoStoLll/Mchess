@@ -43,12 +43,14 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
     private Bitmap bitmapQueenbl;
     private Bitmap bitmapKingwh;
     private Bitmap bitmapKingbl;
+    private Bitmap bitmapRevert;
     private int OFFSET;
     private int scale;
     private Rect sideSrc;
     private Rect sideDstTop;
     private Rect sideDstBot;
     private Rect pointSrc;
+    private Rect revertDst;
 
     public DrawView(Context context, Controller controller) {
         super(context);
@@ -90,11 +92,13 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         bitmapQueenbl = BitmapFactory.decodeResource(getResources(), R.drawable.queenbl);
         bitmapKingwh = BitmapFactory.decodeResource(getResources(), R.drawable.kingwh);
         bitmapKingbl = BitmapFactory.decodeResource(getResources(), R.drawable.kingbl);
+        bitmapRevert = BitmapFactory.decodeResource(getResources(), R.drawable.revert);
 
         sideSrc = new Rect(0, 0, bitmapSide.getWidth(), bitmapSide.getHeight());
         sideDstTop = new Rect(0, 0, width, OFFSET);
         sideDstBot = new Rect(0, 8 * scale + OFFSET, width, height);
         pointSrc = new Rect(0, 0, bitmapPoint.getWidth(), bitmapPoint.getHeight());
+        revertDst = new Rect(7*scale, 0, width, scale);
     }
 
     @Override
@@ -145,7 +149,6 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
                     }
                     else{
                         paint.setStyle(Paint.Style.FILL);
-                        //paint.setColor(Color.rgb(255, 243, 176));
                         paint.setColor(Color.rgb(199, 192, 186));
                     }
                     canvas.drawRect(i * scale, j * scale + OFFSET, (i+1) * scale, (j+1) * scale + OFFSET, paint);
@@ -256,6 +259,10 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
                 canvas.drawText(situation, 3*scale + scale/4 , scale, p);
             }
         }
+
+        void drawRevert(Canvas canvas){
+            canvas.drawBitmap(bitmapRevert,pointSrc,revertDst,p);
+        }
         @Override
         public void run() {
             Canvas canvas;
@@ -269,8 +276,9 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
                     drawMap(canvas, controller.getField());
                     drawMoveList(canvas, controller.getMoveList(), controller.getSelected());
                     drawSide(canvas);
-                    drawDead(canvas, controller.getDeadBlack(), controller.getDeadWhite());
+                    //drawDead(canvas, controller.getDeadBlack(), controller.getDeadWhite());
                     drawSituation(canvas, controller.getSituation());
+                    drawRevert(canvas);
                 } finally {
                     if (canvas != null) {
                         surfaceHolder.unlockCanvasAndPost(canvas);

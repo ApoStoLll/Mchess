@@ -47,6 +47,7 @@ class Controller {
 
     private void cancelSelected(){
         selected = null;
+
         for(figures figure : black){
             if(figure.isSelected) figure.setSelected(false);
         }
@@ -65,7 +66,7 @@ class Controller {
                 figures figur = new Pawn(1,step.getTo());
                 if(step.getTo().getY() != 6) figur.setFirstStep(false);
                 white.add(figur);
-                if(deadBlack.size() > 0) deadWhite.remove(deadWhite.size()-1);
+                //if(deadBlack.size() > 0) deadWhite.remove(deadWhite.size()-1);
             }
             if(field[step.getTo().getX()][step.getTo().getY()] == -1) {
                 figures figur = new Pawn(0,step.getTo());
@@ -215,6 +216,9 @@ class Controller {
     Coordinate getSelected(){return selected;}
     String getSituation() {return situation;}
     void revert(){
-        if(steps.size() > 0) moveBack(steps.get(steps.size()-1));
+        if(steps.size() > 0) {
+            moveBack(steps.get(steps.size()-1));
+            num--;
+        }
     }
 }
