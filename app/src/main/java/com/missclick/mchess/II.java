@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 public class II {
     //private int[][] field;
-    //private ArrayList<figures> white;
-    //private ArrayList<figures> black;
+    private ArrayList<figures> white;
+    private ArrayList<figures> black;
     private Controller controller;
     private Step bestStep;
     II(Controller controller){
@@ -28,7 +28,7 @@ public class II {
         return moves;
     }
 
-    public static int[][] arrCopy(int[][] arr){
+     static int[][] arrCopy(int[][] arr){
         int[][] copy = new int[8][8];
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++)
@@ -56,59 +56,7 @@ public class II {
         return value;
     }
 
-   /* int alphaBeta(int alpha, int beta, int depth, ArrayList<figures> allies, ArrayList<figures> enemy){
-        int value;
-        ArrayList<Step> moves = getMoves(ene);
-        for(Step move : moves){
-            controller.selectFigure(move.getFigure());
-            controller.move(move);
-            if(depth > 1)
-                value = alphaBeta(alpha, beta, depth - 1, enemy, allies);
-            else{
-                if(move.isHit()) value = evaluateBoard(field, allies) + evaluateBoard(field, enemy);
-                else{
-                    bestStep = randomStep();
-                    controller.revert();
-                    continue;
-                }
-            }
-            //value = evaluateBoard(field, allies) + evaluateBoard(field, enemy);
-            Log.d("II", "value = " + value);
-            controller.revert();
-            if(value > alpha){
-                if(value >= beta) {
-                    bestStep = move;
-                    Log.d("II", "BETA");
-                    return beta;
-                }
-                if(bestStep == null) bestStep = move;
-                Log.d("II", "al = val");
-                alpha = value;
-            }
-        }
-        //proverka na shag
-        Log.d("II", "ALPHA");
-        return alpha;
-    }*/
 
-    /*void calculateBest(){
-        //alphaBeta(-30, 30, 4, black, white);
-        int bestValue = 0;
-
-        ArrayList<Step> moves = getMoves(controller.getBlack());
-        for(Step move : moves){
-            controller.selectFigure(move.getFigure());
-            controller.move(move);
-            int boardValue = evaluateBoard(controller.getBlack()) + evaluateBoard(controller.getWhite());
-            Log.d("Calculate", "boardValue: " + boardValue);
-            controller.revert();
-            if(boardValue < bestValue){
-                bestValue = boardValue;
-                Log.d("Calculate", "bestValue: " + bestValue);
-                bestStep = move;
-            }
-        }
-    }*/
 
     int minimax(int depth, ArrayList<figures> allies){
         if(depth == 0)
@@ -120,11 +68,12 @@ public class II {
             for(Step move : moves){
                 controller.selectFigure(move.getFigure());
                 controller.move(move);
+                //moveFigure(field, move);
                 int boardValue = minimax(depth - 1, controller.getWhite());
                 controller.revert();
                 if(bestMove > boardValue){
                     bestMove = boardValue;
-                    Log.d("Calculate", "bestValue: " + bestMove);
+                    //Log.d("Calculate", "bestValue: " + bestMove);
                     bestStep = move;
                 }
             }
@@ -135,24 +84,41 @@ public class II {
             for(Step move : moves){
                 controller.selectFigure(move.getFigure());
                 controller.move(move);
+                //moveFigure(field, move);
                 int boardValue = minimax(depth - 1, controller.getBlack());
+                Log.d("Minimax", "Revert white");
                 controller.revert();
                 if(bestMove < boardValue){
                     bestMove = boardValue;
-                    Log.d("Calculate", "bestValue: " + bestMove);
-                    bestStep = move;
+                   // Log.d("Calculate", "bestValue: " + bestMove);
+                    //bestStep = move;
                 }
             }
             return bestMove;
         }
     }
 
+    void moveFigure(int[][] field, Step step){
+        ArrayList<Coordinate> moveList = new ArrayList<>();
+        figures figure = step.getFigure();
+        /*if(figure.getColor() == 1) moveList = figure.check(field,black,white);
+        else moveList = figure.check(field,white,black);*/
+        field[step.getTo().getX()][step.getTo().getY()] = field[step.getFrom().getX()][step.getFrom().getY()];
+        field[step.getFrom().getX()][step.getFrom().getY()] = 0;
+        if(figure.getColor() == 1) figure.move(step.getTo(), field, black, white);
+        else figure.move(step.getTo(), field, white, black);
+
+    }
+
     void move(){
+        //int[][] fieldCopy = II.arrCopy(controller.getField());
+
         minimax(3, controller.getBlack());
         if(bestStep != null){
             Log.d("Calculate", "        MOVING     ");
             controller.selectFigure(bestStep.getFigure());
             controller.move(bestStep);
+            //controller.num++;
         }
         else Log.d("II", "best = null");
     }

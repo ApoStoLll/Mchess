@@ -85,13 +85,21 @@ public class GameActivity extends AppCompatActivity implements View.OnTouchListe
         if(b < 8 && b >= 0) {
             figures figuer = controller.findFigure(new Coordinate(a, b));
             if((figuer == null && selectedFigure != null) || (figuer != null && figuer.getColor() == 0 && selectedFigure != null)){
+                Log.d("Game Activity", "Cntr move(), ii.move()");
                 controller.move(new Step(new Coordinate(a, b), selectedFigure));
-                ii.move();
+                selectedFigure = null;
             }
+            if(controller.getNum() % 2 != 0) ii.move();
             else{
-                if(figuer != null && figuer.getColor() == 1)
-                controller.selectFigure(figuer);
-                selectedFigure = figuer;
+                if(figuer != null && figuer.getColor() == 1) {
+                    Log.d("Game Activity", "select figure");
+                    controller.selectFigure(figuer);
+                    selectedFigure = figuer;
+                }
+                else{
+                    ///controller.cancelSelected();
+                    controller.moveList = null;
+                }
             }
             drawView.postInvalidate();
         }

@@ -201,7 +201,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
             }
         }
 
-        void drawDead(Canvas canvas, ArrayList<figures> deadBlack, ArrayList<figures> deadWhite){
+       /* void drawDead(Canvas canvas, ArrayList<figures> deadBlack, ArrayList<figures> deadWhite){
             if(!deadWhite.isEmpty()){
                 int i = 0;
                 int pawn = 0;
@@ -252,7 +252,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
                     if(pawn > 1) canvas.drawText("x"+ pawn, (i + 1) * scale - (scale/7), OFFSET + 9*scale - (scale/5), p);
                 }
             }
-        }
+        }*/
 
         void drawSituation(Canvas canvas, String situation){
             if(situation != null){
