@@ -19,9 +19,9 @@ public class GameActivity extends AppCompatActivity implements View.OnTouchListe
     private int height;
     private int scale;
     private int OFFSET;
-    private figures selectedFigure;
+    //private figures selectedFigure;
     private boolean one;
-    private II ii;
+    private AI ii;
    // private MediaPlayer shah;
 
     @Override
@@ -43,20 +43,21 @@ public class GameActivity extends AppCompatActivity implements View.OnTouchListe
         if(type == 1) {
             Log.d("MYLOG", "ONE player");
             one = true;
-            ii = new II(controller);
+            ii = new AI(controller);
         }
         setContentView(drawView);
     }
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        //drawView.postInvalidate();
         float x = event.getX();
         float y = event.getY() - OFFSET;
         if (event.getAction() == MotionEvent.ACTION_DOWN){ // нажатие
                 int a = (int) (x/scale);
                 int b = (int) (y/(scale));
                 if(a == 7 && (int)(event.getY()/(scale)) == 0) {
-                    selectedFigure = null;
-                    controller.revert();
+                    //selectedFigure = null;
+                    controller.revert(controller.getField());
                 }
                 if(!one) multiPlayer(a, b);
                 else singlePlayer(a,b);
@@ -66,35 +67,52 @@ public class GameActivity extends AppCompatActivity implements View.OnTouchListe
     }
     void multiPlayer(int a, int b){
         if(b < 8 && b >= 0) {
-            figures figuer = controller.findFigure(new Coordinate(a, b));
+            /*figures figuer = controller.findFigure(new Coordinate(a, b));
             if(figuer == null || (figuer.getColor() == 0 && controller.getNum() % 2 != 0 ||
                     figuer.getColor() == 1 && controller.getNum() % 2 == 0)) {
                 figures tempFigure = controller.selectFigure(figuer);
-                if(tempFigure == null) controller.move(new Step(new Coordinate(a, b), selectedFigure));//new Coordinate(a,b), selectedFigure);
+                if(tempFigure == null && selectedFigure != null){
+                    controller.move(new Step(new Coordinate(a, b), selectedFigure));//new Coordinate(a,b), selectedFigure);
+                    selectedFigure = null;
+                }
                 else selectedFigure = tempFigure;
             }
             else if(selectedFigure != null && figuer.getColor() != selectedFigure.getColor()){
                 controller.move(new Step(new Coordinate(a,b), selectedFigure));
+                selectedFigure = null;
             }
             drawView.postInvalidate();
-            //shah = MediaPlayer.create(this,R.raw.shah);
+            //shah = MediaPlayer.create(this,R.raw.shah);*/
+            figures figure = controller.findFigure(new Coordinate(a, b));
+            if(figure != null){
+                if(figure.getColor() == 0 && controller.getNum() % 2 != 0 ||
+                        figure.getColor() == 1 && controller.getNum() % 2 == 0)
+                    controller.selectFigure(figure);
+                else
+                    if(controller.getSelected() != null)
+                        controller.move(new Step(new Coordinate(a, b), controller.getSelected()), controller.getField());
+            }
+            else{
+                if(controller.getSelected() != null)
+                    controller.move(new Step(new Coordinate(a, b), controller.getSelected()), controller.getField());
+            }
+            drawView.postInvalidate();
         }
 
     }
     void singlePlayer(int a, int b){
         if(b < 8 && b >= 0) {
             figures figuer = controller.findFigure(new Coordinate(a, b));
-            if((figuer == null && selectedFigure != null) || (figuer != null && figuer.getColor() == 0 && selectedFigure != null)){
-                Log.d("Game Activity", "Cntr move(), ii.move()");
-                controller.move(new Step(new Coordinate(a, b), selectedFigure));
-                selectedFigure = null;
+            if((figuer == null && controller.getSelected() != null) ||
+                    (figuer != null && figuer.getColor() == 0 && controller.getSelected() != null)){
+                Log.d("Game Activity", "move()");
+                controller.move(new Step(new Coordinate(a, b), controller.getSelected()), controller.getField());
             }
             if(controller.getNum() % 2 != 0) ii.move();
             else{
                 if(figuer != null && figuer.getColor() == 1) {
                     Log.d("Game Activity", "select figure");
                     controller.selectFigure(figuer);
-                    selectedFigure = figuer;
                 }
                 else{
                     ///controller.cancelSelected();

@@ -4,13 +4,13 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-public class II {
+public class AI {
     //private int[][] field;
     private ArrayList<figures> white;
     private ArrayList<figures> black;
     private Controller controller;
     private Step bestStep;
-    II(Controller controller){
+    AI(Controller controller){
         //this.field = field;
         //this.white = controller.getWhite();
         //this.black = controller.getBlack();
@@ -21,6 +21,7 @@ public class II {
         ArrayList<Step> moves = new ArrayList<>();
         for(figures figure : allies){
             ArrayList<Coordinate> moveList = figure.check(controller.getField(), enemy, allies);
+            //controller.cancelSelected();
             if(moveList != null && !moveList.isEmpty())
                 for(int i = 0; i < moveList.size(); i++)
                     moves.add(new Step(moveList.get(i), figure));
@@ -66,11 +67,12 @@ public class II {
             ArrayList<Step> moves = getMoves(controller.getWhite(), controller.getBlack());
             int bestMove = 999;
             for(Step move : moves){
+                if(move == null) continue;
                 controller.selectFigure(move.getFigure());
-                controller.move(move);
+                controller.move(move, controller.getField());
                 //moveFigure(field, move);
                 int boardValue = minimax(depth - 1, controller.getWhite());
-                controller.revert();
+                controller.revert(controller.getField());
                 if(bestMove > boardValue){
                     bestMove = boardValue;
                     //Log.d("Calculate", "bestValue: " + bestMove);
@@ -82,12 +84,13 @@ public class II {
             int bestMove = -999;
             ArrayList<Step> moves = getMoves(controller.getBlack(), controller.getWhite());
             for(Step move : moves){
+                if(move == null) continue;
                 controller.selectFigure(move.getFigure());
-                controller.move(move);
+                controller.move(move, controller.getField());
                 //moveFigure(field, move);
                 int boardValue = minimax(depth - 1, controller.getBlack());
-                Log.d("Minimax", "Revert white");
-                controller.revert();
+               // Log.d("Minimax", "Revert white");
+                controller.revert(controller.getField());
                 if(bestMove < boardValue){
                     bestMove = boardValue;
                    // Log.d("Calculate", "bestValue: " + bestMove);
@@ -117,7 +120,7 @@ public class II {
         if(bestStep != null){
             Log.d("Calculate", "        MOVING     ");
             controller.selectFigure(bestStep.getFigure());
-            controller.move(bestStep);
+            controller.move(bestStep, controller.getField());
             //controller.num++;
         }
         else Log.d("II", "best = null");

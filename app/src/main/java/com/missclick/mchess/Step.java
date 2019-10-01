@@ -1,5 +1,7 @@
 package com.missclick.mchess;
 
+import java.util.ArrayList;
+
 public class Step {
     private figures figure;
     private Coordinate to;
@@ -7,10 +9,29 @@ public class Step {
     public Coordinate getFrom() {
         return from;
     }
+    ArrayList<figures> black;
+    ArrayList<figures> white;
+
+    public ArrayList<figures> getBlack() {
+        return black;
+    }
+
+    public void setBlack(ArrayList<figures> black) {
+        this.black = black;
+    }
+
+    public ArrayList<figures> getWhite() {
+        return white;
+    }
+
+    public void setWhite(ArrayList<figures> white) {
+        this.white = white;
+    }
 
     private Coordinate from;
     private Boolean firstStep = false;
     private int[][] currentField;
+     String situation;
 
     private boolean hit = false;
     Step(Coordinate to, figures figure){

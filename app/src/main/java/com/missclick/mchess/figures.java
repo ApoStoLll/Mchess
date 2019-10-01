@@ -143,10 +143,17 @@ class Pawn extends figures {
         this.coor = coor;
         this.color = color;
     }
+    Pawn(figures pawn){
+        this.coor = pawn.getCoor();
+        this.color = pawn.getColor();
+        this.firstStep = pawn.firstStep;
+    }
 
     @Override
     int move(Coordinate coor, int[][] field, ArrayList<figures> enemy, ArrayList<figures> allies) {
-        this.coor = coor;
+        //this.coor = coor;
+        this.coor.setX(coor.getX());
+        this.coor.setY(coor.getY());
         this.firstStep = false;
         for (figures figur : allies)
         for (Coordinate coord : figur.hit(field, enemy, allies)) {
@@ -175,6 +182,7 @@ class Pawn extends figures {
         ArrayList<Coordinate> movelist = new ArrayList<>();
         int x = this.coor.getX();
         int y = this.coor.getY();
+        //Log.d("Figures", "X: " + x + " Y: " + y);
         if(field[x][y+1-2*this.color] == 0) {
             movelist.add(new Coordinate(x,y+1-2*this.color));
             if(this.firstStep && field[x][y+2-4*this.color] == 0)
@@ -193,6 +201,11 @@ class Rook extends figures{
         this.coor = coor;
         this.color = color;
     }
+    Rook(figures Rook){
+        this.coor = Rook.coor;
+        this.color = Rook.color;
+    }
+
     @Override
     ArrayList<Coordinate> hit(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
         return hitRook
@@ -209,6 +222,10 @@ class Bishop extends figures{
     Bishop(int color, Coordinate coor){
         this.coor = coor;
         this.color = color;
+    }
+    Bishop(figures bishop){
+        this.coor = bishop.coor;
+        this.color = bishop.color;
     }
     @Override
     ArrayList<Coordinate> hit(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
@@ -227,6 +244,11 @@ class Knight extends figures{
         this.coor = coor;
         this.color = color;
     }
+    Knight(figures knight){
+        this.coor = knight.coor;
+        this.color = knight.color;
+    }
+
     private ArrayList<Coordinate> justCheck(int[][] field) {
         ArrayList<Coordinate> movelist = new ArrayList<>();
         int x = this.coor.getX();
@@ -258,6 +280,10 @@ class Queen extends figures{
     Queen(int color, Coordinate coor){
         this.coor = coor;
         this.color = color;
+    }
+    Queen(figures queen){
+        this.coor = queen.coor;
+        this.color = queen.color;
     }
     @Override
     ArrayList<Coordinate> hit(int[][] field,ArrayList<figures> enemy,ArrayList<figures> allies){
